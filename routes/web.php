@@ -30,3 +30,6 @@ Route::get('categoria/{id}/confirmar', [CategoriaController::class, 'confirmar']
 // PRODUCTOS
 
 Route::resource('productos', ProductoController::class);
+Route::get('/cancelar1', function() {
+    return redirect() -> route('producto.index') -> with('datos', 'Accion cancelada');
+}) -> name('cancelar1');

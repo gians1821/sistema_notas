@@ -7,14 +7,18 @@ use Illuminate\Http\Request;
 
 class ProductoController extends Controller
 {
+
+    const PAGINATION = 4;
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $producto = Producto::where('estado', '=', '1') -> paginate($this::PAGINATION);
+        return view('mantenedor.producto.index', compact('producto'));
     }
 
     /**
