@@ -93,6 +93,18 @@
                   <p>Productos</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ route('productos.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Libros</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('productos.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Autores</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">

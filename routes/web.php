@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AutorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\LibroController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\UnidadController;
 use App\Http\Controllers\UserController;
@@ -30,7 +32,9 @@ Route::get('categoria/{id}/confirmar', [CategoriaController::class, 'confirmar']
 // PRODUCTOS
 
 Route::resource('productos', ProductoController::class);
-Route::get('/cancelar1', function() {
-    return redirect() -> route('producto.index') -> with('datos', 'Accion cancelada');
-}) -> name('cancelar1');
-Route::get('producto/{id}/confirmar', 'ProductoController@confirmar') -> name('productos.confirmar');
+Route::resource('libros', LibroController::class);
+Route::resource('autores', AutorController::class);
+Route::get('/cancelar1', function () {
+    return redirect()->route('producto.index')->with('datos', 'Accion cancelada');
+})->name('cancelar1');
+Route::get('producto/{id}/confirmar', 'ProductoController@confirmar')->name('productos.confirmar');
