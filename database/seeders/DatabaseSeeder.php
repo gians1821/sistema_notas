@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\User::factory(1)->create();
         \App\Models\Categoria::factory(20)->create();
-
+        // $this->call(EditorialesTableSeeder::class);
+        // $this->call(AutoresTableSeeder::class);
+        $this->call(LibrosTableSeeder::class);
     }
 }

@@ -3,18 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Libro;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 
 class LibroController extends Controller
 {
+    const PAGINATION = 10; // DE 10 EN 10
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $buscarPor = $request->get('buscarpor');
+        $libro = Libro::where('TitLibro', 'like', '%' . $buscarPor . '%')->paginate($this::PAGINATION);
+        return view('mantenedor.libro.index', compact('libro'));
     }
 
     /**
@@ -24,7 +33,7 @@ class LibroController extends Controller
      */
     public function create()
     {
-        //
+        return view('mantenedor.categoria.create');
     }
 
     /**
@@ -35,18 +44,20 @@ class LibroController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Libro  $libro
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Libro $libro)
-    {
-        //
+        $data = request()->validate(
+            [
+                'descripcion' => 'required|max:30'
+            ],
+            [
+                'descripcion.required' => 'Ingrese descripción de categoria',
+                'descripcion.max' => 'Maximo 30 caracteres para la descripción'
+            ]
+        );
+        $categoria = new Producto();
+        $categoria->descripcion = $request->descripcion;
+        $categoria->estado = '1';
+        $categoria->save();
+        return redirect()->route('mantenedor.categoria.index')->with('datos', 'Registro Nuevo Guardado...!');
     }
 
     /**
@@ -55,9 +66,10 @@ class LibroController extends Controller
      * @param  \App\Models\Libro  $libro
      * @return \Illuminate\Http\Response
      */
-    public function edit(Libro $libro)
+    public function edit($id)
     {
-        //
+        $producto = Producto::findOrFail($id);
+        return view('mantenedor.producto.edit', compact('producto'));
     }
 
     /**
@@ -67,9 +79,21 @@ class LibroController extends Controller
      * @param  \App\Models\Libro  $libro
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Libro $libro)
+    public function update(Request $request, $id)
     {
-        //
+        $data = request()->validate(
+            [
+                'descripcion' => 'required|max:30'
+            ],
+            [
+                'descripcion.required' => 'Ingrese descripción de categoria',
+                'descripcion.max' => 'Maximo 30 caracteres para la descripción'
+            ]
+        );
+        $categoria = Producto::findOrFail($id);
+        $categoria->descripcion = $request->descripcion;
+        $categoria->save();
+        return redirect()->route('categoria.index')->with('datos', 'Registro Actualizado...!');
     }
 
     /**
@@ -78,8 +102,17 @@ class LibroController extends Controller
      * @param  \App\Models\Libro  $libro
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Libro $libro)
+    public function destroy($id)
     {
-        //
+        $categoria = Producto::findOrFail($id);
+        $categoria->estado = '0';
+        $categoria->save();
+        return redirect()->route('categoria.index')->with('datos', 'Registro Eliminado...!');
+    }
+
+    public function confirmar($id)
+    {
+        $categoria = Producto::findOrFail($id);
+        return view('mantenedor.categoria.confirmar', compact('categoria'));
     }
 }

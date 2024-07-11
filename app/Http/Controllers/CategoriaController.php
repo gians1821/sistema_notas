@@ -40,7 +40,7 @@ class CategoriaController extends Controller
       $categoria->descripcion = $request->descripcion;
       $categoria->estado = '1';
       $categoria->save();
-      return redirect()->route('mantenedor.categoria.index')->with('datos', 'Registro Nuevo Guardado...!');
+      return redirect()->route('categoria.index')->with('datos', 'Registro Nuevo Guardado...!');
    }
 
    public function edit($id)
