@@ -14,7 +14,7 @@ class LibroController extends Controller
      */
     public function index()
     {
-        //
+        return view('mantenedor.libro.index');
     }
 
     /**
