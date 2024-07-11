@@ -10,8 +10,8 @@ class Producto extends Model
     use HasFactory;
 
     protected $table = 'productos';
-    protected $primaryKey = 'producto_id';
-    protected $timestamps = 'false';
+    protected $primaryKey = 'id';
+    public $timestamps = false;
 
     protected $fillable = [
         'descripcion', 'categoria_id', 'unidad_id', 'stock', 'estado'
@@ -19,12 +19,11 @@ class Producto extends Model
 
     public function categoria()
     {
-        return $this -> hasOne('App\Categoria', 'categoria_id', 'categoria_id');    
+        return $this->hasOne(Categoria::class, 'idcategoria', 'categoria_id');
     }
 
     public function unidad()
     {
-        return $this -> hasOne('App\Unidad', 'unidad_id', 'unidad_id');    
+        return $this->hasOne(Unidad::class, 'id', 'unidad_id');
     }
-
 }

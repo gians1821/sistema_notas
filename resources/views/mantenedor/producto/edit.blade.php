@@ -2,16 +2,57 @@
 @section('contenido')
 <div class="container">
     <h1>Editar Registro</h1>
-    <form method="POST" action="{{ route('categoria.update', $categoria -> idcategoria)}}">
+    <form method="POST" action="{{ route('productos.update', $producto -> id)}}">
         @method('put')
         @csrf
         <div class="form-group">
             <label for="">Código</label>
-            <input type="text" class="form-control" id="id" name="id" value="{{ $categoria->idcategoria }}" disabled>
+            <input type="text" class="form-control" id="id" name="id" value="{{ $producto->id }}" disabled>
         </div>
+        <!-- DESCRIPCIÓN -->
         <div class="form-group">
             <label for="">Descripción</label>
-            <input type="text" class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion" value="{{ $categoria->descripcion }}">
+            <input type="text" class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion" value="{{ $producto->descripcion }}">
+            @error('descripcion')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message}}</strong>
+            </span>
+            @enderror
+        </div>
+        <!-- CATEGORÍAS -->
+        <div class="form-group">
+            <label for="">Categorías</label>
+            <select class="form-control" name="categoria_id" id="categoria_id">
+                @foreach($categoria as $itemcategoria)
+                <option value="{{ $itemcategoria->id }}" {{ $itemcategoria -> id == $producto -> id ? 'selected' : '' }}></option>
+            </select>
+
+            @enderror
+        </div>
+        <!-- UNIDAD -->
+        <div class="form-group">
+            <label for="">Unidad</label>
+            <!-- <input type="text" class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion" value="{{ $producto->descripcion }}"> -->
+            @error('descripcion')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message}}</strong>
+            </span>
+            @enderror
+        </div>
+        <!-- PRECIO -->
+        <div class="form-group">
+            <label for="">Precio</label>
+            <!-- <input type="text" class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion" value="{{ $producto->descripcion }}"> -->
+            @error('descripcion')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message}}</strong>
+            </span>
+            @enderror
+        </div>
+        <!-- STOCK -->
+        <div class="form-group">
+            <label for="">Stock</label>
+            <!-- <input type="text" class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion" value="{{ $producto->descripcion }}"> -->
             @error('descripcion')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message}}</strong>
