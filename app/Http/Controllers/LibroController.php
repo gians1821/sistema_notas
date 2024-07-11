@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class LibroController extends Controller
 {
+    const PAGINATION = 10;
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +16,7 @@ class LibroController extends Controller
      */
     public function index()
     {
-        return view('mantenedor.libro.index');
+        return view('mantenedor.categoria.index');
     }
 
     /**

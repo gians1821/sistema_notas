@@ -6,10 +6,9 @@
   <!-- Default box -->
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">LISTADO DE CATEGORIAS</h3>
+      <h3 class="card-title">LISTADO DE LIBROS</h3>
       <br>
 
-      <!-- <a href="{{ route('categoria.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Nuevo Registro</a> -->
       <a href="" class="btn btn-primary"><i class="fas fa-plus"></i> Nuevo Registro</a>
       <nav class="navbar navbar-light float-right">
         <form class="form-inline my-2 my-lg-0" method="GET">
@@ -49,28 +48,8 @@
             <th scope="col">Opciones</th>
           </tr>
         </thead>
-        <tbody>
-          @if(count($categoria)<=0) <tr>
-            <td colspan="3">No hay registros</td>
-            </tr>
-            @else
-            @foreach($categoria as $itemcategoria)
-            <tr>
-              <td>{{$itemcategoria->idcategoria}}</td>
-              <td>{{$itemcategoria->descripcion}}</td>
-              <td>
-                <!-- <a href="{{ route('categoria.edit', $itemcategoria -> idcategoria) }}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i>Editar</a> -->
-                <a href="" class="btn btn-info btn-sm"><i class="fas fa-edit"></i>Editar</a>
-                <!-- <a href="{{ route('categoria.confirmar', $itemcategoria -> idcategoria) }}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i>Eliminar</a> -->
-                <a href="" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i>Eliminar</a>
-              </td>
-            </tr>
-            @endforeach
-            @endif
-        </tbody>
       </table>
 
-      {{ $categoria -> links() }}
     </div>
     <!-- /.card-body -->
     <div class="card-footer">
