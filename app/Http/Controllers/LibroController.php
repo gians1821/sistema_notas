@@ -33,7 +33,7 @@ class LibroController extends Controller
      */
     public function create()
     {
-        return view('mantenedor.categoria.create');
+        return view('mantenedor.libro.create');
     }
 
     /**
@@ -57,7 +57,7 @@ class LibroController extends Controller
         $categoria->descripcion = $request->descripcion;
         $categoria->estado = '1';
         $categoria->save();
-        return redirect()->route('mantenedor.categoria.index')->with('datos', 'Registro Nuevo Guardado...!');
+        return redirect()->route('mantenedor.libro.index')->with('datos', 'Registro Nuevo Guardado...!');
     }
 
     /**
@@ -69,7 +69,7 @@ class LibroController extends Controller
     public function edit($id)
     {
         $producto = Producto::findOrFail($id);
-        return view('mantenedor.producto.edit', compact('producto'));
+        return view('mantenedor.libro.edit', compact('producto'));
     }
 
     /**
@@ -113,6 +113,6 @@ class LibroController extends Controller
     public function confirmar($id)
     {
         $categoria = Producto::findOrFail($id);
-        return view('mantenedor.categoria.confirmar', compact('categoria'));
+        return view('mantenedor.libro.confirmar', compact('categoria'));
     }
 }

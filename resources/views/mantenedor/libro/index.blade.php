@@ -9,7 +9,10 @@
       <h3 class="card-title">LISTADO DE LIBROS</h3>
       <br>
 
-      <a href="{{ route('categoria.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Nuevo Registro</a>
+      <a href="{{ route('libros.create') }}" class="btn btn-primary">
+        <i class="fas fa-plus"></i>
+        Nuevo Registro
+      </a>
       <nav class="navbar navbar-light float-right">
         <form class="form-inline my-2 my-lg-0" method="GET">
 
