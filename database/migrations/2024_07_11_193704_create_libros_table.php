@@ -17,8 +17,15 @@ class CreateLibrosTable extends Migration
             $table->id('CodLibro');
             $table->string('TitLibro', 40);
             $table->char('AnoLibro', 4);
-            $table->integer('IdAutor');
+            
+            /* Relación #1 con otra tabla */
+            $table->unsignedBigInteger('IdAutor');
+            $table->foreign('IdAutor')->references('IdAutor')->on('autores')->onDelete('cascade');
+
+            /* Relación #2 con otra tabla */
             $table->char('IdEditorial', 2);
+            $table->foreign('IdEditorial')->references('IdEditorial')->on('editoriales')->onDelete('cascade');
+
             $table->integer('Cantidad');
             $table->timestamps();
         });
