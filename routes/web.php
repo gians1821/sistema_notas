@@ -19,18 +19,20 @@ Route::post('/identificacion', [UserController::class, 'verificalogin'])->name('
 Route::post('/salir', [UserController::class, 'salir'])->name('logout');
 
 Route::resource('/categoria', CategoriaController::class);
+Route::resource('unidades', UnidadController::class);
+Route::get('unidad/{id}/confirmar', [UnidadController::class, 'confirmar'])->name('unidades.confirmar');
+Route::get('cancelar-unidades', [UnidadController::class, 'cancelar'])->name('unidades.cancelar');
 
 Route::get('cancelar', function () {
     return redirect()->route('categoria.index')
         ->with('datos', 'Acción Cancelada ..!');
 })->name('cancelar');
-
 Route::get('categoria/{id}/confirmar', [CategoriaController::class, 'confirmar'])->name('categoria.confirmar');
 
 // PRODUCTOS
 
 Route::resource('productos', ProductoController::class);
-Route::get('/cancelar1', function() {
-    return redirect() -> route('producto.index') -> with('datos', 'Accion cancelada');
-}) -> name('cancelar1');
-Route::get('producto/{id}/confirmar', 'ProductoController@confirmar') -> name('productos.confirmar');
+Route::get('/cancelar1', function () {
+    return redirect()->route('productos.index')->with('datos', 'Accion cancelada');
+})->name('cancelar1');
+Route::get('producto/{id}/confirmar', 'ProductoController@confirmar')->name('productos.confirmar');
