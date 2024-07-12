@@ -42,7 +42,7 @@ class CategoriaController extends Controller
       $categoria->descripcion = $request->descripcion;
       $categoria->estado = '1';
       $categoria->save();
-      return redirect()->route('categoria.index')->with('datos', 'Registro Nuevo Guardado...!');
+      return redirect()->route('categorias.index')->with('datos', 'Registro Nuevo Guardado...!');
    }
 
    public function edit($id)
@@ -65,18 +65,26 @@ class CategoriaController extends Controller
       $categoria = Categoria::findOrFail($id);
       $categoria->descripcion = $request->descripcion;
       $categoria->save();
-      return redirect()->route('categoria.index')->with('datos', 'Registro Actualizado...!');
+      return redirect()->route('categorias.index')->with('datos', 'Registro Actualizado...!');
    }
+
    public function confirmar($id)
    {
       $categoria = Categoria::findOrFail($id);
       return view('mantenedor.categoria.confirmar', compact('categoria'));
    }
+
    public function destroy($id)
    {
       $categoria = Categoria::findOrFail($id);
       $categoria->estado = '0';
       $categoria->save();
-      return redirect()->route('categoria.index')->with('datos', 'Registro Eliminado...!');
+      return redirect()->route('categorias.index')->with('datos', 'Registro Eliminado...!');
+   }
+
+   public function cancelar()
+   {
+      return redirect()->route('categorias.index')
+         ->with('datos', 'Acción Cancelada ..!');
    }
 }

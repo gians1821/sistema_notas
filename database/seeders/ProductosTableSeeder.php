@@ -16,18 +16,18 @@ class ProductosTableSeeder extends Seeder
     {
         $productos = [
             [
-                'descripcion' => 'Producto 1',
+                'descripcion' => 'Fanta',
                 'categoria_id' => '1',
-                'unidad_id' => '1',
-                'precio' => 120,
+                'unidad_id' => '4',
+                'precio' => 6,
                 'stock' => 100,
                 'estado' => 1,
             ],
             [
-                'descripcion' => 'Producto 2',
+                'descripcion' => 'Trapeador',
                 'categoria_id' => '2',
-                'unidad_id' => '2',
-                'precio' => 140,
+                'unidad_id' => '4',
+                'precio' => 15,
                 'stock' => 50,
                 'estado' => 1,
             ],

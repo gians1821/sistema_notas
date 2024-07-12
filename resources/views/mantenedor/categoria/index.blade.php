@@ -8,7 +8,7 @@
     <div class="card-header">
       <h3 class="card-title">LISTADO DE CATEGORIAS</h3>
       <br>
-      <a href="{{ route('categoria.create') }}" class="btn btn-primary">
+      <a href="{{ route('categorias.create') }}" class="btn btn-primary">
         <i class="fas fa-plus"></i>
         Nuevo Registro
       </a>
@@ -58,8 +58,8 @@
               <td>{{$itemcategoria->idcategoria}}</td>
               <td>{{$itemcategoria->descripcion}}</td>
               <td>
-                <a href="{{ route('categoria.edit', $itemcategoria -> idcategoria) }}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i>Editar</a>
-                <a href="{{ route('categoria.confirmar', $itemcategoria -> idcategoria) }}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i>Eliminar</a>
+                <a href="{{ route('categorias.edit', $itemcategoria -> idcategoria) }}" class="btn btn-info btn-sm"><i class="fas fa-edit"></i>Editar</a>
+                <a href="{{ route('categorias.confirmar', $itemcategoria -> idcategoria) }}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i>Eliminar</a>
               </td>
             </tr>
             @endforeach

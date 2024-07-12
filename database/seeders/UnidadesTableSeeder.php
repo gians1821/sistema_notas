@@ -16,22 +16,22 @@ class UnidadesTableSeeder extends Seeder
     {
         Unidad::create([
             'descripcion' => 'Kilogramo',
-            'estado' => 'A'
+            'estado' => '1'
         ]);
 
         Unidad::create([
             'descripcion' => 'Litro',
-            'estado' => 'A'
+            'estado' => '1'
         ]);
 
         Unidad::create([
             'descripcion' => 'Metro',
-            'estado' => 'I'
+            'estado' => '1'
         ]);
 
         Unidad::create([
             'descripcion' => 'Unidad',
-            'estado' => 'A'
+            'estado' => '1'
         ]);
     }
 }

@@ -6,9 +6,6 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\UnidadController;
 use App\Http\Controllers\UserController;
-/*Route::get('/', function () {
-    return view('bienvenido');
-});*/
 
 Route::get('/', [UserController::class, 'showLogin'])->name('login');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -18,12 +15,9 @@ Route::post('/salir', [UserController::class, 'salir'])->name('logout');
 
 // CATEGORIAS
 
-Route::resource('/categoria', CategoriaController::class);
-Route::get('cancelar', function () {
-    return redirect()->route('categoria.index')
-        ->with('datos', 'Acción Cancelada ..!');
-})->name('cancelar');
-Route::get('categoria/{id}/confirmar', [CategoriaController::class, 'confirmar'])->name('categoria.confirmar');
+Route::resource('categorias', CategoriaController::class);
+Route::get('cancelar-categorias', [CategoriaController::class, 'cancelar'])->name('categorias.cancelar');
+Route::get('categoria/{id}/confirmar', [CategoriaController::class, 'confirmar'])->name('categorias.confirmar');
 
 // UNIDADES
 
