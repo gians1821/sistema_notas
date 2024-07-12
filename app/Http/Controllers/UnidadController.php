@@ -51,7 +51,7 @@ class UnidadController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data = request()->validate(
+        $data = $request->validate(
             [
                 'descripcion' => 'required|max:30',
             ],
@@ -65,11 +65,13 @@ class UnidadController extends Controller
         $unidad->save();
         return redirect()->route('unidades.index')->with('datos', 'Registro Actualizado...!');
     }
+
     public function confirmar($id)
     {
         $unidad = Unidad::findOrFail($id);
         return view('mantenedor.unidad.confirmar', compact('unidad'));
     }
+
     public function destroy($id)
     {
         $unidad = Unidad::findOrFail($id);
@@ -77,6 +79,7 @@ class UnidadController extends Controller
         $unidad->save();
         return redirect()->route('unidades.index')->with('datos', 'Registro Eliminado...!');
     }
+
     public function cancelar()
     {
         return redirect()->route('unidades.index')

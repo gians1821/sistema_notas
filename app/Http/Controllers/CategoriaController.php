@@ -16,7 +16,9 @@ class CategoriaController extends Controller
    public function index(Request $request)
    {
       $buscarPor = $request->get('buscarpor');
-      $categoria = Categoria::where('estado', '=', '1')->where('descripcion', 'like', '%' . $buscarPor . '%')->paginate($this::PAGINATION);
+      $categoria = Categoria::where('estado', '=', '1')
+         ->where('descripcion', 'like', '%' . $buscarPor . '%')
+         ->paginate($this::PAGINATION);
       return view('mantenedor.categoria.index', compact('categoria'));
    }
 

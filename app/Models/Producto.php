@@ -14,7 +14,7 @@ class Producto extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'descripcion', 'categoria_id', 'unidad_id', 'stock', 'estado'
+        'descripcion', 'categoria_id', 'precio', 'unidad_id', 'stock', 'estado'
     ];
 
     public function categoria()

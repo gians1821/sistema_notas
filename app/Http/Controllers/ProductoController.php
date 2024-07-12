@@ -12,6 +12,11 @@ class ProductoController extends Controller
 
     const PAGINATION = 4;
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +24,10 @@ class ProductoController extends Controller
      */
     public function index(Request $request)
     {
-        $productos = Producto::where('estado', '=', '1')->paginate($this::PAGINATION);
+        $buscarPor = $request->get('buscarpor');
+        $productos = Producto::where('estado', '=', '1')
+            ->where('descripcion', 'like', '%' . $buscarPor . '%')
+            ->paginate($this::PAGINATION);
         return view('mantenedor.producto.index', compact('productos'));
     }
 
@@ -30,9 +38,9 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        $categoria = Categoria::where('estado', '=', '1')->get();
-        $unidad = Unidad::where('estado', '=', '1')->get();
-        return view('mantenedor.producto.create', compact('categoria', 'unidad'));
+        $categorias = Categoria::where('estado', '=', '1')->get();
+        $unidades = Unidad::where('estado', '=', '1')->get();
+        return view('mantenedor.producto.create', compact('categorias', 'unidades'));
     }
 
     /**
@@ -42,26 +50,33 @@ class ProductoController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function store(Request $request)
-     {
-        $data = request()->validate([
-            'descripcion' => 'required|max:30',
-            'precio' => 'required|min:0',
-            'stock' => 'required|min:0',
-        ],
-        [
-            'descripcion.required' => 'Ingrese descripcion de producto',
-            'descripcion.max' => 'Maximo 30 caracteres para la descripcion',
-            'precio.required' => 'Ingrese precio de producto',
-            'precio.min' => 'Precio no puede ser negativo',
-            'stock.required' => 'Ingrese stock de producto',
-            'stock.min' => 'Stock no puede ser negativo',
-        ]);
+    public function store(Request $request)
+    {
+        $request->validate(
+            [
+                'descripcion' => 'required|max:30',
+                'precio' => 'required|min:0',
+                'stock' => 'required|min:0',
+            ],
+            [
+                'descripcion.required' => 'Ingrese descripcion de producto',
+                'descripcion.max' => 'Maximo 30 caracteres para la descripcion',
+                'precio.required' => 'Ingrese precio de producto',
+                'precio.min' => 'Precio no puede ser negativo',
+                'stock.required' => 'Ingrese stock de producto',
+                'stock.min' => 'Stock no puede ser negativo',
+            ]
+        );
         $producto = new Producto();
-        $producto -> descripcion = $request -> descripcion;
-        $producto -> categoria_id = $request -> categoria_id;
-        
-     }
+        $producto->descripcion = $request->descripcion;
+        $producto->categoria_id = $request->categoria_id;
+        $producto->unidad_id = $request->unidad_id;
+        $producto->precio = $request->precio;
+        $producto->stock = $request->stock;
+        $producto->estado = '1';
+        $producto->save();
+        return redirect()->route('productos.index')->with('datos', 'Registro Nuevo Guardado!');
+    }
 
     /**
      * Display the specified resource.
@@ -95,9 +110,29 @@ class ProductoController extends Controller
      * @param  \App\Models\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Producto $producto)
+    public function update(Request $request, $id)
     {
-        //
+        $data = $request->validate(
+            [
+                'descripcion' => 'required|max:30',
+                'categoria_id' => 'required',
+                'unidad_id' => 'required',
+                'precio' => 'required',
+                'stock' => 'required',
+            ],
+            [
+                'descripcion.required' => 'Ingrese descripción del producto',
+                'descripcion.max' => 'Maximo 30 caracteres para la descripción'
+            ]
+        );
+        $producto = Producto::findOrFail($id);
+        $producto->descripcion = $data['descripcion'];
+        $producto->categoria_id = $data['categoria_id'];
+        $producto->unidad_id = $data['unidad_id'];
+        $producto->precio = $data['precio'];
+        $producto->stock = $data['stock'];
+        $producto->save();
+        return redirect()->route('productos.index')->with('datos', 'Registro Actualizado...!');
     }
 
     /**
@@ -106,8 +141,21 @@ class ProductoController extends Controller
      * @param  \App\Models\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Producto $producto)
+    public function destroy($id)
     {
-        //
+        $producto = Producto::findOrFail($id);
+        $producto->estado = '0';
+        $producto->save();
+        return redirect()->route('productos.index')->with('datos', 'Registro Eliminado...!');
+    }
+    public function cancelar()
+    {
+        return redirect()->route('productos.index')->with('datos', 'Accion cancelada');
+    }
+
+    public function confirmar($id)
+    {
+        $producto = Producto::findOrFail($id);
+        return view('mantenedor.producto.confirmar', compact('producto'));
     }
 }

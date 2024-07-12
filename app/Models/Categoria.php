@@ -11,13 +11,12 @@ class Categoria extends Model
 
     protected $table = 'categorias';
     protected $primaryKey = 'idcategoria';
-    public $timestamps=false;
+    public $timestamps = false;
 
-    protected $fillable=['descripcion','estado'];
+    protected $fillable = ['descripcion', 'estado'];
 
-    public function productos() 
+    public function productos()
     {
-        return $this -> hasMany(Producto::class, 'categoria_id', 'categoria_id');
+        return $this->hasMany(Producto::class, 'categoria_id', 'idcategoria');
     }
-
 }
