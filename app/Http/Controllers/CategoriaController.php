@@ -53,7 +53,7 @@ class CategoriaController extends Controller
 
    public function update(Request $request, $id)
    {
-      $data = request()->validate(
+      $request->validate(
          [
             'descripcion' => 'required|max:30'
          ],
