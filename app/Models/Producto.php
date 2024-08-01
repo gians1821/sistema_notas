@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Producto extends Model
 {
@@ -25,5 +26,12 @@ class Producto extends Model
     public function unidad()
     {
         return $this->hasOne(Unidad::class, 'id', 'unidad_id');
+    }
+
+    public static function ActualizarStock($idproducto, $cantidad)
+    {
+        return DB::select(
+            DB::raw("UPDATE productos set stock = stock - '" . $cantidad . "' where idproducto='" . $idproducto . "'")
+        );
     }
 }
