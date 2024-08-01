@@ -157,7 +157,6 @@
   <!-- AdminLTE App -->
   <script src="/adminlte/dist/js/adminlte.min.js"></script>
   <!-- AdminLTE for demo purposes -->
-  <script src="/adminlte/dist/js/demo.js"></script>
   @yield('js')
 </body>
 
