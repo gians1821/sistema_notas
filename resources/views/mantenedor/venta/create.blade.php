@@ -183,8 +183,8 @@
 @endsection
 
 @section('js')
-<link rel="stylesheet" href="/select2/bootstrap-select.min.css">
-<script src="/select2/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="/select2/dist/css/select2.min.css">
+<script src="/select2/dist/js/select2.full.min.js"></script>
 <script src="/adminlte/plugins/moment/moment.min.js"></script>
 <script src="/adminlte/plugins/inputmask/jquery.inputmask.min.js"></script>
 
