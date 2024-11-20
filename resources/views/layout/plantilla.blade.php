@@ -20,7 +20,11 @@
             background-color: #0f3b5e !important;
             /* Color azul */
         }
+
+</style>
+
     </style>
+
     <link href="{{ asset('plantilla/static/css/app.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -59,7 +63,7 @@
                             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end w-5" aria-labelledby="alertsDropdown">
                                 <!-- TITULO -->
                                 <div class="dropdown-menu-header">
-                                    5 New Notifications
+                                    Nuevas notificaciones
                                 </div>
                                 <div class="list-group">
                                     <!-- 1. NOTIFICACION -->
@@ -76,43 +80,7 @@
                                         </div>
                                     </a>
                                     <!-- 2. NOTIFICACION -->
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <i class="text-warning" data-feather="bell"></i>
-                                            </div>
-                                            <div class="col-10">
-                                                <div class="text-dark">Lorem ipsum</div>
-                                                <div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate hendrerit et.</div>
-                                                <div class="text-muted small mt-1">2h ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <!-- 3. NOTIFICACION -->
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <i class="text-primary" data-feather="home"></i>
-                                            </div>
-                                            <div class="col-10">
-                                                <div class="text-dark">Login from 192.186.1.8</div>
-                                                <div class="text-muted small mt-1">5h ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <!-- 4. NOTIFICACION -->
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <i class="text-success" data-feather="user-plus"></i>
-                                            </div>
-                                            <div class="col-10">
-                                                <div class="text-dark">New connection</div>
-                                                <div class="text-muted small mt-1">Christina accepted your request.</div>
-                                                <div class="text-muted small mt-1">14h ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
+                                    
                                 </div>
                                 <!-- BOTON SHOW ALL NOTIFICATIONS-->
                                 <div class="dropdown-menu-footer">
@@ -131,7 +99,7 @@
                                 <!-- TITULO -->
                                 <div class="dropdown-menu-header">
                                     <div class="position-relative">
-                                        4 New Messages
+                                        Nuevos Mensajes
                                     </div>
                                 </div>
                                 <div class="list-group">
@@ -148,45 +116,7 @@
                                             </div>
                                         </div>
                                     </a>
-                                    <!-- 2. MENSAJE -->
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <img src="{{ asset('plantilla\src\img\avatars\avatar-2.jpg')}}" class="avatar img-fluid rounded-circle" alt="William Harris">
-                                            </div>
-                                            <div class="col-10 ps-2">
-                                                <div class="text-dark">William Harris</div>
-                                                <div class="text-muted small mt-1">Curabitur ligula sapien euismod vitae.</div>
-                                                <div class="text-muted small mt-1">2h ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <!-- 3. MENSAJE -->
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <img src="{{ asset('plantilla\src\img\avatars\avatar-4.jpg')}}" class="avatar img-fluid rounded-circle" alt="Christina Mason">
-                                            </div>
-                                            <div class="col-10 ps-2">
-                                                <div class="text-dark">Christina Mason</div>
-                                                <div class="text-muted small mt-1">Pellentesque auctor neque nec urna.</div>
-                                                <div class="text-muted small mt-1">4h ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <!-- 4. MENSAJE -->
-                                    <a href="#" class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col-2">
-                                                <img src="{{ asset('plantilla\src\img\avatars\avatar-3.jpg')}}" class="avatar img-fluid rounded-circle" alt="Sharon Lessman">
-                                            </div>
-                                            <div class="col-10 ps-2">
-                                                <div class="text-dark">Sharon Lessman</div>
-                                                <div class="text-muted small mt-1">Aenean tellus metus, bibendum sed, posuere ac, mattis non.</div>
-                                                <div class="text-muted small mt-1">5h ago</div>
-                                            </div>
-                                        </div>
-                                    </a>
+                                    
                                 </div>
                                 <!-- BOTON SHOW ALL MESSAGES-->
                                 <div class="dropdown-menu-footer">

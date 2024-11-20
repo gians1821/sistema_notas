@@ -6,7 +6,7 @@
         PRINCIPAL
     </li>
     <!-- DASHBOARD -->
-    <li class="sidebar-item active">
+    <li class="sidebar-item">
         <a class="sidebar-link" href="{{route('Home.index')}}">
             <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Inicio</span>
         </a>
@@ -59,7 +59,7 @@
     </li>
     @endrole
     <!-- GESTION DE CAPACIDADES -->
-    <li class="sidebar-item">
+    <li class="sidebar-item active">
         <a class="sidebar-link" href="{{URL::to('/Capacidad')}}">
             <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Gestión Capacidades</span>
         </a>
