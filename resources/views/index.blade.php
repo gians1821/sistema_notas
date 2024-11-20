@@ -101,15 +101,46 @@
 @endsection('BarraNavegacion')
 @section('Contenido')
 <!-- CONTENIDO DE LA PAGINA -->
-<h1 class="h3 mb-3"><strong>Bienvenido {{auth()->user()->name}}</strong></h1>
-<h2>Estás logueado como {{auth()->user()->getRoleNames()}}</h2>
-<div class="mx-5">
-    @role('Admin')
-    <img src="https://img.freepik.com/vector-gratis/oficina-directores-escuela-escritorio-sillas-estanteria-vitrina-trofeos-deportivos-interior-vacio-dibujos-animados-gabinete-director-reunirse-hablar-maestros-alumnos-padres_107791-3108.jpg" alt="">
-    @endrole
-    @role('Docente')
-    <img src="https://img.freepik.com/psd-gratis/ilustracion-3d-aula-escolar_23-2150939266.jpg" alt="">
-    @endrole
+<h1 class="h2 mb-5">
+    <span style="color: #FFD700;"><Strong>Bienvenido a la</Strong></span> 
+    <span style="color: #003366;"><Strong>Institución Educativa Brüning</Strong></span>
+</h1>
 
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4 mr-5">Perfil de Usuario</h1>
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <img src="{{ asset('images/prueba.png') }}" alt="Foto de Perfil" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px;">
+                <h2>{{auth()->user()->name}}</h2>
+                <p>{{auth()->user()->email}}</p>
+            </div>
+            <div class="col-md-8">
+                <form>
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre Completo</label>
+                        <input type="text" class="form-control" id="nombre" value="{{ auth()->user()->name }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Nivel de acceso</label>
+                        <input type="text" class="form-control" id="telefono" value="{{ auth()->user()->getRoleNames()->implode(', ') }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label">Descripción</label>
+                        <input type="text" class="form-control" id="direccion" value="Usted puede ver las notas de sus hijos" readonly>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <h3 class="mt-5">Información de sus Hijo(s)</h3>
+        <div class="row">
+            <div class="col-md-4 mb-3 text-center">
+                <img src="{{ asset('images/pruebita.jpg') }}" alt="Hijo 1" class="img-fluid rounded" style="height: 200px;">
+                <h4>Fatima</h4>
+                <a href="" class="btn btn-primary mt-2">Ver Detalles</a>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection('Contenido')
