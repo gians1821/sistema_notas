@@ -21,42 +21,38 @@ class CursoPorGradoController extends Controller
 
     public function index(Request $request)
     {
-        $buscarporGrado = $request->get('buscarporGrado');
-        $buscarporNivel = $request->get('buscarporNivel');
-        // Inicializa una variable para guardar el id_grado encontrado
-        $id_grado = [];
-        $id_nivel = [];
+        $nivel = $request->get('nivel');
+        $grado = $request->get('grado');
+
+        $query = Curso::query();
 
         // Si hay un valor para buscar por grado, busca el id_grado correspondiente
-        if ($buscarporGrado) {
-            $grado = Grado::where('nombre_grado', 'like', '%' . $buscarporGrado . '%')->get();
-            if ($grado) {
-                $id_grado = $grado->pluck('id_grado')->toArray();
-            }
+        if ($grado) {
+            $query->whereHas('grado', function ($query) use ($grado) {
+                $query->where('id_grado', $grado); // Cambia 'grado' por el campo correcto en la tabla 'grado'
+            });
         }
 
-        if ($buscarporNivel) {
-            $nivel = Nivel::where('nombre_nivel', 'like', '%' . $buscarporNivel . '%')->get();
-            if ($nivel) {
-                $id_nivel = $nivel->pluck('id_nivel')->toArray();
-            }
+        if ($nivel) {
+            
+            $query->whereHas('grado', function ($query) use ($nivel) {
+                $query->whereHas('nivel', function ($query) use ($nivel) {
+                    $query->where('id_nivel', $nivel); // Cambia 'nivel' por el campo correcto en la tabla 'nivel'
+                });
+            });
         }
 
-        $curso = Curso::where('id_curso', '>', '0')
-            ->where(function ($query) use ($id_grado, $id_nivel) {
-                if (!empty($id_grado)) {
-                    $query->whereIn('grado_id_grado', $id_grado);
-                }
-                if (!empty($id_nivel)) {
-                    $query->whereHas('grado', function ($q) use ($id_nivel) {
-                        $q->where('id_nivel', $id_nivel);
-                    });
-                }
-            })
-            ->paginate($this::PAGINATION);
-        $curso->appends(['buscarporGrado' => $buscarporGrado, 'buscarporNivel' => $buscarporNivel]);
+        $curso = $query->paginate(self::PAGINATION);
 
-        return view('CursoPorGrado.cursoxGrado', compact('curso', 'buscarporGrado', 'buscarporNivel'));
+        $curso->appends([
+            'nivel' => $nivel,
+            'grado' => $grado,
+        ]);
+
+        $niveles = Nivel::all(); // Con esto envio todos los niveles a la vista
+        $grados = Grado::all();
+
+        return view('CursoPorGrado.cursoxGrado', compact('curso', 'nivel', 'grado' , 'niveles', 'grados'));
     }
 
     /**

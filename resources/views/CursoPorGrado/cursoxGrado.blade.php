@@ -79,16 +79,26 @@
 <h1 class="h3 mb-3 titulos"><strong>Gestión de</strong> cursos por grado</h1>
 <br>
 <nav class="navbar navbar-light ">
-    <form class="form-inline my-lg-0 m-2" method="GET">
+    <form class="form-inline my-lg-0 m-2 ml-auto" method="GET">
         <div class="input-group ">
-            <select class="form-control ml-2" id="nivel" name="buscarporNivel">
-                <option value="Nivel" selected>Nivel</option>
-                <option value="PRIMARIA">Primaria</option>
-                <option value="SECUNDARIA">Secundaria</option>
-            </select>
-            <select class="form-control ml-2" id="grado" name="buscarporGrado">
-                <option value="" selected>Grado</option>
-            </select>
+
+        <select class="form-control ml-2 mr-2" id="nivel" name="nivel" onchange="this.form.submit()" style="width: 150px;">
+            <option value="" {{ !$nivel ? 'selected' : '' }}>Nivel</option>
+            @foreach($niveles as $itemniveles)
+                <option value="{{ $itemniveles->id_nivel }}" {{ $itemniveles->id_nivel == $nivel ? 'selected' : '' }}>
+                    {{ $itemniveles->nombre_nivel }}
+                </option>
+            @endforeach
+        </select>
+        <select class="form-control ml-2 mr-2" id="grado" name="grado" onchange="this.form.submit()" style="width: 150px;">
+            <option value="" {{ !$grado ? 'selected' : '' }}>Grado</option>
+            @foreach(App\Models\Grado::where('id_nivel', $nivel)->get() as $itemgrado)
+                <option value="{{ $itemgrado->id_grado }}" {{ $itemgrado->id_grado == $grado ? 'selected' : '' }}>
+                    {{ $itemgrado->nombre_grado }}
+                </option>
+            @endforeach
+        </select>
+
             <div class="input-group-append ml-2">
                 <button class="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
             </div>
@@ -111,56 +121,36 @@
 <table class="table  text-center ">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">
-                CURSOS
-                @if($buscarporNivel || $buscarporGrado)
-                DE {{ mb_strtoupper($buscarporGrado) }} DE {{ $buscarporNivel }}
-                @endif
-            </th>
+            <th scope="col" class="w-25">Id</th>
+            <th scope="col">Curso</th>
+            <th scope="col">Grado</th>
+            <th scope="col">Nivel</th>
         </tr>
     </thead>
     <tbody>
         @if (count($curso)<=0) <tr>
-            <td colspan="3">No hay registros</td>
+            <td colspan="4">No hay registros</td>
             </tr>
-            @else
+        @else
             @foreach($curso as $itemcurso)
             <tr>
+                <td>{{$itemcurso->id_curso}}</td>
                 <td>{{$itemcurso->nombre_curso}}</td>
+                <td>{{ $itemcurso->grado->nombre_grado }}</td>
+                <td>{{ $itemcurso->grado->nivel->nombre_nivel }}</td>
             </tr>
             @endforeach
-            @endif
+        @endif
     </tbody>
 </table>
-{{ $curso->appends(['buscarporNivel' => $buscarporNivel,'buscarporGrado' => $buscarporGrado])->links() }}
+
+{{ $curso->appends(['nivel' => $nivel, 'grado' => $grado])->onEachSide(0)->links() }}
+
 @endsection('Contenido')
 @section('script')
 <script>
     setTimeout(function() {
         document.querySelector('#mensaje').remove();
     }, 3000);
-</script>
-<script>
-    document.getElementById('nivel').addEventListener('change', function() {
-        var nivel = this.value;
-        var gradoSelect = document.getElementById('grado');
-        gradoSelect.innerHTML = '';
-
-        if (nivel === 'Nivel') {
-            var options = ['Grado'];
-        }
-        if (nivel === 'PRIMARIA') {
-            var options = ['Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 'Sexto'];
-        } else if (nivel === 'SECUNDARIA') {
-            var options = ['Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto'];
-        }
-
-        options.forEach(function(option) {
-            var opt = document.createElement('option');
-            opt.value = option;
-            opt.innerHTML = option;
-            gradoSelect.appendChild(opt);
-        });
-    });
 </script>
 @endsection
