@@ -84,7 +84,6 @@ class AlumnoController extends Controller
         return view('Alumno.Alumnos', compact('alumnos', 'buscarporNom', 'buscarporApell', 'nivel', 'grado', 'seccion', 'niveles', 'grados', 'secciones'));
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
@@ -99,69 +98,72 @@ class AlumnoController extends Controller
     public function store(Request $request)
     {
         // Validar datos del formulario
-        $data = $request->validate([
-            'nombre_alumno' => 'required|string|max:30',
-            'apellido_alumno' => 'required|string|max:30',
-            'fecha_nacimiento' => 'required|date',
-            'dni' => 'required|string|max:8',
-            'pais' => 'required|string|max:30',
-            'region' => 'required|string|max:30',
-            'ciudad' => 'required|string|max:30',
-            'distrito' => 'required|string|max:30',
-            'estado_civil' => 'required|string|max:15',
-            'telefono' => 'required|string|max:15',
-            'nivel' => 'required|String|max:15',
-            'grado' => 'required|String|max:15',
-            'seccion' => 'required|String|max:15',
-        ], [
-            'nombre_alumno.required' => 'Ingrese el nombre del alumno.',
-            'nombre_alumno.string' => 'El nombre del alumno debe ser una cadena de texto.',
-            'nombre_alumno.max' => 'El nombre del alumno no debe exceder los 30 caracteres.',
+        $data = $request->validate(
+            [
+                'nombre_alumno' => 'required|string|max:30',
+                'apellido_alumno' => 'required|string|max:30',
+                'fecha_nacimiento' => 'required|date',
+                'dni' => 'required|string|max:8',
+                'pais' => 'required|string|max:30',
+                'region' => 'required|string|max:30',
+                'ciudad' => 'required|string|max:30',
+                'distrito' => 'required|string|max:30',
+                'estado_civil' => 'required|string|max:15',
+                'telefono' => 'required|string|max:15',
+                'nivel' => 'required|String|max:15',
+                'grado' => 'required|String|max:15',
+                'seccion' => 'required|String|max:15',
+            ],
+            [
+                'nombre_alumno.required' => 'Ingrese el nombre del alumno.',
+                'nombre_alumno.string' => 'El nombre del alumno debe ser una cadena de texto.',
+                'nombre_alumno.max' => 'El nombre del alumno no debe exceder los 30 caracteres.',
 
-            'apellido_alumno.required' => 'Ingrese el apellido del alumno.',
-            'apellido_alumno.string' => 'El apellido del alumno debe ser una cadena de texto.',
-            'apellido_alumno.max' => 'El apellido del alumno no debe exceder los 30 caracteres.',
+                'apellido_alumno.required' => 'Ingrese el apellido del alumno.',
+                'apellido_alumno.string' => 'El apellido del alumno debe ser una cadena de texto.',
+                'apellido_alumno.max' => 'El apellido del alumno no debe exceder los 30 caracteres.',
 
-            'fecha_nacimiento.required' => 'Ingrese la fecha de nacimiento.',
-            'fecha_nacimiento.date' => 'Ingrese una fecha válida.',
+                'fecha_nacimiento.required' => 'Ingrese la fecha de nacimiento.',
+                'fecha_nacimiento.date' => 'Ingrese una fecha válida.',
 
-            'dni.required' => 'Ingrese el DNI del alumno.',
-            'dni.string' => 'El DNI del alumno debe ser una cadena de texto.',
-            'dni.max' => 'El DNI del alumno no debe exceder los 8 caracteres.',
+                'dni.required' => 'Ingrese el DNI del alumno.',
+                'dni.string' => 'El DNI del alumno debe ser una cadena de texto.',
+                'dni.max' => 'El DNI del alumno no debe exceder los 8 caracteres.',
 
-            'pais.required' => 'Ingrese el país.',
-            'pais.string' => 'El país debe ser una cadena de texto.',
-            'pais.max' => 'El país no debe exceder los 30 caracteres.',
+                'pais.required' => 'Ingrese el país.',
+                'pais.string' => 'El país debe ser una cadena de texto.',
+                'pais.max' => 'El país no debe exceder los 30 caracteres.',
 
-            'region.required' => 'Ingrese la región.',
-            'region.string' => 'La región debe ser una cadena de texto.',
-            'region.max' => 'La región no debe exceder los 30 caracteres.',
+                'region.required' => 'Ingrese la región.',
+                'region.string' => 'La región debe ser una cadena de texto.',
+                'region.max' => 'La región no debe exceder los 30 caracteres.',
 
-            'ciudad.required' => 'Ingrese la ciudad.',
-            'ciudad.string' => 'La ciudad debe ser una cadena de texto.',
-            'ciudad.max' => 'La ciudad no debe exceder los 30 caracteres.',
+                'ciudad.required' => 'Ingrese la ciudad.',
+                'ciudad.string' => 'La ciudad debe ser una cadena de texto.',
+                'ciudad.max' => 'La ciudad no debe exceder los 30 caracteres.',
 
-            'distrito.required' => 'Ingrese el distrito.',
-            'distrito.string' => 'El distrito debe ser una cadena de texto.',
-            'distrito.max' => 'El distrito no debe exceder los 30 caracteres.',
+                'distrito.required' => 'Ingrese el distrito.',
+                'distrito.string' => 'El distrito debe ser una cadena de texto.',
+                'distrito.max' => 'El distrito no debe exceder los 30 caracteres.',
 
-            'estado_civil.required' => 'Ingrese el estado civil.',
-            'estado_civil.string' => 'El estado civil debe ser una cadena de texto.',
-            'estado_civil.max' => 'El estado civil no debe exceder los 15 caracteres.',
+                'estado_civil.required' => 'Ingrese el estado civil.',
+                'estado_civil.string' => 'El estado civil debe ser una cadena de texto.',
+                'estado_civil.max' => 'El estado civil no debe exceder los 15 caracteres.',
 
-            'telefono.required' => 'Ingrese el teléfono.',
-            'telefono.string' => 'El teléfono debe ser una cadena de texto.',
-            'telefono.max' => 'El teléfono no debe exceder los 15 caracteres.',
+                'telefono.required' => 'Ingrese el teléfono.',
+                'telefono.string' => 'El teléfono debe ser una cadena de texto.',
+                'telefono.max' => 'El teléfono no debe exceder los 15 caracteres.',
 
-            'nivel.required' => 'Seleccione el nivel.',
-            'nivel.max' => 'El nivel no debe exceder los 15 caracteres.',
+                'nivel.required' => 'Seleccione el nivel.',
+                'nivel.max' => 'El nivel no debe exceder los 15 caracteres.',
 
-            'grado.required' => 'Seleccione el grado.',
-            'grado.max' => 'El grado no debe exceder los 15 caracteres.',
+                'grado.required' => 'Seleccione el grado.',
+                'grado.max' => 'El grado no debe exceder los 15 caracteres.',
 
-            'seccion.required' => 'Seleccione la sección.',
-            'seccion.max' => 'La sección no debe exceder los 15 caracteres.',
-        ]);
+                'seccion.required' => 'Seleccione la sección.',
+                'seccion.max' => 'La sección no debe exceder los 15 caracteres.',
+            ],
+        );
 
         /*Buscar el id_seccion basado en nivel, grado y seccion
         $seccion = DB::table('seccion')
@@ -176,9 +178,6 @@ class AlumnoController extends Controller
         if (!$seccion) {
             return back()->withErrors(['seccion' => 'No se encontró una sección que coincida con la selección.']);
         }*/
-
-
-
 
         $alumnos = new Alumno();
         $alumnos->nombre_alumno = $request->nombre_alumno;
