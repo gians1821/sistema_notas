@@ -6,83 +6,54 @@
     <!-- Registro de Alumnos -->
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-10">
-                <h1 class="h3 mb-3 text-left"><strong>Registro</strong> Nuevo</h1>
+            <div class="col-md-8 col-lg-12">
+                <h1 class="h3 mb-3 text-left"><strong>NUEVA</strong> MATRÍCULA</h1>
                 <form method="POST" action="{{ route('Alumno.store') }}">
                     @csrf
                     <div class="row">
-                        <!-- Campos alineados a la izquierda -->
-                        <div class="col-md-6">
-                            @include('components.text_input', [
-                                'name' => 'nombre_alumno',
-                                'label' => 'Nombre',
+                        <div class="col-sm-7 col-md-8 col-lg-9"></div>
+                        <div class="col-sm-5 col-md-4 col-lg-3">
+                            @include('components.select_input', [
+                                'name' => 'periodo',
+                                'label' => 'Periodo',
+                                'options' => ['default' => 'Seleccione periodo', '2023' => '2023', '2024' => '2024'],
+                                'selected' => 'default'
                             ])
+                            <div style="border: 3px black solid; border-radius: 8px; padding: 8px">
+                                <img class="img-fluid" src="https://cdn-icons-png.flaticon.com/512/1144/1144797.png"
+                                    alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="h5">DATOS DEL PADRE DE FAMILIA</h2>
+                    <hr>
+                    <div class="row">
+                        @include('components.text_input', [
+                            'name' => 'padre_familia',
+                            'label' => 'Padre de Familia',
+                        ])
+                    </div>
+                    <h2 class="h5 mt-4">DATOS DEL ALUMNO</h2>
+                    <hr>
+                    <div class="row">
+                        <!-- Campos alineados a la izquierda -->
+                        <div class="col-md-4">
                             @include('components.text_input', [
-                                'name' => 'apellido_alumno',
-                                'label' => 'Apellido',
+                                'name' => 'dni',
+                                'label' => 'DNI',
                             ])
                             @include('components.date_input', [
                                 'name' => 'fecha_nacimiento',
                                 'label' => 'Fecha de Nacimiento',
                             ])
                             @include('components.text_input', [
-                                'name' => 'dni',
-                                'label' => 'DNI',
-                            ])
-                            @include('components.text_input', [
                                 'name' => 'pais',
                                 'label' => 'País',
-                            ])
-                            @include('components.text_input', [
-                                'name' => 'region',
-                                'label' => 'Región',
                             ])
                             @include('components.text_input', [
                                 'name' => 'ciudad',
                                 'label' => 'Ciudad',
                             ])
-                        </div>
-
-                        <!-- Campos alineados a la derecha -->
-                        <div class="col-md-6">
-                            @include('components.text_input', [
-                                'name' => 'distrito',
-                                'label' => 'Distrito',
-                            ])
-                            @include('components.text_input', [
-                                'name' => 'estado_civil',
-                                'label' => 'Estado Civil',
-                            ])
-                            @include('components.text_input', [
-                                'name' => 'telefono',
-                                'label' => 'Teléfono',
-                            ])
-                            <div class="form-group">
-                                <label for="nivel">Nivel</label>
-                                <select class="form-control @error('nivel') is-invalid @enderror" id="nivel"
-                                    name="nivel">
-                                    @error('nivel')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                    <option value="" selected disabled>Seleccione Nivel</option>
-                                    <option value="Primaria">Primaria</option>
-                                    <option value="Secundaria">Secundaria</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="grado">Grado</label>
-                                <select class="form-control @error('grado') is-invalid @enderror" id="grado"
-                                    name="grado">
-                                    @error('grado')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                    <option value="" selected disabled>Seleccione Grado</option>
-                                </select>
-                            </div>
                             <div class="form-group">
                                 <label for="seccion">Sección</label>
                                 <select class="form-control @error('seccion') is-invalid @enderror" id="seccion"
@@ -98,7 +69,65 @@
                                     <option value="C">C</option>
                                 </select>
                             </div>
-                            <div class="form-group text-right mt-4">
+
+                        </div>
+                        <!-- Campos alineados en el centro -->
+                        <div class="col-md-4">
+                            @include('components.text_input', [
+                                'name' => 'nombre_alumno',
+                                'label' => 'Nombre',
+                            ])
+                            @include('components.text_input', [
+                                'name' => 'estado_civil',
+                                'label' => 'Estado Civil',
+                            ])
+                            @include('components.text_input', [
+                                'name' => 'region',
+                                'label' => 'Región',
+                            ])
+                            <div class="form-group">
+                                <label for="nivel">Nivel</label>
+                                <select class="form-control @error('nivel') is-invalid @enderror" id="nivel"
+                                    name="nivel">
+                                    @error('nivel')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                    <option value="" selected disabled>Seleccione Nivel</option>
+                                    <option value="Primaria">Primaria</option>
+                                    <option value="Secundaria">Secundaria</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <!-- Campos alineados a la derecha -->
+                        <div class="col-md-4">
+                            @include('components.text_input', [
+                                'name' => 'apellido_alumno',
+                                'label' => 'Apellido',
+                            ])
+                            @include('components.text_input', [
+                                'name' => 'telefono',
+                                'label' => 'Teléfono',
+                            ])
+                            @include('components.text_input', [
+                                'name' => 'distrito',
+                                'label' => 'Distrito',
+                            ])
+                            <div class="form-group">
+                                <label for="grado">Grado</label>
+                                <select class="form-control @error('grado') is-invalid @enderror" id="grado"
+                                    name="grado">
+                                    @error('grado')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                    <option value="" selected disabled>Seleccione Grado</option>
+                                </select>
+                            </div>
+                            <div class="form-group text-right mt-5">
                                 <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i>
                                     Registrar</button>
                                 <a href="{{ route('Cancelar') }}" class="btn btn-danger"><i class="fas fa-ban"></i>
