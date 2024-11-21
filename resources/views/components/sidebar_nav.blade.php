@@ -31,11 +31,14 @@
     </li>
     <!-- AQUI ES DONDE TRABAJAREMOS -->
     <!-- GESTION DE ALUMNOS -->
-    <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Alumno') ? 'active' : '' }}">
-        <a class="sidebar-link" href="{{ URL::to('/Alumno') }}">
-            <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Registrar Matrícula</span>
-        </a>
-    </li>
+    @hasanyrole('Admin|Secretaria')
+        <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Alumno') ? 'active' : '' }}">
+            <a class="sidebar-link" href="{{ URL::to('/Alumno') }}">
+                <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Registrar
+                    Matrícula</span>
+            </a>
+        </li>
+    @endhasanyrole
     <!-- GESTION DE GRADOS -->
     @role('Admin')
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Seccion') ? 'active' : '' }}">
@@ -57,14 +60,16 @@
         </li>
     @endrole
     <!-- GESTION DE CAPACIDADES -->
-    <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Capacidad') ? 'active' : '' }}">
-        <a class="sidebar-link" href="{{ URL::to('/Capacidad') }}">
-            <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Gestión
-                Capacidades</span>
-        </a>
-    </li>
-    <!-- GESTION DE PERSONAL -->
     @role('Admin')
+        <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Capacidad') ? 'active' : '' }}">
+            <a class="sidebar-link" href="{{ URL::to('/Capacidad') }}">
+                <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Gestión
+                    Capacidades</span>
+            </a>
+        </li>
+    @endrole
+    @role('Admin')
+        <!-- GESTION DE PERSONAL -->
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Personal') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ route('Personal.index') }}">
                 <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Gestión de
@@ -78,4 +83,20 @@
             <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Gestión Notas</span>
         </a>
     </li>
+    <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Catedra') ? 'active' : '' }}">
+        <a class="sidebar-link" href="{{ route('Catedra.index') }}">
+            <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Generar Reporte de Notas</span>
+        </a>
+    </li>
+    <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Catedra') ? '' : '' }}">
+        <a class="sidebar-link" href="{{ route('Catedra.index') }}">
+            <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Revisar Notas</span>
+        </a>
+    </li>
+    <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Catedra') ? '' : '' }}">
+        <a class="sidebar-link" href="{{ route('Catedra.index') }}">
+            <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Registrar Notas</span>
+        </a>
+    </li>
+    
 </ul>

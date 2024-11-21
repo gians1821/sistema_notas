@@ -4,13 +4,13 @@
 @endsection('BarraNavegacion')
 @section('Contenido')
     <!-- CONTENIDO DE LA PAGINA -->
-    <h1 class="h3 mb-3 titulos"><strong>Gestión de</strong> alumnos</h1>
+    <h1 class="h3 mb-3 titulos"><strong>Lista </strong> de <b>Alumnos Matriculados</b></h1>
     <br>
     <nav class="navbar navbar-light">
 
-        @role('Admin')
-            <a href="{{ route('Alumno.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Nuevo Registro</a>
-        @endrole
+        @hasanyrole('Admin|Secretaria')
+            <a href="{{ route('Alumno.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Nueva Matrícula</a>
+        @endhasanyrole
 
         <form class="form-inline my-2 my-lg-0" method="GET">
             <div class="input-group">
@@ -38,8 +38,7 @@
                     <option value="" selected>Grado</option>
                     <!-- Agrega opciones de grado dinámicamente o manualmente -->
                     @foreach (App\Models\Grado::where('id_nivel', $nivel)->get() as $grado)
-                        <option value="{{ $grado->id_grado }}"
-                            {{ request('grado') == $grado->id_grado ? 'selected' : '' }}>
+                        <option value="{{ $grado->id_grado }}" {{ request('grado') == $grado->id_grado ? 'selected' : '' }}>
                             {{ $grado->nombre_grado }}
                         </option>
                     @endforeach
@@ -81,9 +80,9 @@
     <table class="table text-center">
         <thead class="thead-dark ">
             <tr>
-                <th scope="col" class="w-25">Id Alumno</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellido</th>
+                <th scope="col">Alumno</th>
+                <th scope="col">Grado y Sección</th>
+                <th scope="col">Apoderado</th>
                 <th scope="col">Opciones</th>
             </tr>
         </thead>
@@ -96,27 +95,39 @@
                 @foreach ($alumnos as $itemalumnos)
                     <tr>
                         <td>
-                            {{ $itemalumnos->id_alumno }}
+                            {{ $itemalumnos->nombre_alumno . ' ' . $itemalumnos->apellido_alumno }}
                         </td>
                         <td>
-                            {{ $itemalumnos->nombre_alumno }}
+                            {{ ucwords(
+                                strtolower(
+                                    $itemalumnos->seccion->grado->nombre_grado .
+                                        ' ' .
+                                        $itemalumnos->seccion->nombre_seccion .
+                                        ' de ' .
+                                        $itemalumnos->seccion->grado->nivel->nombre_nivel,
+                                ),
+                            ) }}
                         </td>
                         <td>
                             {{ $itemalumnos->apellido_alumno }}
                         </td>
                         <td>
 
-                            @role('Admin')
+                            @hasanyrole('Admin|Secretaria')
+                                <a href="{{ route('Alumno.edit', $itemalumnos->id_alumno) }}" class="btn btn-secondary">
+                                    Emitir constancia de matrícula
+                                </a>
                                 <a href="{{ route('Alumno.edit', $itemalumnos->id_alumno) }}" class="btn btn-info">
                                     <img src="{{ asset('plantilla\src\img\logo\editar_blanco.png') }}" alt="Editar"
                                         style="width: 30px; height: 30px;">
                                 </a>
-
-                                <a href="{{ route('Alumno.confirmar', $itemalumnos->id_alumno) }}" class="btn btn-danger">
-                                    <img src="{{ asset('plantilla\src\img\logo\eliminar.png') }}" alt="Eliminar"
-                                        style="width: 30px; height: 30px;">
-                                </a>
-                            @endrole
+                                @role('Admin')
+                                    <a href="{{ route('Alumno.confirmar', $itemalumnos->id_alumno) }}" class="btn btn-danger">
+                                        <img src="{{ asset('plantilla\src\img\logo\eliminar.png') }}" alt="Eliminar"
+                                            style="width: 30px; height: 30px;">
+                                    </a>
+                                @endrole
+                            @endhasanyrole
 
                         </td>
                     </tr>

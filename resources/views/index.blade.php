@@ -41,6 +41,7 @@
             </div>
         </div>
 
+        @role('Padre')
         <h3 class="mt-5">Información de sus Hijo(s)</h3>
         <div class="row">
             <div class="col-md-4 mb-3 text-center">
@@ -50,6 +51,7 @@
                 <a href="" class="btn btn-primary mt-2">Ver Detalles</a>
             </div>
         </div>
+        @endrole
     </div>
     </div>
 @endsection('Contenido')
