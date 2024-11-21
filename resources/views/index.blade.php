@@ -32,24 +32,41 @@
                         <input type="text" class="form-control" id="telefono"
                             value="{{ auth()->user()->getRoleNames()->implode(', ') }}" readonly>
                     </div>
+                    @role('Docente')
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label">Descripción</label>
+                        <input type="text" class="form-control" id="direccion"
+                            value="Puede visualizar y registrar las notas del estudiante" readonly>
+                    </div>
+                    @endrole
+                    @role('Admin')
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label">Descripción</label>
+                        <input type="text" class="form-control" id="direccion"
+                            value="Tienes control total del sistema" readonly>
+                    </div>
+                    @endrole
+                    @role('Padre')
                     <div class="mb-3">
                         <label for="direccion" class="form-label">Descripción</label>
                         <input type="text" class="form-control" id="direccion"
                             value="Usted puede ver las notas de sus hijos" readonly>
                     </div>
+                    @endrole
                 </form>
             </div>
         </div>
-
+        @role('Padre')
         <h3 class="mt-5">Información de sus Hijo(s)</h3>
         <div class="row">
             <div class="col-md-4 mb-3 text-center">
                 <img src="{{ asset('images/pruebita.jpg') }}" alt="Hijo 1" class="img-fluid rounded"
                     style="height: 200px;">
-                <h4>Fatima</h4>
+                <h4>Jose luis</h4>
                 <a href="" class="btn btn-primary mt-2">Ver Detalles</a>
             </div>
         </div>
+        @endrole
     </div>
     </div>
 @endsection('Contenido')

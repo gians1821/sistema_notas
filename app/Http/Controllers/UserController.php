@@ -12,7 +12,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    const PAGINATION = 2;
+    const PAGINATION = 5;
 
     public function __construct()
     {

@@ -12,9 +12,17 @@
 
     <!-- PROFILE -->
     @role('Admin')
-        <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'admin') ? 'active' : '' }}">
+        <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'admin.usuarios') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ route('admin.usuarios.index') }}">
                 <i class="align-middle" data-feather="user"></i> <span class="align-middle">Usuarios</span>
+            </a>
+        </li>
+    @endrole
+
+    @role('Admin')
+        <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'admin.perfil') ? 'active' : '' }}">
+            <a class="sidebar-link" href="{{ route('admin.perfil.index') }}">
+                <i class="align-middle" data-feather="user"></i> <span class="align-middle">Perfiles</span>
             </a>
         </li>
     @endrole
