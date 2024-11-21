@@ -12,6 +12,7 @@ use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\CatedraController;
 use App\Http\Controllers\CursoHasAlumnoController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PerfilController;
 use App\Models\Alumno;
 use App\Models\User;
 
@@ -25,6 +26,9 @@ Route::get('/Home', [HomeController::class, 'index'])->name('Home.index');
 
 //Roles
 Route::resource('/User', UserController::class)->names('admin.usuarios');
+
+Route::resource('/Perfil', PerfilController::class)->names('admin.perfil');
+
 Route::get('/CancelarUsuario', function () {
     return redirect()->route('admin.usuarios.index')->with('datos', 'Accion Cancelada..!');
 })->name('CancelarUsuario');
