@@ -19,19 +19,20 @@ class LoginController extends Controller
     {
         $data = request()->validate(
             [
-                'name' => 'required',
+                'email' => 'required',
                 'password' => 'required'
             ],
             [
-                'name.required' => 'Ingrese Usuario',
+                'email.required' => 'Ingrese Correo electronico',
+                'email.email' => 'El formato del correo electrónico es inválido',
                 'password.required' => 'Ingrese contraseña',
             ]
         );
         if (Auth::attempt($data)) {
             $con = 'OK';
         }
-        $name = $request->get('name');
-        $query = User::where('name', '=', $name)->get();
+        $email = $request->get('email');
+        $query = User::where('email', '=', $email)->get();
         if ($query->count() != 0) {
             $hashp = $query[0]->password;
             $password = $request->get('password');
@@ -41,7 +42,7 @@ class LoginController extends Controller
                 return back()->withErrors(['password' => 'Contraseña no válida']);
             }
         } else {
-            return back()->withErrors(['name' => 'Usuario no encontrado']);
+            return back()->withErrors(['email' => 'Correo no válido']);
         }
     }
 

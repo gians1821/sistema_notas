@@ -7,6 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Registration</title>
     <link rel="stylesheet" href="/login/login.css">
+    <style>
+        .error-message {
+        color: darkred; 
+        font-size: 0.8em; 
+        margin-top: 5px; 
+        }
+    </style>
 </head>
 
 <body class="">
@@ -35,29 +42,30 @@
                         <ion-icon name="person">
                         </ion-icon>
                     </span>
-                    <input class="form-control" type="text" required id="name" name="name" value="{{old('name')}}">
-                    <label>Username</label>
+                    <input class="form-control" required id="email" name="email" value="{{old('email')}}">
+                    <label>Correo Electronico</label>
+                    @if ($errors->has('email'))
+                        <span class="error-message">{{ $errors->first('email') }}</span>
+                    @endif
                 </div>
                 <div class="input-box">
                     <span class="icon">
                         <ion-icon name="lock-closed"></ion-icon>
                     </span>
                     <input class="form-control" type="password" required id="password" name="password" value="{{old('password')}}">
-                    <label>Password</label>
-                </div>
-                <div class="remenber-forgot">
-                    <label><input type="checkbox">
-                        Remenber me</label>
-                    <a href="#">Forgot Password?</a>
+                    <label>Contraseña</label>
+                    @if ($errors->has('password'))
+                        <span class="error-message"><strong>{{ $errors->first('password') }}</strong></span>
+                    @endif
                 </div>
                 <form action="{{ route('User.Login') }}" method="POST">
                     @csrf
                     <button type="submit" class="btn">Login</button>
                 </form>
                 <div class="login-register">
-                    <p>Don' t have an account?
+                    <p>¿Se te olvido la contreseña?
                         <a href="#" class="register-link">
-                            Register
+                            Reestablecer
                         </a>
                     </p>
                 </div>
