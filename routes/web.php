@@ -21,6 +21,12 @@ Route::get('/', [LoginController::class, 'Login'])->name('login');
 Route::post('/', [LoginController::class, 'UserLogin'])->name('User.Login');
 Route::post('/logout', [LoginController::class, 'exit'])->name('User.Logout');
 
+//Recuperar Contraseña
+Route::post('/password/recovery', [LoginController::class, 'sendRecoveryEmail'])->name('password.sendRecoveryEmail');
+Route::get('/password/reset/{token}', [LoginController::class, 'showResetForm'])->name('password.reset');
+Route::post('/password/reset', [LoginController::class, 'resetPassword'])->name('password.resetPassword');
+
+
 //Home
 Route::get('/Home', [HomeController::class, 'index'])->name('Home.index');
 

@@ -9,9 +9,16 @@
     <link rel="stylesheet" href="/login/login.css">
     <style>
         .error-message {
-        color: darkred; 
-        font-size: 0.8em; 
-        margin-top: 5px; 
+            color: darkred; 
+            font-size: 0.8em; 
+            margin-top: 15px; 
+        }
+        .alert-success {
+            color: green;
+            font-size: 1.0em;
+            margin-top: 15px;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </head>
@@ -45,7 +52,7 @@
                     <input class="form-control" required id="email" name="email" value="{{old('email')}}">
                     <label>Correo Electronico</label>
                     @if ($errors->has('email'))
-                        <span class="error-message">{{ $errors->first('email') }}</span>
+                        <span class="error-message"><strong>{{ $errors->first('email') }}</strong></span>
                     @endif
                 </div>
                 <div class="input-box">
@@ -69,47 +76,50 @@
                         </a>
                     </p>
                 </div>
+                <div class="login-register">
+                    @if(session('statusconfirm'))
+                        <div class="alert-success">
+                            <strong>{{ session('statusconfirm') }}</strong>
+                        </div>
+                    @endif
+                </div>
             </form>
         </div>
 
         <div class="form-box register">
-            <h2>Registration</h2>
-            <form action="#">
+            <h2>Reestablecer Contraseña</h2>
+            
+            <form method="POST" action="{{ route('password.sendRecoveryEmail') }}">
+                @csrf
                 <div class="input-box">
                     <span class="icon">
-                        <ion-icon name="person">
-                        </ion-icon>
+                        <ion-icon name="person"></ion-icon>
                     </span>
-                    <input type="text" required>
-                    <label>Username</label>
-                </div>
-                <div class="input-box">
-                    <span class="icon">
-                        <ion-icon name="mail">
-                        </ion-icon>
-                    </span>
-                    <input type="email" required>
-                    <label>Email</label>
-                </div>
-                <div class="input-box">
-                    <span class="icon">
-                        <ion-icon name="lock-closed"></ion-icon>
-                    </span>
-                    <input type="password" required>
-                    <label>Password</label>
+                    <input class="form-control" id="emailrecovery" name="emailrecovery">
+                    <label>Correo Electrónico</label>
+                    @error('emailrecovery')
+                        <span class="error-message"><b>{{ $message }}</b></span>
+                    @enderror
                 </div>
                 <div class="remenber-forgot">
-                    <label><input type="checkbox">
-                        agree to the terms & conditions
+                    <label>Estaremos enviando un mensaje a su correo 
+                        para que pueda reestablecer su contraseña.
                     </label>
                 </div>
-                <button type="submit" class="btn">Register</button>
+                <button type="submit" class="btn">Enviar</button>
                 <div class="login-register">
-                    <p>Already have an account?
+                    <p>¿Volver al inicio de sesión?
                         <a href="#" class="login-link">
                             Login
                         </a>
                     </p>
+                </div>
+                <div class="login-register">
+                    @if(session('status'))
+                        <div class="alert-success">
+                            <strong>{{ session('status') }}</strong>
+                        </div>
+                    @endif
                 </div>
             </form>
         </div>
