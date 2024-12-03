@@ -14,16 +14,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // User::factory(10)->create();
-        // $this->call(RoleSeeder::class);
-        //Curso::factory(12)->create();
-        User::Create([
-            'name' => 'Fabian Ruiz',
-            'email' => 'fruiz@mail.com',
-            'password' => bcrypt('123456789')
-        ])->assignRole('Padre');
+        $this->call(AlumnosTableSeeder::class);
+        $this->call(GradosTableSeeder::class);
+        $this->call(MigrationsTableSeeder::class);
 
-        //User::factory(99)->create();
+        $this->call(PermissionsTableSeeder::class);
+        $this->call(ModelHasPermissionsTableSeeder::class);
 
+        $this->call(RolesTableSeeder::class);
+        $this->call(ModelHasRolesTableSeeder::class);
+
+        $this->call(NivelsTableSeeder::class);
+        $this->call(RoleHasPermissionsTableSeeder::class);
+        $this->call(SeccionsTableSeeder::class);
+        $this->call(SessionsTableSeeder::class);
+        $this->call(TipoPersonalsTableSeeder::class);
+        $this->call(UsersTableSeeder::class);
     }
 }
