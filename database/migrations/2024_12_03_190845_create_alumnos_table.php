@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('alumnos', function (Blueprint $table) {
             $table->bigIncrements('id_alumno');
+            $table->integer('padre_id')->index('hijos_padre_id_foreign');
             $table->string('periodo', 5);
             $table->string('nombre_alumno', 30);
             $table->string('apellido_alumno', 30);
