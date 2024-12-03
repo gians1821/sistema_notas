@@ -1,3 +1,12 @@
+<!--
+INPUT DE TIPO SELECT
+Variables:
+$name       - Nombre del modelo a llamar
+$label      - Para la etiqueta del input
+$message    - Para el mensaje de error
+$options    - Para los desplegables de la lista
+-->
+
 <div class="form-group">
     <label for="{{ $name }}">{{ $label }}</label>
     <select class="form-control @error($name) is-invalid @enderror" id="{{ $name }}" name="{{ $name }}">

@@ -106,5 +106,4 @@
             <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Registrar Notas</span>
         </a>
     </li>
-    
 </ul>
