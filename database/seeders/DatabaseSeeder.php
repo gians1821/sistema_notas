@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionsTableSeeder::class);
         $this->call(ModelHasPermissionsTableSeeder::class);
 
+        $this->call(UsersTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         $this->call(ModelHasRolesTableSeeder::class);
 
@@ -29,7 +30,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SeccionsTableSeeder::class);
         $this->call(SessionsTableSeeder::class);
         $this->call(TipoPersonalsTableSeeder::class);
-        $this->call(UsersTableSeeder::class);
         $this->call(PadresTableSeeder::class);
     }
 }
