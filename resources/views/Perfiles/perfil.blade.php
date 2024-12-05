@@ -10,13 +10,6 @@
         <a class="btn btn-primary " href="{{ route('admin.perfil.create') }}">
             <i class="fas fa-plus"></i> Nuevo Perfil
         </a>
-        <form class="form-inline my-lg-0" method="GET" action="{{ route('admin.perfil.index') }}">
-            <div class="d-flex align-items-center">
-                <input name="buscarpor" class="form-control mr-sm-2" type="search" style="width: 350px;"
-                    placeholder="Ingrese nombre del rol" aria-label="Search" value="">
-                <button class="btn btn-success" type="submit">Buscar</button>
-            </div>
-        </form>
     </nav>
 
     <div id="mensaje">

@@ -77,7 +77,27 @@ class PerfilController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validación de los datos del formulario con mensajes personalizados
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:roles,name,' . $id, // Permite mantener el nombre actual del rol
+        ], [
+            'name.required' => 'El nombre del rol es obligatorio.',
+            'name.string' => 'El nombre del rol debe ser un texto válido.',
+            'name.max' => 'El nombre del rol no puede exceder los 255 caracteres.',
+            'name.unique' => 'El nombre del rol ya existe en el sistema. Por favor, elige otro.',
+        ]);
+
+        // Encontrar el rol por su ID
+        $rol = Role::findOrFail($id);
+
+        // Actualizar el nombre del rol
+        $rol->name = $request->input('name');
+
+        // Guardar los cambios en la base de datos
+        $rol->save();
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('admin.perfil.index')->with('success', 'Rol actualizado correctamente');
     }
 
     public function confirmar($id)
