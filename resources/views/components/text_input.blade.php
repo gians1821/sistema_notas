@@ -9,7 +9,7 @@ $message    - Para el mensaje de error
 <div class="form-group">
     <label class="h5" for="{{ $name }}">{{ $label }}</label>
     <input type="text" class="form-control @error($name) is-invalid @enderror" id="{{ $name }}"
-        name="{{ $name }}">
+        name="{{ $name }}" value="{{ $value ?? '' }}">
     @error($name)
         <span class="invalid-feedback" role="alert">
             <strong>{{ $message }}</strong>

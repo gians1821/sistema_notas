@@ -4,9 +4,9 @@
 @endsection
 @section('Contenido')
     @include('components.confirm_deletion', [
-        'tag_item' => 'usuario', 
-        'field_item' => $user->name,
-        'delete_route' => route('admin.usuarios.destroy', $user->id),
-        'cancelar_route' => route('CancelarUsuario')
+        'tag_item' => 'perfil', 
+        'field_item' => $rol->name,
+        'delete_route' => route('admin.perfil.destroy', $rol->id),
+        'cancelar_route' => route('CancelarPerfil')
     ])
 @endsection

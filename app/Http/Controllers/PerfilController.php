@@ -26,7 +26,7 @@ class PerfilController extends Controller
      */
     public function create()
     {
-        //
+        return view('Perfiles.Create');
     }
 
     /**
@@ -34,7 +34,25 @@ class PerfilController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validación de los datos del formulario
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:roles,name', // El nombre debe ser único en la tabla roles
+        ], [
+            'name.required' => 'El nombre del rol es obligatorio.',
+            'name.string' => 'El nombre del rol debe ser un texto válido.',
+            'name.max' => 'El nombre del rol no puede exceder los 255 caracteres.',
+            'name.unique' => 'El nombre del rol ya existe en el sistema. Por favor elige otro.',
+        ]);
+
+        // Crear un nuevo rol
+        $rol = new Role();
+        $rol->name = $request->input('name');
+
+        // Guardar el rol en la base de datos
+        $rol->save();
+
+        // Redirigir con mensaje de éxito
+        return redirect()->route('admin.perfil.index')->with('success', 'Rol registrado correctamente');
     }
 
     /**
@@ -50,7 +68,8 @@ class PerfilController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $rol = Role::findOrFail($id);
+        return view('Perfiles.Edit', compact('rol'));
     }
 
     /**
@@ -63,14 +82,14 @@ class PerfilController extends Controller
 
     public function confirmar($id)
     {
-
+        $rol = Role::findOrFail($id);
+        return view('Perfiles.confirmar', compact('rol'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $rol = Role::findOrFail($id);
+        $rol->delete();
+        return redirect()->route('admin.perfil.index')->with('datos', 'Registro Eliminado..');
     }
 }

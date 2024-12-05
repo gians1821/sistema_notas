@@ -13,10 +13,11 @@
             <div class="card-body">
                 <p class="h5">Id: {{ $users->id }}</p>
 
-                <div class="form-group">
-                    <label class="h5">nombre</label>
-                    <input type="text" class="form-control" id="name_user" name="name" value="{{ $users->name }}">
-                </div>
+                @include('components.text_input', [
+                    'label' => 'Nombre',
+                    'name' => 'name',
+                    'value' => $users->name
+                ])
 
                 <div class="form-group">
                     <label class="h5">Email</label>
