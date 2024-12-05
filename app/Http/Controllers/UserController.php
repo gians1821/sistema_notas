@@ -124,11 +124,16 @@ class UserController extends Controller
         return redirect()->route('admin.usuarios.index')->with('datos', 'Usuario Actualizado');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function confirmar($id_user)
     {
-        //
+        $user = User::findOrFail($id_user);
+        return view('Admin.confirmar', compact('user'));
+    }
+
+    public function destroy($id_user)
+    {
+        $user = User::findOrFail($id_user);
+        $user->delete();
+        return redirect()->route('admin.usuarios.index')->with('datos', 'Registro Eliminado..');
     }
 }

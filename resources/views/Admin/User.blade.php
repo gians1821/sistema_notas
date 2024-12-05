@@ -63,7 +63,7 @@
                                 <img src="{{ asset('plantilla/src/img/logo/editar_blanco.png') }}" alt="Editar"
                                     style="width: 30px; height: 30px;">
                             </a>
-                            <a href="" class="btn btn-danger">
+                            <a href="{{ route('admin.usuarios.confirmar', $user->id) }}" class="btn btn-danger">
                                 <img src="{{ asset('plantilla\src\img\logo\eliminar.png') }}" alt="Eliminar"
                                     style="width: 30px; height: 30px;">
                             </a>

@@ -69,14 +69,14 @@ Route::get('/Cancelar', function () {
 Route::get('/CancelarSeccion', function () {
     return redirect()->route('Seccion.index')->with('datos', 'Accion Cancelada..!');
 })->name('CancelarSeccion');
-// Cancelar Curso
-Route::get('/CancelarCurso', function () {
-    return redirect()->route('Curso.index')->with('datos', 'Accion Cancelada..!');
-})->name('CancelarCurso');
 // Cancelar Capacidad
 Route::get('/CancelarCapacidad', function () {
     return redirect()->route('Capacidad.index')->with('datos', 'Accion Cancelada..!');
 })->name('CancelarCapacidad');
+// Cancelar Usuario
+Route::get('/CancelarUsuario', function () {
+    return redirect()->route('admin.usuarios.index')->with('datos', 'Accion Cancelada..!');
+})->name('CancelarUsuario');
 // Cancelar Personal
 Route::get('/CancelarPersonal', function () {
     return redirect()->route('Personal.index')->with('datos', 'Accion Cancelada..!');
@@ -91,6 +91,8 @@ Route::get('Alumno/{id_alumno}/confirmar', [AlumnoController::class, 'confirmar'
 Route::get('Seccion/{id_seccion}/confirmar', [SeccionController::class, 'confirmar'])->name('Seccion.confirmar');
 // Confirmar Curso
 Route::get('Curso/{id_curso}/confirmar', [CursoController::class, 'confirmar'])->name('Curso.confirmar');
+// Confirmar User
+Route::get('User/{id_user}/confirmar', [UserController::class, 'confirmar'])->name('admin.usuarios.confirmar');
 // Confirmar Capacidad
 Route::get('Capacidad/{id_competencia}/confirmar', [CapacidadController::class, 'confirmar'])->name('Capacidad.confirmar');
 // Confirmar Personal
