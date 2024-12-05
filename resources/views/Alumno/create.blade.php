@@ -16,7 +16,7 @@
                             @include('components.select_input', [
                                 'name' => 'periodo',
                                 'label' => 'Periodo',
-                                'options' => ['default' => 'Seleccione periodo', '2023' => '2023', '2024' => '2024'],
+                                'options' => $periodos,
                                 'selected' => 'default'
                             ])
                             <div style="border: 3px black solid; border-radius: 8px; padding: 8px">
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                     </div>
-                    <h2 class="h5">DATOS DEL PADRE DE FAMILIA</h2>
+                    <h2 class="h4">DATOS DEL PADRE DE FAMILIA</h2>
                     <hr>
                     <div class="row">
                         @include('components.text_input', [
@@ -33,7 +33,7 @@
                             'label' => 'Padre de Familia',
                         ])
                     </div>
-                    <h2 class="h5 mt-4">DATOS DEL ALUMNO</h2>
+                    <h2 class="h4 mt-4">DATOS DEL ALUMNO</h2>
                     <hr>
                     <div class="row">
                         <!-- Campos alineados a la izquierda -->

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Alumno;
 use App\Models\Grado;
 use App\Models\Nivel;
+use App\Models\Periodo;
 use App\Models\Seccion;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -81,7 +82,11 @@ class AlumnoController extends Controller
         $grados = Grado::all();
         $secciones = Seccion::all();
 
-        return view('Alumno.Alumnos', compact('alumnos', 'buscarporNom', 'buscarporApell', 'nivel', 'grado', 'seccion', 'niveles', 'grados', 'secciones'));
+
+        return view('Alumno.Alumnos', compact(
+            'alumnos', 'buscarporNom', 'buscarporApell', 'nivel', 'grado', 
+            'seccion', 'niveles', 'grados', 'secciones'
+        ));
     }
 
     /**
@@ -89,7 +94,9 @@ class AlumnoController extends Controller
      */
     public function create()
     {
-        return view('Alumno.create');
+        $periodos = Periodo::all();
+
+        return view('Alumno.create', compact('periodos'));
     }
 
     /**
