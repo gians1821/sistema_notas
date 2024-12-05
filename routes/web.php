@@ -65,6 +65,10 @@ Route::post('/Alumno/pdfalumnos/{idseccion}', [AlumnoController::class, 'generar
 Route::get('/Cancelar', function () {
     return redirect()->route('Alumno.index')->with('datos', 'Accion Cancelada..!');
 })->name('Cancelar');
+// Cancelar Perfil
+Route::get('/CancelarPerfil', function () {
+    return redirect()->route('admin.perfil.index')->with('datos', 'Accion Cancelada..!');
+})->name('CancelarPerfil');
 // Cancelar Seccion
 Route::get('/CancelarSeccion', function () {
     return redirect()->route('Seccion.index')->with('datos', 'Accion Cancelada..!');
@@ -87,6 +91,8 @@ Route::get('/CancelarNota', function () {
 })->name('CancelarNota');
 // Confirmar Alumno
 Route::get('Alumno/{id_alumno}/confirmar', [AlumnoController::class, 'confirmar'])->name('Alumno.confirmar');
+// Confirmar Perfil
+Route::get('Perfil/{id_perfil}/confirmar', [PerfilController::class, 'confirmar'])->name('admin.perfil.confirmar');
 // Confirmar Seccion
 Route::get('Seccion/{id_seccion}/confirmar', [SeccionController::class, 'confirmar'])->name('Seccion.confirmar');
 // Confirmar Curso

@@ -30,38 +30,13 @@
         @endif
     </div>
     <br>
-    <table class="table text-center">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col" class="w-25">Id</th>
-                <th scope="col">Rol</th> <!-- Nueva columna para Rol -->
-                <th scope="col">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (count($roles) <= 0)
-                <tr>
-                    <td colspan="3">No hay registros</td>
-                </tr>
-            @else
-                @foreach ($roles as $rol)
-                    <tr>
-                        <td>{{ $rol->id }}</td>
-                        <td>{{ $rol->name }}</td>
-                        <td>
-                            <a href="" class="btn btn-info">
-                                <img src="{{ asset('plantilla/src/img/logo/editar_blanco.png') }}" alt="Editar"
-                                    style="width: 30px; height: 30px;">
-                            </a>
-                            <a href="" class="btn btn-danger">
-                                <img src="{{ asset('plantilla\src\img\logo\eliminar.png') }}" alt="Eliminar"
-                                    style="width: 30px; height: 30px;">
-                            </a>
-                        </td>
-                    </tr>
-                @endforeach
-            @endif
-        </tbody>
-    </table>
+
+    @include('components.items_table', [
+        'data' => $roles,  // Los elementos a mostrar en la tabla
+        'headers' => ['Id', 'Rol', 'Acciones'],  // Los títulos de las columnas
+        'columns_data' => ['id', 'name'],  // Las propiedades de los modelos a mostrar
+        'edit_route' => 'admin.perfil.edit',  // Ruta para editar
+        'delete_route' => 'admin.perfil.confirmar'  // Ruta para eliminar
+    ])
 
 @endsection

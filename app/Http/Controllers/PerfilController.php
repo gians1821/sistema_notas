@@ -61,6 +61,11 @@ class PerfilController extends Controller
         //
     }
 
+    public function confirmar($id)
+    {
+
+    }
+
     /**
      * Remove the specified resource from storage.
      */

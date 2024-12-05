@@ -73,6 +73,7 @@
             @endif
         </tbody>
     </table>
+    
     {{ $users->appends(['buscarpor' => $buscarpor])->links() }}
 
 @endsection
