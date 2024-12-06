@@ -74,6 +74,17 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-11-24 21:42:45',
                 'updated_at' => '2024-11-24 21:43:58',
             ),
+            5 => 
+            array (
+                'id' => 7,
+                'name' => 'PRUEBA',
+                'email' => 'mail@mail.com',
+                'email_verified_at' => NULL,
+                'password' => '$2y$12$4o3nfe4qNimZw.Sa.z8uf.T69xJvwz6eVJZaS9EMLtwprXlKKcv/a',
+                'remember_token' => NULL,
+                'created_at' => '2024-12-05 16:01:03',
+                'updated_at' => '2024-12-05 16:01:03',
+            ),
         ));
         
         
