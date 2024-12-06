@@ -22,12 +22,24 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $buscarpor = $request->get('buscarpor');
-        $users = User::with('roles')
-            ->where('name', 'like', "%$buscarpor%")
-            ->orWhere('email', 'like', "%$buscarpor%")
-            ->paginate($this::PAGINATION);
+        $filtrarPorRol = $request->get('rol');
+        $roles = Role::all(); 
 
-        return view('Admin.User', compact('users', 'buscarpor'));
+        $query = User::with('roles')
+            ->where(function ($query) use ($buscarpor) {
+                $query->where('name', 'like', "%$buscarpor%")
+                    ->orWhere('email', 'like', "%$buscarpor%");
+            });
+
+        if (!empty($filtrarPorRol)) {
+            $query->whereHas('roles', function ($q) use ($filtrarPorRol) {
+                $q->where('name', $filtrarPorRol);
+            });
+        }
+
+        $users = $query->paginate($this::PAGINATION);
+
+        return view('Admin.User', compact('users', 'buscarpor', 'filtrarPorRol', 'roles'));
     }
 
     /**
@@ -94,6 +106,7 @@ class UserController extends Controller
     {
         $users = User::findOrFail($id);
         $roles = Role::all();
+
         return view('Admin.Edit', compact('users', 'roles'));
     }
 

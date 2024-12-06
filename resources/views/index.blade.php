@@ -23,32 +23,32 @@
             <div class="col-md-8">
                 <form>
                     <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre Completo</label>
+                        <label for="nombre" class="form-label"> <strong> Nombre Completo </strong></label>
                         <input type="text" class="form-control" id="nombre" value="{{ auth()->user()->name }}"
                             readonly>
                     </div>
                     <div class="mb-3">
-                        <label for="telefono" class="form-label">Nivel de acceso</label>
+                        <label for="telefono" class="form-label"><strong> Nivel de acceso </strong></label>
                         <input type="text" class="form-control" id="telefono"
                             value="{{ auth()->user()->getRoleNames()->implode(', ') }}" readonly>
                     </div>
                     @role('Docente')
                     <div class="mb-3">
-                        <label for="direccion" class="form-label">Descripción</label>
+                        <label for="direccion" class="form-label"><strong> Descripción </strong></label>
                         <input type="text" class="form-control" id="direccion"
                             value="Puede visualizar y registrar las notas del estudiante" readonly>
                     </div>
                     @endrole
                     @role('Admin')
                     <div class="mb-3">
-                        <label for="direccion" class="form-label">Descripción</label>
+                        <label for="direccion" class="form-label"><strong> Descripción </strong></label>
                         <input type="text" class="form-control" id="direccion"
                             value="Tienes control total del sistema" readonly>
                     </div>
                     @endrole
                     @role('Padre')
                     <div class="mb-3">
-                        <label for="direccion" class="form-label">Descripción</label>
+                        <label for="direccion" class="form-label"><strong> Descripción </strong></label>
                         <input type="text" class="form-control" id="direccion"
                             value="Usted puede ver las notas de sus hijos" readonly>
                     </div>

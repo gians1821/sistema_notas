@@ -6,7 +6,7 @@
     <!-- CONTENIDO DE LA PAGINA -->
     <h1 class="h3 mb-3 titulos"><strong>Asignar un</strong> Rol</h1>
     <br>
-    <form method="POST" action="{{ route('admin.usuarios.store') }}">
+    <form method="POST" action="{{ route('admin.usuarios.store' ) }}">
         @csrf
         <div class="card">
             <div class="card-body">
@@ -23,6 +23,11 @@
                 @include('components.password_input', [
                     'label' => 'Contraseña',
                     'name' => 'password',
+                ])
+
+                @include('components.password_input', [
+                'label' => 'Confirmar Contraseña',
+                'name' => 'password_confirmation',
                 ])
                 
                 @include('components.select_input', [

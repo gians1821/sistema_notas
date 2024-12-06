@@ -12,8 +12,18 @@
         </a>
         <form class="form-inline my-lg-0" method="GET" action="{{ route('admin.usuarios.index') }}">
             <div class="d-flex align-items-center">
-                <input name="buscarpor" class="form-control mr-sm-2" type="search" style="width: 350px;"
+                <input name="buscarpor" class="form-control mr-sm-2" type="search" style="width: 300px;"
                     placeholder="Ingrese nombre o correo de un Usuario" aria-label="Search" value="{{ $buscarpor }}">
+                
+                <select name="rol" class="form-control mr-sm-2" style="width: 300px";>
+                    <option value="">Seleccione un rol</option>
+                    @foreach ($roles as $role)
+                        <option value="{{ $role->name }}" {{ $filtrarPorRol == $role->name ? 'selected' : '' }}>
+                            {{ $role->name }}
+                        </option>
+                    @endforeach
+                </select>
+
                 <button class="btn btn-success" type="submit">Buscar</button>
             </div>
         </form>
@@ -74,6 +84,13 @@
         </tbody>
     </table>
     
-    {{ $users->appends(['buscarpor' => $buscarpor])->links() }}
+    {{ $users->appends(['buscarpor' => $buscarpor, 'rol' => $filtrarPorRol])->links() }}
 
 @endsection
+@section('script')
+    <script>
+        setTimeout(function() {
+            document.querySelector('#mensaje').remove();
+        }, 3000);
+    </script>
+@section('script')
