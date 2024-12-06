@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('padres', function (Blueprint $table) {
             $table->comment('hola');
             $table->integer('id', true);
+            $table->char('dni', 8);
             $table->string('nombres', 50);
             $table->string('apellidos', 50);
             $table->timestamp('created_at')->nullable()->useCurrent();
