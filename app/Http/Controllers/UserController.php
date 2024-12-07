@@ -115,9 +115,16 @@ class UserController extends Controller
     public function edit($id)
     {
         $users = User::findOrFail($id);
+        $id_rol = DB::table('model_has_roles')
+            ->where('model_id', $id)
+            ->value('role_id');
+        $rolecito = DB::table('roles')
+            ->where('id', $id_rol)
+            ->value('name');
+        
         $roles = Role::all();
 
-        return view('Admin.Edit', compact('users', 'roles'));
+        return view('Admin.Edit', compact('users', 'rolecito' ,'roles'));
     }
 
     /**
@@ -125,42 +132,52 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $id,
+            'rol' => 'required|exists:roles,id', // Asegúrate de que el rol exista en la tabla roles
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación opcional para la foto de perfil
+        ], [
+            'name.required' => 'El nombre es obligatorio.',
+            'email.required' => 'El correo electrónico es obligatorio.',
+            'email.email' => 'El correo electrónico no es válido.',
+            'email.unique' => 'Este correo electrónico ya está registrado.',
+            'rol.required' => 'El rol es obligatorio.',
+            'rol.exists' => 'El rol seleccionado no existe.',
+            'profile_photo.image' => 'El archivo debe ser una imagen.',
+            'profile_photo.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg, gif.',
+            'profile_photo.max' => 'La imagen no puede pesar más de 2MB.',
+        ]);
+
         $usuario = User::findOrFail($id);
         $usuario->name = $request->name;
         $usuario->email = $request->email;
         if ($request->filled('password')) {
             $usuario->password = bcrypt($request->password);
         }
-        // Obtén el ID del rol desde el formulario
+        
         $newRoleId = $request->input('rol');
 
-        // Manejar la foto de perfil
         if ($request->hasFile('profile_photo')) {
-            // Elimina la foto anterior si existe
             if ($usuario->profile_photo && Storage::exists($usuario->profile_photo)) {
                 Storage::delete($usuario->profile_photo);
             }
-            // Guarda la nueva foto
             $usuario->profile_photo = $request->file('profile_photo')->store('profile_photos', 'public');
         }
 
-        // Guarda los cambios en el usuario antes de actualizar roles
         $usuario->save();
 
-        // Obtén el ID del rol actual del usuario
         $currentRole = DB::table('model_has_roles')
             ->where('model_id', $id)
             ->where('model_type', User::class)
             ->first();
 
-        // Si hay un rol actual, lo actualizamos
         if ($currentRole) {
             DB::table('model_has_roles')
                 ->where('model_id', $id)
                 ->where('model_type', User::class)
                 ->update(['role_id' => $newRoleId]);
         } else {
-            // Si no hay rol actual, insertamos el nuevo rol
             DB::table('model_has_roles')->insert([
                 'role_id' => $newRoleId,
                 'model_id' => $id,

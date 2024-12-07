@@ -22,7 +22,14 @@
                 <!-- Descripción del Rol -->
                 <div class="mb-3">
                     <label for="descripcion" class="form-label"><strong> Descripción del Rol </strong></label>
-                    <textarea class="form-control" name="descripcion" id="descripcion" rows="3">{{ $rol->descripcion }}</textarea>
+                    <textarea class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" id="descripcion" rows="3">{{ $rol->descripcion }}</textarea>
+                    @error('descripcion')
+                        <div class="invalid-feedback">
+                            <strong>
+                                {{ $message }}
+                            </strong>
+                        </div>
+                    @enderror
                 </div>
 
                 <!-- Permisos -->

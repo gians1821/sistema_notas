@@ -25,7 +25,11 @@
                             class="form-control @error('profile_photo') is-invalid @enderror" accept="image/*"
                             onchange="previewImage(event)">
                         @error('profile_photo')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <div class="invalid-feedback">
+                                <strong>
+                                    {{ $message }}
+                                </strong>
+                            </div>
                         @enderror
                     </div>
                     
@@ -39,7 +43,14 @@
 
                         <div class="form-group">
                             <label class="h5">Email</label>
-                            <input type="email" class="form-control" id="email_user" name="email" value="{{ $users->email }}">
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email_user" name="email" value="{{ $users->email }}">
+                            @error('email')
+                                <div class="invalid-feedback">
+                                    <strong>
+                                        {{ $message }}
+                                    </strong>
+                                </div>
+                            @enderror
                         </div>
 
                         <div class="form-group">
@@ -48,11 +59,19 @@
                         </div>
 
                         <h2 class="h5 mt-3"> Listado de Roles</h2>
-                        <select class="form-control w-100 mr-4" id="rol" name="rol">
-                            <option value="Nivel" selected disabled>Seleccione Rol</option>
+                        <select class="form-control w-100 mr-4 @error('rol') is-invalid @enderror" id="rol" name="rol">
                             @foreach ($roles as $role)
-                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                <option value="{{ $role->id }}" {{ $role->name === $rolecito ? 'selected' : '' }}>
+                                    {{ $role->name }}
+                                </option>
                             @endforeach
+                            @error('rol')
+                                <div class="invalid-feedback">
+                                    <strong>
+                                        {{ $message }}
+                                    </strong>
+                                </div>
+                            @enderror
                         </select>
                     </div>
                 </div>
