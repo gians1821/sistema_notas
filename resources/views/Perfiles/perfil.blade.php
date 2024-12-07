@@ -7,9 +7,13 @@
     <h1 class="h3 mb-3 titulos"><strong>Gestión de</strong> Perfiles</h1>
     <br>
     <nav class="navbar navbar-light">
+
+        @can('Admin.perfiles.create')
         <a class="btn btn-primary " href="{{ route('admin.perfil.create') }}">
-            <i class="fas fa-plus"></i> Nuevo Perfil
+            <i class="fas fa-plus"></i> Nuevo Registro
         </a>
+        @endcan
+
     </nav>
 
     <div id="mensaje">
@@ -32,4 +36,11 @@
         'delete_route' => 'admin.perfil.confirmar'  // Ruta para eliminar
     ])
 
+@endsection
+@section('script')
+    <script>
+        setTimeout(function() {
+            document.querySelector('#mensaje').remove();
+        }, 3000);
+    </script>
 @endsection

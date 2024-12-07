@@ -18,14 +18,21 @@
                         <td>{{ $item->$property }}</td>
                     @endforeach
                     <td>
+
+                        @can('Admin.perfiles.edit')
                         <a href="{{ route($edit_route, $item->{$columns_data[0]}) }}" class="btn btn-info">
                             <img src="{{ asset('plantilla/src/img/logo/editar_blanco.png') }}" alt="Editar"
                                 style="width: 30px; height: 30px;">
                         </a>
+                        @endcan
+
+                        @can('Admin.perfiles.destroy')
                         <a href="{{ route($delete_route, $item->{$columns_data[0]}) }}" class="btn btn-danger">
                             <img src="{{ asset('plantilla/src/img/logo/eliminar.png') }}" alt="Eliminar"
                                 style="width: 30px; height: 30px;">
                         </a>
+                        @endcan
+
                     </td>
                 </tr>
             @endforeach

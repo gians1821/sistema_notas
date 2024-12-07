@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class RoleHasPermissionsTableSeeder extends Seeder
 {
@@ -16,9 +17,10 @@ class RoleHasPermissionsTableSeeder extends Seeder
     {
         
 
-        \DB::table('role_has_permissions')->delete();
+        DB::table('role_has_permissions')->delete();
         
-        \DB::table('role_has_permissions')->insert(array (
+        DB::table('role_has_permissions')->insert(array (
+            //PERMISOS DEL ADMIN
             0 => 
             array (
                 'permission_id' => 1,
@@ -161,43 +163,74 @@ class RoleHasPermissionsTableSeeder extends Seeder
             ),
             28 => 
             array (
-                'permission_id' => 1,
-                'role_id' => 2,
+                'permission_id' => 29,
+                'role_id' => 1,
             ),
             29 => 
             array (
-                'permission_id' => 6,
-                'role_id' => 2,
+                'permission_id' => 30,
+                'role_id' => 1,
             ),
             30 => 
             array (
-                'permission_id' => 18,
-                'role_id' => 2,
+                'permission_id' => 31,
+                'role_id' => 1,
             ),
             31 => 
             array (
-                'permission_id' => 26,
-                'role_id' => 2,
+                'permission_id' => 32,
+                'role_id' => 1,
             ),
+
+
+
+
+
+
             32 => 
             array (
-                'permission_id' => 27,
+                'permission_id' => 1,
                 'role_id' => 2,
             ),
             33 => 
             array (
-                'permission_id' => 28,
+                'permission_id' => 6,
                 'role_id' => 2,
             ),
             34 => 
             array (
-                'permission_id' => 26,
-                'role_id' => 3,
+                'permission_id' => 18,
+                'role_id' => 2,
             ),
             35 => 
             array (
+                'permission_id' => 26,
+                'role_id' => 2,
+            ),
+            36 => 
+            array (
+                'permission_id' => 27,
+                'role_id' => 2,
+            ),
+            37 => 
+            array (
+                'permission_id' => 28,
+                'role_id' => 2,
+            ),
+            38 => 
+            array (
+                'permission_id' => 26,
+                'role_id' => 3,
+            ),
+            39 => 
+            array (
                 'permission_id' => 28,
                 'role_id' => 3,
+            ),
+            40 => 
+            array (
+                'permission_id' => 1,
+                'role_id' => 4,
             ),
         ));
         

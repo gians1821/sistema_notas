@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class PermissionsTableSeeder extends Seeder
 {
@@ -16,232 +17,282 @@ class PermissionsTableSeeder extends Seeder
     {
         
 
-        \DB::table('permissions')->delete();
+        DB::table('permissions')->delete();
         
-        \DB::table('permissions')->insert(array (
+        DB::table('permissions')->insert(array (
+            //HOME
             0 => 
             array (
                 'id' => 1,
                 'name' => 'Home.index',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:03',
-                'updated_at' => '2024-08-15 02:20:03',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             1 => 
             array (
                 'id' => 2,
-                'name' => 'Admin.users.index',
+                'name' => 'Home.info.hijo',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:04',
-                'updated_at' => '2024-08-15 02:20:04',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
+
+            //USUARIOS
             2 => 
             array (
                 'id' => 3,
-                'name' => 'Admin.users.create',
+                'name' => 'Admin.users.index',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:05',
-                'updated_at' => '2024-08-15 02:20:05',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             3 => 
             array (
                 'id' => 4,
-                'name' => 'Admin.users.edit',
+                'name' => 'Admin.users.create',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:05',
-                'updated_at' => '2024-08-15 02:20:05',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             4 => 
             array (
                 'id' => 5,
-                'name' => 'Admin.users.destroy',
+                'name' => 'Admin.users.edit',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:06',
-                'updated_at' => '2024-08-15 02:20:06',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             5 => 
             array (
                 'id' => 6,
-                'name' => 'Alumno.index',
+                'name' => 'Admin.users.destroy',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:06',
-                'updated_at' => '2024-08-15 02:20:06',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
+
+            //PERFILES
             6 => 
             array (
                 'id' => 7,
-                'name' => 'Alumno.create',
+                'name' => 'Admin.perfiles.index',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:07',
-                'updated_at' => '2024-08-15 02:20:07',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             7 => 
             array (
                 'id' => 8,
-                'name' => 'Alumno.edit',
+                'name' => 'Admin.perfiles.create',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:07',
-                'updated_at' => '2024-08-15 02:20:07',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             8 => 
             array (
                 'id' => 9,
-                'name' => 'Alumno.destroy',
+                'name' => 'Admin.perfiles.edit',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:08',
-                'updated_at' => '2024-08-15 02:20:08',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             9 => 
             array (
                 'id' => 10,
-                'name' => 'Seccion.index',
+                'name' => 'Admin.perfiles.destroy',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:08',
-                'updated_at' => '2024-08-15 02:20:08',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
+
+
+
+
+            //DEMAS 5
             10 => 
             array (
                 'id' => 11,
-                'name' => 'Seccion.create',
+                'name' => 'Alumno.index',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:09',
-                'updated_at' => '2024-08-15 02:20:09',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             11 => 
             array (
                 'id' => 12,
-                'name' => 'Seccion.destroy',
+                'name' => 'Alumno.create',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:09',
-                'updated_at' => '2024-08-15 02:20:09',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             12 => 
             array (
                 'id' => 13,
-                'name' => 'Curso.index',
+                'name' => 'Alumno.edit',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:10',
-                'updated_at' => '2024-08-15 02:20:10',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             13 => 
             array (
                 'id' => 14,
-                'name' => 'Curso.create',
+                'name' => 'Alumno.destroy',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:11',
-                'updated_at' => '2024-08-15 02:20:11',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             14 => 
             array (
                 'id' => 15,
-                'name' => 'Curso.edit',
+                'name' => 'Seccion.index',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:11',
-                'updated_at' => '2024-08-15 02:20:11',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             15 => 
             array (
                 'id' => 16,
-                'name' => 'Curso.destroy',
+                'name' => 'Seccion.create',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:12',
-                'updated_at' => '2024-08-15 02:20:12',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             16 => 
             array (
                 'id' => 17,
-                'name' => 'CursoPorGrado.index',
+                'name' => 'Seccion.destroy',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:12',
-                'updated_at' => '2024-08-15 02:20:12',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             17 => 
             array (
                 'id' => 18,
-                'name' => 'Capacidad.index',
+                'name' => 'Curso.index',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:13',
-                'updated_at' => '2024-08-15 02:20:13',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             18 => 
             array (
                 'id' => 19,
-                'name' => 'Capacidad.create',
+                'name' => 'Curso.create',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:13',
-                'updated_at' => '2024-08-15 02:20:13',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             19 => 
             array (
                 'id' => 20,
-                'name' => 'Capacidad.edit',
+                'name' => 'Curso.edit',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:14',
-                'updated_at' => '2024-08-15 02:20:14',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             20 => 
             array (
                 'id' => 21,
-                'name' => 'Capacidad.destroy',
+                'name' => 'Curso.destroy',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:14',
-                'updated_at' => '2024-08-15 02:20:14',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             21 => 
             array (
                 'id' => 22,
-                'name' => 'Personal.index',
+                'name' => 'CursoPorGrado.index',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:15',
-                'updated_at' => '2024-08-15 02:20:15',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             22 => 
             array (
                 'id' => 23,
-                'name' => 'Personal.create',
+                'name' => 'Capacidad.index',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:15',
-                'updated_at' => '2024-08-15 02:20:15',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             23 => 
             array (
                 'id' => 24,
-                'name' => 'Personal.edit',
+                'name' => 'Capacidad.create',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:16',
-                'updated_at' => '2024-08-15 02:20:16',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             24 => 
             array (
                 'id' => 25,
-                'name' => 'Personal.destroy',
+                'name' => 'Capacidad.edit',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:17',
-                'updated_at' => '2024-08-15 02:20:17',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             25 => 
             array (
                 'id' => 26,
-                'name' => 'CursoHasAlumno.index',
+                'name' => 'Capacidad.destroy',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:18',
-                'updated_at' => '2024-08-15 02:20:18',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             26 => 
             array (
                 'id' => 27,
-                'name' => 'CursoHasAlumno.edit',
+                'name' => 'Personal.index',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:18',
-                'updated_at' => '2024-08-15 02:20:18',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
             27 => 
             array (
                 'id' => 28,
+                'name' => 'Personal.create',
+                'guard_name' => 'web',
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            28 => 
+            array (
+                'id' => 29,
+                'name' => 'Personal.edit',
+                'guard_name' => 'web',
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            29 => 
+            array (
+                'id' => 30,
+                'name' => 'Personal.destroy',
+                'guard_name' => 'web',
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            30 => 
+            array (
+                'id' => 31,
+                'name' => 'CursoHasAlumno.index',
+                'guard_name' => 'web',
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            31 => 
+            array (
+                'id' => 32,
+                'name' => 'CursoHasAlumno.edit',
+                'guard_name' => 'web',
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            32 => 
+            array (
+                'id' => 33,
                 'name' => 'CursoHasAlumno.pdf',
                 'guard_name' => 'web',
-                'created_at' => '2024-08-15 02:20:19',
-                'updated_at' => '2024-08-15 02:20:19',
+                'created_at' => NULL,
+                'updated_at' => NULL,
             ),
         ));
         

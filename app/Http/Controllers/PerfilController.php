@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 
 class PerfilController extends Controller
 {
@@ -26,7 +28,8 @@ class PerfilController extends Controller
      */
     public function create()
     {
-        return view('Perfiles.Create');
+        $permisos = Permission::all(); 
+        return view('Perfiles.Create', compact('permisos'));
     }
 
     /**
@@ -34,25 +37,28 @@ class PerfilController extends Controller
      */
     public function store(Request $request)
     {
-        // Validación de los datos del formulario
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name', // El nombre debe ser único en la tabla roles
-        ], [
-            'name.required' => 'El nombre del rol es obligatorio.',
-            'name.string' => 'El nombre del rol debe ser un texto válido.',
-            'name.max' => 'El nombre del rol no puede exceder los 255 caracteres.',
-            'name.unique' => 'El nombre del rol ya existe en el sistema. Por favor elige otro.',
+        // Validate the input
+        $request->validate([
+            'name' => 'required|unique:roles,name',
+            'descripcion' => 'required'
+        ],
+        [
+            'name.required' => 'Ingrese nombre del rol',
+            'name.unique' => 'El nombre del rol ya existe',
+            'descripcion.required' => 'Ingrese una descripción para el rol',
+        ]);
+    
+        $role = Role::create([
+            'name' => $request->name,
+            'descripcion' => $request->descripcion,
         ]);
 
-        // Crear un nuevo rol
-        $rol = new Role();
-        $rol->name = $request->input('name');
-
-        // Guardar el rol en la base de datos
-        $rol->save();
-
-        // Redirigir con mensaje de éxito
-        return redirect()->route('admin.perfil.index')->with('success', 'Rol registrado correctamente');
+        if ($request->has('permissions')) {
+            $permissions = Permission::whereIn('id', $request->permissions)->get();
+            $role->syncPermissions($permissions);
+        }
+    
+        return redirect()->route('admin.perfil.index')->with('datos', 'Rol creado exitosamente.');
     }
 
     /**
@@ -69,47 +75,42 @@ class PerfilController extends Controller
     public function edit(string $id)
     {
         $rol = Role::findOrFail($id);
-        return view('Perfiles.Edit', compact('rol'));
+    
+        $permissions = Permission::all();
+    
+        return view('Perfiles.Edit', compact('rol', 'permissions'));
     }
+    
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        // Validación de los datos del formulario con mensajes personalizados
+
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name,' . $id, // Permite mantener el nombre actual del rol
+            'name' => 'required|string|max:255|unique:roles,name,' . $id, 
+            'descripcion' => 'nullable|string|max:255', 
+            'permissions' => 'array|exists:permissions,id', 
         ], [
             'name.required' => 'El nombre del rol es obligatorio.',
             'name.string' => 'El nombre del rol debe ser un texto válido.',
             'name.max' => 'El nombre del rol no puede exceder los 255 caracteres.',
             'name.unique' => 'El nombre del rol ya existe en el sistema. Por favor, elige otro.',
+            'descripcion.string' => 'La descripción debe ser un texto válido.',
+            'permissions.array' => 'Los permisos deben ser seleccionados correctamente.',
+            'permissions.exists' => 'Uno o más permisos seleccionados no existen.',
         ]);
 
-        // Encontrar el rol por su ID
         $rol = Role::findOrFail($id);
 
-        // Actualizar el nombre del rol
         $rol->name = $request->input('name');
+        $rol->descripcion = $request->input('descripcion'); 
 
-        // Guardar los cambios en la base de datos
+        $rol->permissions()->sync($request->input('permissions', [])); 
+
         $rol->save();
 
-        // Redirigir con un mensaje de éxito
-        return redirect()->route('admin.perfil.index')->with('success', 'Rol actualizado correctamente');
-    }
-
-    public function confirmar($id)
-    {
-        $rol = Role::findOrFail($id);
-        return view('Perfiles.confirmar', compact('rol'));
-    }
-
-    public function destroy($id)
-    {
-        $rol = Role::findOrFail($id);
-        $rol->delete();
-        return redirect()->route('admin.perfil.index')->with('datos', 'Registro Eliminado..');
+        return redirect()->route('admin.perfil.index')->with('datos', 'Rol actualizado correctamente');
     }
 }

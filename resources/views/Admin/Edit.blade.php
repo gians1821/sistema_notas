@@ -36,7 +36,7 @@
                         <option value="{{ $role->id }}">{{ $role->name }}</option>
                     @endforeach
                 </select>
-                <button type="submit" class="btn btn-primary mt-4"><i class="fas fa-save"></i> Registrar</button>
+                <button type="submit" class="btn btn-primary mt-4"><i class="fas fa-save"></i> Actualizar </button>
                 <a href="{{ route('CancelarUsuario') }}" class="btn btn-danger mt-4"><i class="fas fa-ban"></i>
                     Cancelar</button></a>
 

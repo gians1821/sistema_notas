@@ -4,28 +4,31 @@
         PRINCIPAL
     </li>
     <!-- DASHBOARD -->
+    
+    @can('Home.index')
     <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Home') ? 'active' : '' }}">
         <a class="sidebar-link" href="{{ route('Home.index') }}">
             <i class="align-middle" data-feather="home"></i> <span> Inicio </span>
         </a>
     </li>
+    @endcan
 
     <!-- PROFILE -->
-    @role('Admin')
+    @can('Admin.users.index')
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'admin.usuarios') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ route('admin.usuarios.index') }}">
                 <i class="align-middle" data-feather="user"></i> <span> Usuarios </span>
             </a>
         </li>
-    @endrole
+    @endcan
 
-    @role('Admin')
+    @can('Admin.perfiles.index')
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'admin.perfil') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ route('admin.perfil.index') }}">
                 <i class="align-middle" data-feather="users"></i> <span> Perfiles </span>
             </a>
         </li>
-    @endrole
+    @endcan
 
     <!-- SIGN IN -->
     <li class="sidebar-item">
@@ -33,9 +36,10 @@
             <i class="align-middle" data-feather="log-in"></i> <span> Sign In </span>
         </a>
     </li>
+
     <!-- TITULO 2 -->
     <li class="sidebar-header">
-        MANTENEDORES
+        GESTION ACADEMICA
     </li>
     <!-- AQUI ES DONDE TRABAJAREMOS -->
     <!-- GESTION DE ALUMNOS -->

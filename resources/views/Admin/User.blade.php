@@ -7,9 +7,13 @@
     <h1 class="h3 mb-3 titulos"><strong>Gestión de</strong> usuarios</h1>
     <br>
     <nav class="navbar navbar-light">
+
+        @can('Admin.users.create')
         <a class="btn btn-primary " href="{{ route('admin.usuarios.create') }}">
             <i class="fas fa-plus"></i> Nuevo Registro
         </a>
+        @endcan
+
         <form class="form-inline my-lg-0" method="GET" action="{{ route('admin.usuarios.index') }}">
             <div class="d-flex align-items-center">
                 <input name="buscarpor" class="form-control mr-sm-2" type="search" style="width: 300px;"
@@ -69,14 +73,21 @@
                             @endforeach
                         </td>
                         <td>
+
+                            @can('Admin.users.edit')
                             <a href="{{ route('admin.usuarios.edit', $user->id) }}" class="btn btn-info">
                                 <img src="{{ asset('plantilla/src/img/logo/editar_blanco.png') }}" alt="Editar"
                                     style="width: 30px; height: 30px;">
                             </a>
+                            @endcan
+
+                            @can('Admin.users.destroy')
                             <a href="{{ route('admin.usuarios.confirmar', $user->id) }}" class="btn btn-danger">
                                 <img src="{{ asset('plantilla\src\img\logo\eliminar.png') }}" alt="Eliminar"
                                     style="width: 30px; height: 30px;">
                             </a>
+                            @endcan
+
                         </td>
                     </tr>
                 @endforeach
