@@ -14,11 +14,11 @@
     <div class="container mt-5">
         <h1 class="text-center mb-4 mr-5">Perfil de Usuario</h1>
         <div class="row">
-            <div class="col-md-4 text-center">
+            <div class="col-md-4 text-center" style="transform: translateY(-40px);">
                 <img src="{{ auth()->user()->profile_photo ? asset('storage/' . auth()->user()->profile_photo) : asset('images/default-user.png') }}" 
                     alt="Foto de Perfil" 
                     class="img-fluid rounded-circle mb-3" 
-                    style="width: 150px; height: 150px; object-fit: cover;">
+                    style="width: 200px; height: 200px; object-fit: cover;">
                 <h2>{{ auth()->user()->name }}</h2>
                 <p>{{ auth()->user()->email }}</p>
             </div>
@@ -44,18 +44,24 @@
             </div>
         </div>
 
-        @can('Home.info.hijo')
-        <h3 class="mt-5">Información de sus Hijo(s)</h3>
-        <div class="row">
-            <div class="col-md-4 mb-3 text-center">
-                <img src="{{ asset('images/pruebita.jpg') }}" class="img-fluid rounded"
-                    style="height: 200px;">
-                <h4>Jose luis</h4>
-                <a href="" class="btn btn-primary mt-2">Ver Detalles</a>
+        @if($alumnos->isNotEmpty())
+            <hr style="border: 1px solid #0a0a0a; margin: 10px 0;">
+            <h3 class="mt-5 mb-4">Información de sus Hijo(s)</h3>
+            <div class="row">
+                @foreach($alumnos as $alumno)
+                    <div class="col-md-4 mb-3 text-center">
+                        <div class="card" style="width: 70%;">
+                            <img src="{{ asset('images/pruebita.jpg') }}" class="card-img-top img-fluid rounded" 
+                                style="width: 150px; height: 150px; margin: auto;">
+                            <div class="card-body">
+                                <h4 class="card-title">{{ $alumno->nombre_alumno }} {{ $alumno->apellido_alumno }}</h4>
+                                <a href="" class="btn btn-primary">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
-        </div>
-        @endcan
+        @endif
+    </div>
 
-    </div>
-    </div>
 @endsection('Contenido')

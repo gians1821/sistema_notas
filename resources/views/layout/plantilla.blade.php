@@ -131,7 +131,7 @@
                             </a>
 
                             <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                                <img src="{{ auth()->user()->profile_photo ? asset('storage/' . auth()->user()->profile_photo) : asset('images/default-user.png') }}" class="avatar img-fluid rounded me-1" /> <span class="text-dark">{{auth()->user()->name}}</span>
+                                <img src="{{ auth()->user()->profile_photo ? asset('storage/' . auth()->user()->profile_photo) : asset('images/default-user.png') }}" class="avatar img-fluid rounded me-1" style="width: 40px; height: 40px; object-fit: cover;"/> <span class="text-dark">{{auth()->user()->name}}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a class="dropdown-item" href="{{ route('Home.index') }}"><i class="align-middle me-1" data-feather="user"></i> Inicio </a>
