@@ -113,4 +113,17 @@ class PerfilController extends Controller
 
         return redirect()->route('admin.perfil.index')->with('datos', 'Rol actualizado correctamente');
     }
+
+    public function confirmar($id)
+    {
+        $rol = Role::findOrFail($id);
+        return view('Perfiles.confirmar', compact('rol'));
+    }
+
+    public function destroy($id)
+    {
+        $rol = Role::findOrFail($id);
+        $rol->delete();
+        return redirect()->route('admin.perfil.index')->with('datos', 'Registro Eliminado..');
+    }
 }

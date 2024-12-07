@@ -100,7 +100,7 @@ class LoginController extends Controller
         $reset = DB::table('password_reset_tokens')->where('token', $token)->first();
 
         if (!$reset) {
-            return back()->withErrors(['token' => 'El token de recuperación no es válido o ha expirado.']);
+            return back()->withErrors(['token' => 'El token de recuperación ha expirado.']);
         }
 
         $user = User::where('email', $reset->email)->first();

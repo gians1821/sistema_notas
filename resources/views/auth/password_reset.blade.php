@@ -41,6 +41,9 @@
                         @error('password')
                             <span class="error-message"><b>{{ $message }}</b></span>
                         @enderror
+                        @error('token')
+                            <span class="error-message"><b>{{ $message }}</b></span>
+                        @enderror
                     </div>
                     <button type="submit" class="btn">Restablecer</button>
                 </form>
