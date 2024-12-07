@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -59,11 +60,15 @@ class UserController extends Controller
         // Validar los datos del formulario
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'profile_photo' => ['required', 'image', 'max:2048'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'rol' => ['required', 'exists:roles,id'],
         ], [
             'name.required' => 'El nombre es obligatorio.',
+            'profile_photo.required' => 'La imagen es obligatoria.',
+            'profile_photo.image' => 'El archivo debe ser una imagen.',
+            'profile_photo.max' => 'La imagen no puede pesar más de 2MB.',
             'email.required' => 'El correo electrónico es obligatorio.',
             'email.unique' => 'Este correo electrónico ya está registrado.',
             'password.required' => 'La contraseña es obligatoria.',
@@ -71,25 +76,30 @@ class UserController extends Controller
             'rol.required' => 'El rol es obligatorio.',
             'rol.exists' => 'El rol seleccionado no existe.',
         ]);
-
+    
+        // Guardar la imagen en el almacenamiento y obtener la ruta
+        $imagePath = $request->file('profile_photo')->store('profile_photos', 'public');
+    
         // Crear el usuario
         $usuario = new User();
         $usuario->name = $request->name;
         $usuario->email = $request->email;
+        $usuario->profile_photo = $imagePath; // Guardar la ruta de la imagen en la base de datos
         if ($request->filled('password')) {
             $usuario->password = bcrypt($request->password);
         }
-
-        // Guarda los cambios en el usuario antes de actualizar roles
+    
+        // Guardar el usuario antes de asignar roles
         $usuario->save();
-
+    
         // Asignar el rol al usuario
         $rol = Role::find($request->input('rol'));
         $usuario->assignRole($rol->name);
-
+    
         // Redirigir con mensaje de éxito
         return redirect()->route('admin.usuarios.index')->with('datos', 'Usuario registrado correctamente');
     }
+    
 
     /**
      * Display the specified resource.
@@ -123,6 +133,16 @@ class UserController extends Controller
         }
         // Obtén el ID del rol desde el formulario
         $newRoleId = $request->input('rol');
+
+        // Manejar la foto de perfil
+        if ($request->hasFile('profile_photo')) {
+            // Elimina la foto anterior si existe
+            if ($usuario->profile_photo && Storage::exists($usuario->profile_photo)) {
+                Storage::delete($usuario->profile_photo);
+            }
+            // Guarda la nueva foto
+            $usuario->profile_photo = $request->file('profile_photo')->store('profile_photos', 'public');
+        }
 
         // Guarda los cambios en el usuario antes de actualizar roles
         $usuario->save();

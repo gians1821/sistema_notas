@@ -15,8 +15,10 @@
         <h1 class="text-center mb-4 mr-5">Perfil de Usuario</h1>
         <div class="row">
             <div class="col-md-4 text-center">
-                <img src="{{ asset('images/prueba.png') }}" alt="Foto de Perfil" class="img-fluid rounded-circle mb-3"
-                    style="width: 150px; height: 150px;">
+                <img src="{{ auth()->user()->profile_photo ? asset('storage/' . auth()->user()->profile_photo) : asset('images/default-user.png') }}" 
+                    alt="Foto de Perfil" 
+                    class="img-fluid rounded-circle mb-3" 
+                    style="width: 150px; height: 150px; object-fit: cover;">
                 <h2>{{ auth()->user()->name }}</h2>
                 <p>{{ auth()->user()->email }}</p>
             </div>
