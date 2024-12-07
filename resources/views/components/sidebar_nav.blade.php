@@ -32,8 +32,12 @@
 
     <!-- SIGN IN -->
     <li class="sidebar-item">
-        <a class="sidebar-link" href="{{ route('User.Login') }}">
-            <i class="align-middle" data-feather="log-in"></i> <span> Sign In </span>
+        <form id="logout-form" action="{{ route('User.Logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+        <a class="sidebar-link" href="{{ route('User.Logout') }}"
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <i class="align-middle" data-feather="log-in"></i> <span> Cerrar Sesión </span>
         </a>
     </li>
 
