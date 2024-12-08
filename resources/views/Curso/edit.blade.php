@@ -16,29 +16,29 @@
             <label for="nivel">Nivel</label>
             <select class="form-control @error('nivel') is-invalid @enderror" id="nivel" name="nivel"
                 value="{{ $curso->id_curso }}">
-                @error('nivel')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+
                 <option value="" selected disabled>Seleccione Nivel</option>
                 <option value="Primaria">Primaria</option>
                 <option value="Secundaria">Secundaria</option>
             </select>
+            @error('nivel')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
-
-
 
         <div class="form-group">
             <label for="grado">Grado</label>
             <select class="form-control @error('grado') is-invalid @enderror" id="grado" name="grado">
-                @error('grado')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+
                 <option value="" selected disabled>Seleccione Grado</option>
             </select>
+            @error('grado')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
         <div class="form-group">
             <label for="nombre_curso">Nombre del Curso</label>

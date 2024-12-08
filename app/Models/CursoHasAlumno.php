@@ -12,7 +12,7 @@ class CursoHasAlumno extends Model
     public $incrementing = false;
     protected $primaryKey = null;
 
-    protected $table = 'curso_has_alumnos';
+    protected $table = 'catedras';
 
     protected function setKeysForSaveQuery($query)
     {

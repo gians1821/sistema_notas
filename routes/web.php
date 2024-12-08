@@ -14,6 +14,7 @@ use App\Http\Controllers\CursoHasAlumnoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\GradoController;
+use App\Http\Controllers\NivelController;
 use App\Http\Controllers\PadreController;
 use App\Models\Alumno;
 use App\Models\User;
@@ -89,8 +90,11 @@ Route::get('/CancelarPersonal', function () {
 })->name('CancelarPersonal');
 // Cancelar Nota/Catedra
 Route::get('/CancelarNota', function () {
-    return redirect()->route('Nota.index')->with('datos', 'Accion Cancelada..!')->with('');
+    return redirect()->route('Nota.index')->with('datos', 'Accion Cancelada..!');
 })->name('CancelarNota');
+Route::get('/CancelarCurso', function () {
+    return redirect()->route('Curso.index')->with('datos', 'Accion Cancelada..!');
+})->name('CancelarCurso');
 // Confirmar Alumno
 Route::get('Alumno/{id_alumno}/confirmar', [AlumnoController::class, 'confirmar'])->name('Alumno.confirmar');
 // Confirmar Perfil
@@ -107,8 +111,10 @@ Route::get('Capacidad/{id_competencia}/confirmar', [CapacidadController::class, 
 Route::get('Personal/{id_personal}/confirmar', [PersonalController::class, 'confirmar'])->name('Personal.confirmar');
 
 
+Route::get('/niveles', [NivelController::class, 'getNiveles']);
 Route::get('/grados/{id_nivel}', [GradoController::class, 'getGradosPorNivel']);
 Route::get('/secciones/{id_grado}', [SeccionController::class, 'getSeccionesPorGrado']);
+Route::get('/grado/{id_grado}/cursos', [CursoController::class, 'getCursosPorGrado']);
 
 
 
