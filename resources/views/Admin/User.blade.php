@@ -33,10 +33,20 @@
         </form>
     </nav>
 
-    <div id="mensaje">
+    <div id="mensaje1">
         @if (session('datos'))
             <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
                 {{ session('datos') }}
+                <button type="button" class="close" data-dismiss="alert" arialabel="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+    </div>
+    <div id="mensaje2">
+        @if (session('danger'))
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                {{ session('danger') }}
                 <button type="button" class="close" data-dismiss="alert" arialabel="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -101,7 +111,12 @@
 @section('script')
     <script>
         setTimeout(function() {
-            document.querySelector('#mensaje').remove();
+            document.querySelector('#mensaje1').remove();
+        }, 3000);
+    </script>
+    <script>
+        setTimeout(function() {
+            document.querySelector('#mensaje2').remove();
         }, 3000);
     </script>
 @section('script')

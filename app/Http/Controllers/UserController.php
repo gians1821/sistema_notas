@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Padre;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
+use App\Models\Alumno;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -132,8 +135,10 @@ class UserController extends Controller
             ->value('name');
         
         $roles = Role::all();
-
-        return view('Admin.Edit', compact('users', 'rolecito' ,'roles'));
+        $padre = Padre::where('id_users', $id)->first();
+        
+        return view('Admin.Edit', compact('users', 'rolecito' ,'roles', 'padre'));
+        
     }
 
     /**
@@ -141,21 +146,81 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        Log::info($request->all());
+        $padres = Padre::where('id_users', $id)->first();
+        
+        if ($padres){
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'dni' => 'required|numeric|digits:8|unique:padres,dni,' . ($padres ? $padres->id : null),
+                'email' => 'required|email|max:255|unique:users,email,' . $id,
+                'password' => 'nullable|string|min:8|confirmed',
+                'password_confirmation' => 'required|same:password',
+                'rol' => 'required|exists:roles,id', 
+                'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ], [
+
+                'name.required' => 'El nombre es obligatorio.',
+                
+                'dni.required' => 'El DNI es obligatorio.',
+                'dni.numeric' => 'El DNI debe ser un número.',
+                'dni.digits' => 'El DNI debe tener 8 dígitos.',
+                'dni.unique' => 'Este DNI ya está registrado.',
+
+                'email.required' => 'El correo electrónico es obligatorio.',
+                'email.email' => 'El correo electrónico no es válido.',
+                'email.unique' => 'Este correo electrónico ya está registrado.',
+
+                'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+
+                'password_confirmation.required' => 'Confirme la contraseña.',
+                'password_confirmation.same' => 'Las contraseñas no coinciden.',
+
+                'rol.required' => 'El rol es obligatorio.',
+                'rol.exists' => 'El rol seleccionado no existe.',
+
+                'profile_photo.image' => 'El archivo debe ser una imagen.',
+                'profile_photo.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg, gif.',
+                'profile_photo.max' => 'La imagen no puede pesar más de 2MB.',
+            ]);
+            $padre = Padre::findOrFail($padres->id);
+            $nombreCompleto = $request->name;
+            $nombre = explode(' ', $nombreCompleto);
+            $padre->nombres = isset($nombre[0]) ? $nombre[0] : '';
+            $padre->apellidos = isset($nombre[1]) ? implode(' ', array_slice($nombre, 1)) : '';
+            $padre->dni = $request->dni;
+            $padre->save();
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'password_confirmation' => 'required|same:password',
             'rol' => 'required|exists:roles,id', 
             'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ], [
+
             'name.required' => 'El nombre es obligatorio.',
+            'name.string' => 'El nombre debe ser una cadena de texto.',
+
             'email.required' => 'El correo electrónico es obligatorio.',
             'email.email' => 'El correo electrónico no es válido.',
             'email.unique' => 'Este correo electrónico ya está registrado.',
+
+            'password.required' => 'La contraseña es obligatoria.',
+            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+
+            'password_confirmation.required' => 'Confirme la contraseña.',
+            'password.confirmed' => 'Las contraseñas no coinciden.',
+
             'rol.required' => 'El rol es obligatorio.',
             'rol.exists' => 'El rol seleccionado no existe.',
+
             'profile_photo.image' => 'El archivo debe ser una imagen.',
             'profile_photo.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg, gif.',
             'profile_photo.max' => 'La imagen no puede pesar más de 2MB.',
+
         ]);
 
         $usuario = User::findOrFail($id);
@@ -204,8 +269,17 @@ class UserController extends Controller
 
     public function destroy($id_user)
     {
+        
         $user = User::findOrFail($id_user);
-        $user->delete();
-        return redirect()->route('admin.usuarios.index')->with('datos', 'Registro Eliminado..');
+        $padre = Padre::where('id_users', $id_user)->first();
+        $alumno = Alumno::where('padre_id', $padre->id)->first();
+        if ($alumno) {
+            return redirect()->route('admin.usuarios.index')->with('danger', 'El usuario no se puede eliminar porque tiene un hijo registrado');
+        }
+        else {
+            $user->delete();
+            $padre->delete();
+            return redirect()->route('admin.usuarios.index')->with('datos', 'Registro Eliminado..');
+        }
     }
 }

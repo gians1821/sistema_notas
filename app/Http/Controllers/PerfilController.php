@@ -126,7 +126,12 @@ class PerfilController extends Controller
     public function destroy($id)
     {
         $rol = Role::findOrFail($id);
-        $rol->delete();
-        return redirect()->route('admin.perfil.index')->with('datos', 'Registro Eliminado..');
+        $user = $rol->users->count();
+        if ($user > 0) {
+            return redirect()->route('admin.perfil.index')->with('danger', 'No se puede eliminar el rol, tiene usuarios asignados..');
+        } else {
+            $rol->delete();
+            return redirect()->route('admin.perfil.index')->with('datos', 'Registro Eliminado..');
+        }
     }
 }

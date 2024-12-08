@@ -118,6 +118,7 @@
                 <th scope="col">Alumno</th>
                 <th scope="col">Grado y Sección</th>
                 <th scope="col">Apoderado</th>
+                <th scope="col">Email Apoderado</th>
                 <th scope="col">Teléfono</th>
                 <th scope="col">Opciones</th>
             </tr>
@@ -125,7 +126,7 @@
         <tbody>
             @if (count($alumnos) <= 0)
                 <tr>
-                    <td colspan="5">No hay registros</td>
+                    <td colspan="6">No hay registros</td>
                 </tr>
             @else
                 @foreach ($alumnos as $itemalumnos)
@@ -146,12 +147,14 @@
                             {{ $itemalumnos->padre->user->name }}
                         </td>
                         <td>
+                            {{ $itemalumnos->padre->user->email }}
+                        <td>
                             {{ $itemalumnos->telefono }}
                         <td>
 
                             
                                 <a href="{{ route('Alumno.edit', $itemalumnos->id_alumno) }}" class="btn btn-secondary">
-                                    Constancia de Matrícula
+                                    Matrícula
                                 </a>
                                 <a href="{{ route('Alumno.edit', $itemalumnos->id_alumno) }}" class="btn btn-info">
                                     <img src="{{ asset('plantilla\src\img\logo\editar_blanco.png') }}" alt="Editar"

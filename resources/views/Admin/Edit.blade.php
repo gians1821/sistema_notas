@@ -7,8 +7,8 @@
     <h1 class="h3 mb-3 titulos text-center"><strong>Editar</strong> Usuario</h1>
     <br>
     <form method="POST" action="{{ route('admin.usuarios.update', $users->id) }}" enctype="multipart/form-data">
+    @csrf
         @method('PUT')
-        @csrf
         <div class="card mx-auto" style="max-width: 800px;">
             <div class="card-body">
                 <div class="row">
@@ -41,6 +41,14 @@
                             'value' => $users->name,
                         ])
 
+                        @if ($padre) 
+                            @include('components.text_input', [
+                                'label' => 'DNI',
+                                'name' => 'dni',
+                                'value' => $padre ? $padre->dni : '',
+                            ])
+                        @endif
+
                         <div class="form-group">
                             <label class="form-label"><strong>Email</strong></label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror" id="email_user" name="email" value="{{ $users->email }}">
@@ -56,6 +64,11 @@
                         <div class="form-group">
                             <label class="form-label"><strong>Contraseña</strong></label>
                             <input type="password" class="form-control" id="password_user" name="password" placeholder="Dejar en blanco para no cambiar">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label"><strong>Confirmar Contraseña</strong></label>
+                            <input type="password" class="form-control" name="password_confirmation" placeholder="Confirma tu contraseña">
                         </div>
 
                         <label class="form-label"><strong>Listado de Roles</strong></label>

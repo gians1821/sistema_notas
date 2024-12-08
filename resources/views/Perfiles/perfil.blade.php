@@ -26,6 +26,16 @@
             </div>
         @endif
     </div>
+    <div id="mensaje">
+        @if (session('danger'))
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                {{ session('danger') }}
+                <button type="button" class="close" data-dismiss="alert" arialabel="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+    </div>
     <br>
 
     @include('components.items_table', [
