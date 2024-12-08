@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class PeriodosTableSeeder extends Seeder
 {
@@ -16,13 +17,18 @@ class PeriodosTableSeeder extends Seeder
     {
         
 
-        \DB::table('periodos')->delete();
+        DB::table('periodos')->delete();
         
-        \DB::table('periodos')->insert(array (
+        DB::table('periodos')->insert(array (
             0 => 
             array (
                 'id' => 1,
                 'name' => '2023',
+            ),
+            1 => 
+            array (
+                'id' => 2,
+                'name' => '2024',
             ),
         ));
         

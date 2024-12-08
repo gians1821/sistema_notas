@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class GradosTableSeeder extends Seeder
 {
@@ -16,15 +17,15 @@ class GradosTableSeeder extends Seeder
     {
         
 
-        \DB::table('grados')->delete();
+        DB::table('grados')->delete();
         
-        \DB::table('grados')->insert(array (
+        DB::table('grados')->insert(array (
             0 => 
             array (
                 'id_grado' => 1,
                 'id_nivel' => 1,
                 'nombre_grado' => 'Primero',
-                'created_at' => '2024-07-04 20:15:48',
+                'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             1 => 
@@ -32,7 +33,7 @@ class GradosTableSeeder extends Seeder
                 'id_grado' => 2,
                 'id_nivel' => 1,
                 'nombre_grado' => 'Segundo',
-                'created_at' => '2024-07-04 20:15:48',
+                'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             2 => 
@@ -40,7 +41,7 @@ class GradosTableSeeder extends Seeder
                 'id_grado' => 3,
                 'id_nivel' => 1,
                 'nombre_grado' => 'Tercero',
-                'created_at' => '2024-07-04 20:15:48',
+                'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             3 => 
@@ -48,7 +49,7 @@ class GradosTableSeeder extends Seeder
                 'id_grado' => 4,
                 'id_nivel' => 1,
                 'nombre_grado' => 'Cuarto',
-                'created_at' => '2024-07-04 20:15:48',
+                'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             4 => 
@@ -56,7 +57,7 @@ class GradosTableSeeder extends Seeder
                 'id_grado' => 5,
                 'id_nivel' => 1,
                 'nombre_grado' => 'Quinto',
-                'created_at' => '2024-07-04 20:15:48',
+                'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             5 => 
@@ -64,7 +65,7 @@ class GradosTableSeeder extends Seeder
                 'id_grado' => 6,
                 'id_nivel' => 1,
                 'nombre_grado' => 'Sexto',
-                'created_at' => '2024-07-04 20:15:48',
+                'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             6 => 
@@ -72,7 +73,7 @@ class GradosTableSeeder extends Seeder
                 'id_grado' => 7,
                 'id_nivel' => 2,
                 'nombre_grado' => 'Primero',
-                'created_at' => '2024-07-04 20:15:48',
+                'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             7 => 
@@ -80,7 +81,7 @@ class GradosTableSeeder extends Seeder
                 'id_grado' => 8,
                 'id_nivel' => 2,
                 'nombre_grado' => 'Segundo',
-                'created_at' => '2024-07-04 20:15:48',
+                'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             8 => 
@@ -88,7 +89,7 @@ class GradosTableSeeder extends Seeder
                 'id_grado' => 9,
                 'id_nivel' => 2,
                 'nombre_grado' => 'Tercero',
-                'created_at' => '2024-07-04 20:15:48',
+                'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             9 => 
@@ -96,7 +97,7 @@ class GradosTableSeeder extends Seeder
                 'id_grado' => 10,
                 'id_nivel' => 2,
                 'nombre_grado' => 'Cuarto',
-                'created_at' => '2024-07-04 20:15:48',
+                'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             10 => 
@@ -104,7 +105,7 @@ class GradosTableSeeder extends Seeder
                 'id_grado' => 11,
                 'id_nivel' => 2,
                 'nombre_grado' => 'Quinto',
-                'created_at' => '2024-07-04 20:15:48',
+                'created_at' => NULL,
                 'updated_at' => NULL,
             ),
         ));

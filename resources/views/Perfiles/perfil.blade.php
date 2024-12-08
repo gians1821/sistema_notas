@@ -10,7 +10,7 @@
 
         @can('Admin.perfiles.create')
         <a class="btn btn-primary " href="{{ route('admin.perfil.create') }}">
-            <i class="fas fa-plus"></i> Nuevo Registro
+            <i class="fas fa-plus"></i> <strong> Nuevo Registro </strong>
         </a>
         @endcan
 

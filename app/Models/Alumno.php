@@ -17,4 +17,10 @@ class Alumno extends Model
     {
         return $this->belongsTo(Seccion::class,'seccion_id_seccion','id_seccion');
     }
+
+    public function padre()
+    {
+        return $this->belongsTo(Padre::class, 'padre_id');
+    }
+
 }

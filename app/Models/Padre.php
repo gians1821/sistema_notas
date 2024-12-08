@@ -20,4 +20,6 @@ class Padre extends Model
         'id_users',
     ];
 
+
+
 }

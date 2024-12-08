@@ -10,6 +10,7 @@ use App\Models\Periodo;
 use App\Models\Seccion;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use App\Models\Padre;
 
 class AlumnoController extends Controller
 {
@@ -25,13 +26,16 @@ class AlumnoController extends Controller
 
     public function index(Request $request)
     {
+        $periodos = Periodo::all();
+
         $buscarporNom = $request->get('buscarporNom');
         $buscarporApell = $request->get('buscarporApell');
         $nivel = $request->get('nivel');
         $grado = $request->get('grado');
         $seccion = $request->get('seccion');
+        $periodo = $request->get('periodo');
 
-        // Consulta para buscar por nombre, apellido, nivel, grado y sección
+        
         $query = Alumno::query();
 
         if ($buscarporNom) {
@@ -44,14 +48,14 @@ class AlumnoController extends Controller
 
         if ($seccion) {
             $query->whereHas('seccion', function ($query) use ($seccion) {
-                $query->where('id_seccion', $seccion); // Cambia 'seccion' por el campo correcto en la tabla 'seccion'
+                $query->where('id_seccion', $seccion); 
             });
         }
 
         if ($grado) {
             $query->whereHas('seccion', function ($query) use ($grado) {
                 $query->whereHas('grado', function ($query) use ($grado) {
-                    $query->where('id_grado', $grado); // Cambia 'grado' por el campo correcto en la tabla 'grado'
+                    $query->where('id_grado', $grado); 
                 });
             });
         }
@@ -60,31 +64,36 @@ class AlumnoController extends Controller
             $query->whereHas('seccion', function ($query) use ($nivel) {
                 $query->whereHas('grado', function ($query) use ($nivel) {
                     $query->whereHas('nivel', function ($query) use ($nivel) {
-                        $query->where('id_nivel', $nivel); // Cambia 'nivel' por el campo correcto en la tabla 'nivel'
+                        $query->where('id_nivel', $nivel); 
                     });
                 });
             });
         }
 
+        if ($periodo) {
+            $query->where('periodo', $periodo); 
+        }
+
         $alumnos = $query->paginate($this::PAGINACION);
 
-        // Agrega los filtros a los parámetros de paginación
+        
         $alumnos->appends([
             'buscarporNom' => $buscarporNom,
             'buscarporApell' => $buscarporApell,
             'nivel' => $nivel,
             'grado' => $grado,
             'seccion' => $seccion,
+            'periodo' => $periodo,
         ]);
 
-        // Obtener datos para los select
-        $niveles = Nivel::all(); // Asegúrate de que estos datos se obtengan de la base de datos o se pasen de otra manera
+        
+        $niveles = Nivel::all(); 
         $grados = Grado::all();
         $secciones = Seccion::all();
 
 
         return view('Alumno.Alumnos', compact(
-            'alumnos', 'buscarporNom', 'buscarporApell', 'nivel', 'grado', 
+            'alumnos', 'periodos' , 'periodo' ,'buscarporNom', 'buscarporApell', 'nivel', 'grado', 
             'seccion', 'niveles', 'grados', 'secciones'
         ));
     }

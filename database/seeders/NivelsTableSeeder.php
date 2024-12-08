@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class NivelsTableSeeder extends Seeder
 {
@@ -16,21 +17,21 @@ class NivelsTableSeeder extends Seeder
     {
         
 
-        \DB::table('nivels')->delete();
+        DB::table('nivels')->delete();
         
-        \DB::table('nivels')->insert(array (
+        DB::table('nivels')->insert(array (
             0 => 
             array (
                 'id_nivel' => 1,
-                'nombre_nivel' => 'PRIMARIA',
-                'created_at' => '2024-07-03 20:15:48',
+                'nombre_nivel' => 'Primaria',
+                'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             1 => 
             array (
                 'id_nivel' => 2,
-                'nombre_nivel' => 'SECUNDARIA',
-                'created_at' => '2024-07-03 20:15:48',
+                'nombre_nivel' => 'Secundaria',
+                'created_at' => NULL,
                 'updated_at' => NULL,
             ),
         ));

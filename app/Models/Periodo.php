@@ -14,4 +14,5 @@ class Periodo extends Model
     public $timestamps = false;
 
     protected $fillable = ['name'];
+
 }

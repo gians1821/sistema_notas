@@ -4,26 +4,34 @@
 @endsection('BarraNavegacion')
 @section('Contenido')
     <!-- CONTENIDO DE LA PAGINA -->
-    <h1 class="h3 mb-3 titulos"><strong>Lista </strong> de <b>Alumnos Matriculados</b></h1>
+    <h1 class="h3 mb-3 titulos"><strong>Lista de </strong>Alumnos Matriculados</h1>
     <br>
     <nav class="navbar navbar-light">
-
-        @hasanyrole('Admin|Secretaria')
-            <a href="{{ route('Alumno.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Nueva Matrícula</a>
-        @endhasanyrole
+        
+        <a href="{{ route('Alumno.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i><strong> Nuevo Registro </strong></a>
 
         <form class="form-inline my-2 my-lg-0" method="GET">
             <div class="input-group">
+
+                <select class="form-control ml-2 mr-2" style="width: 150px;" id="periodo" name="periodo" onchange="this.form.submit()">
+                    <option value="" selected>Periodo</option>
+                    @foreach ($periodos as $periodo)
+                        <option value="{{ $periodo->name }}" {{ request('periodo') == $periodo->name ? 'selected' : '' }}>
+                            {{ $periodo->name }}
+                        </option>
+                    @endforeach
+                </select>
+
                 <!-- Campo de búsqueda por nombre -->
-                <input name="buscarporNom" class="form-control mr-2" type="search" placeholder="Nombre" aria-label="Search"
+                <input name="buscarporNom" class="form-control mr-2" style="width: 170px;" type="search" placeholder="Nombre" aria-label="Search"
                     value="{{ request('buscarporNom') }}">
 
                 <!-- Campo de búsqueda por apellido -->
-                <input name="buscarporApell" class="form-control mr-2" type="search" placeholder="Apellido"
+                <input name="buscarporApell" class="form-control mr-2" style="width: 170px;" type="search" placeholder="Apellido"
                     aria-label="Search" value="{{ request('buscarporApell') }}">
 
                 <!-- Selección de nivel con envío automático -->
-                <select class="form-control ml-2 mr-2" id="nivel" name="nivel" onchange="this.form.submit()">
+                <select class="form-control ml-2 mr-2" style="width: 130px;" id="nivel" name="nivel" onchange="this.form.submit()">
                     <option value="" selected>Nivel</option>
                     @foreach ($niveles as $itemniveles)
                         <option value="{{ $itemniveles->id_nivel }}"
@@ -34,7 +42,7 @@
                 </select>
 
                 <!-- Selección de grado -->
-                <select class="form-control ml-2 mr-2" id="grado" name="grado" onchange="this.form.submit()">
+                <select class="form-control ml-2 mr-2" style="width: 130px;" id="grado" name="grado" onchange="this.form.submit()">
                     <option value="" selected>Grado</option>
                     <!-- Agrega opciones de grado dinámicamente o manualmente -->
                     @foreach (App\Models\Grado::where('id_nivel', $nivel)->get() as $grado)
@@ -45,7 +53,7 @@
                 </select>
 
                 <!-- Selección de sección -->
-                <select class="form-control ml-2 mr-2" id="seccion" name="seccion" onchange="this.form.submit()">
+                <select class="form-control ml-2 mr-2" style="width: 130px;" id="seccion" name="seccion" onchange="this.form.submit()">
                     <option value="" selected>Sección</option>
                     <!-- Agrega opciones de sección dinámicamente o manualmente -->
                     @foreach (App\Models\Seccion::where('grado_id_grado', request('grado'))->get() as $seccion)
@@ -58,7 +66,7 @@
 
                 <!-- Botón de búsqueda -->
                 <div class="input-group-append ml-2 mr-4">
-                    <button class="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
+                    <button class="btn btn-success my-2 my-sm-0" type="submit" style="width: 100px;"><strong> Buscar </strong></button>
                 </div>
             </div>
         </form>
@@ -83,13 +91,14 @@
                 <th scope="col">Alumno</th>
                 <th scope="col">Grado y Sección</th>
                 <th scope="col">Apoderado</th>
+                <th scope="col">Teléfono</th>
                 <th scope="col">Opciones</th>
             </tr>
         </thead>
         <tbody>
             @if (count($alumnos) <= 0)
                 <tr>
-                    <td colspan="3">No hay registros</td>
+                    <td colspan="5">No hay registros</td>
                 </tr>
             @else
                 @foreach ($alumnos as $itemalumnos)
@@ -109,26 +118,24 @@
                             ) }}
                         </td>
                         <td>
-                            {{ $itemalumnos->apellido_alumno }}
+                        {{ $itemalumnos->padre->nombres . ' ' . $itemalumnos->padre->apellidos }}
                         </td>
                         <td>
+                            {{ $itemalumnos->telefono }}
+                        <td>
 
-                            @hasanyrole('Admin|Secretaria')
+                            
                                 <a href="{{ route('Alumno.edit', $itemalumnos->id_alumno) }}" class="btn btn-secondary">
-                                    Emitir constancia de matrícula
+                                    Constancia de Matrícula
                                 </a>
                                 <a href="{{ route('Alumno.edit', $itemalumnos->id_alumno) }}" class="btn btn-info">
                                     <img src="{{ asset('plantilla\src\img\logo\editar_blanco.png') }}" alt="Editar"
                                         style="width: 30px; height: 30px;">
                                 </a>
-                                @role('Admin')
-                                    <a href="{{ route('Alumno.confirmar', $itemalumnos->id_alumno) }}" class="btn btn-danger">
-                                        <img src="{{ asset('plantilla\src\img\logo\eliminar.png') }}" alt="Eliminar"
-                                            style="width: 30px; height: 30px;">
-                                    </a>
-                                @endrole
-                            @endhasanyrole
-
+                                <a href="{{ route('Alumno.confirmar', $itemalumnos->id_alumno) }}" class="btn btn-danger">
+                                    <img src="{{ asset('plantilla\src\img\logo\eliminar.png') }}" alt="Eliminar"
+                                        style="width: 30px; height: 30px;">
+                                </a>
                         </td>
                     </tr>
                 @endforeach

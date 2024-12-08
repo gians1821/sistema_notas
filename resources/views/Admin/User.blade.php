@@ -10,7 +10,7 @@
 
         @can('Admin.users.create')
         <a class="btn btn-primary " href="{{ route('admin.usuarios.create') }}">
-            <i class="fas fa-plus"></i> Nuevo Registro
+            <i class="fas fa-plus"></i> <strong> Nuevo Registro </strong>
         </a>
         @endcan
 
@@ -28,7 +28,7 @@
                     @endforeach
                 </select>
 
-                <button class="btn btn-success" type="submit">Buscar</button>
+                <button class="btn btn-success" type="submit" style="width: 100px;"><strong> Buscar </strong></button>
             </div>
         </form>
     </nav>
