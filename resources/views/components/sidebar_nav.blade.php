@@ -64,7 +64,7 @@
         <!-- GESTION DE CURSOS -->
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Curso.') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ URL::to('/Curso') }}">
-                <i class="align-middle" data-feather="check-circle"></i> <span> Gestión Cursos </span>
+                <i class="align-middle" data-feather="check-circle"></i> <span> Cursos </span>
             </a>
         </li>
         <!-- GESTION DE CURSOS POR GRADOS -->
@@ -78,7 +78,7 @@
     @role('Admin')
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Capacidad') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ URL::to('/Capacidad') }}">
-                <i class="align-middle" data-feather="check-circle"></i> <span> Gestión Capacidades </span>
+                <i class="align-middle" data-feather="check-circle"></i> <span> Capacidades </span>
             </a>
         </li>
     @endrole
