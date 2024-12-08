@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('curso_has_alumnos', function (Blueprint $table) {
-            $table->unsignedBigInteger('curso_id_curso')->index('curso_has_alumnos_curso_id_curso_foreign');
+        Schema::create('notas', function (Blueprint $table) {
+            $table->unsignedBigInteger('catedra_id')->index('catedras_catedra_id_foreign');
             $table->unsignedBigInteger('alumno_id_alumno')->index('curso_has_alumnos_alumno_id_alumno_foreign');
+            $table->unsignedBigInteger('competencia_id')->index('competencias_competencia_id_foreign');
             $table->string('nota1', 45)->nullable();
             $table->string('nota2', 45)->nullable();
             $table->string('nota3', 45)->nullable();
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('curso_has_alumnos');
+        Schema::dropIfExists('notas');
     }
 };

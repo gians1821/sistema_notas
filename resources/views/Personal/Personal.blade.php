@@ -4,7 +4,7 @@
 @endsection('BarraNavegacion')
 @section('Contenido')
     <!-- CONTENIDO DE LA PAGINA -->
-    <h1 class="h3 mb-3 titulos"><strong>Gestión de</strong> personal</h1>
+    <h1 class="h3 mb-3 titulos"><strong>Gestión de</strong> Personal</h1>
     <br>
     <nav class="navbar navbar-light ">
         <a class="btn btn-primary " href="{{ route('Personal.create') }}">
@@ -105,6 +105,7 @@
 @endsection('Contenido')
 @section('script')
     <script>
+        
         setTimeout(function() {
             document.querySelector('#mensaje').remove();
         }, 3000);

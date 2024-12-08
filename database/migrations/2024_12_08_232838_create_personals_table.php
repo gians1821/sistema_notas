@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_tipo_personal')->index('personals_id_tipo_personal_foreign');
             $table->string('nombre', 30);
             $table->string('apellido', 30);
-            $table->string('dNI', 8);
+            $table->string('dni', 8);
             $table->string('direccion', 45);
             $table->date('fecha_nacimiento');
             $table->string('telefono', 15);

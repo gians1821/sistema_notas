@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('periodos', function (Blueprint $table) {
-            $table->integer('id', true);
+            $table->bigIncrements('id');
             $table->string('name', 10);
         });
     }

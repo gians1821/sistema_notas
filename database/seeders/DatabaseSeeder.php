@@ -14,8 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(PeriodosTableSeeder::class);
+        
         $this->call(AlumnosTableSeeder::class);
+        
+        $this->call(NivelsTableSeeder::class);
         $this->call(GradosTableSeeder::class);
+        $this->call(SeccionsTableSeeder::class);
+        
         $this->call(MigrationsTableSeeder::class);
 
         $this->call(PermissionsTableSeeder::class);
@@ -25,9 +31,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesTableSeeder::class);
         $this->call(ModelHasRolesTableSeeder::class);
 
-        $this->call(NivelsTableSeeder::class);
         $this->call(RoleHasPermissionsTableSeeder::class);
-        $this->call(SeccionsTableSeeder::class);
         $this->call(SessionsTableSeeder::class);
         $this->call(TipoPersonalsTableSeeder::class);
         $this->call(PadresTableSeeder::class);
@@ -35,7 +39,5 @@ class DatabaseSeeder extends Seeder
         $this->call(CacheLocksTableSeeder::class);
         $this->call(CompetenciasTableSeeder::class);
         $this->call(CursosTableSeeder::class);
-        $this->call(CursoHasAlumnosTableSeeder::class);
-        $this->call(PeriodosTableSeeder::class);
     }
 }

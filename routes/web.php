@@ -16,6 +16,7 @@ use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\GradoController;
 use App\Http\Controllers\NivelController;
 use App\Http\Controllers\PadreController;
+use App\Http\Controllers\TipoPersonalController;
 use App\Models\Alumno;
 use App\Models\User;
 
@@ -110,12 +111,10 @@ Route::get('Capacidad/{id_competencia}/confirmar', [CapacidadController::class, 
 // Confirmar Personal
 Route::get('Personal/{id_personal}/confirmar', [PersonalController::class, 'confirmar'])->name('Personal.confirmar');
 
-
+// FUNCIONES BACKEND 
 Route::get('/niveles', [NivelController::class, 'getNiveles']);
 Route::get('/grados/{id_nivel}', [GradoController::class, 'getGradosPorNivel']);
 Route::get('/secciones/{id_grado}', [SeccionController::class, 'getSeccionesPorGrado']);
 Route::get('/grado/{id_grado}/cursos', [CursoController::class, 'getCursosPorGrado']);
-
-
-
 Route::get('/buscar-padre', [PadreController::class, 'buscarPadre']);
+Route::get('/tipos_personal', [TipoPersonalController::class, 'getTiposPersonal']);

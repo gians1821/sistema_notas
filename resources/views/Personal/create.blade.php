@@ -8,74 +8,47 @@
     <form method="POST" action="{{ route('Personal.store') }}">
         @csrf
         <!--DNI-->
-        <div class="form-group">
-            <label for="dNI">DNI</label>
-            <input type="text" class="form-control @error('dNI') is-invalid @enderror " id="dNI" name="dNI"
-                value="{{ old('dNI') }}">
-            @error('dNI')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
+        @include('components.text_input', [
+            'label' => 'DNI',
+            'name' => 'dni'
+        ])
+        
         <!--NOMBRE-->
-        <div class="form-group">
-            <label for="nombre">NOMBRE</label>
-            <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre"
-                value="{{ old('nombre') }}">
-            @error('nombre')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
+        @include('components.text_input', [
+            'label' => 'Nombre',
+            'name' => 'nombre'
+        ])
 
         <!--APELLIDO-->
-        <div class="form-group">
-            <label for="apellido">APELLIDO</label>
-            <input type="text" class="form-control @error('apellido') is-invalid @enderror" id="apellido"
-                name="apellido" value="{{ old('apellido') }}">
-            @error('apellido')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
+        @include('components.text_input', [
+            'label' => 'Apellido',
+            'name' => 'apellido'
+        ])
 
         <!--DIRECCION-->
-        <div class="form-group">
-            <label for="direccion">DIRECCION</label>
-            <input type="text" class="form-control @error('direccion') is-invalid @enderror" id="direccion"
-                name="direccion" value="{{ old('direccion') }}">
-            @error('direccion')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
+        @include('components.text_input', [
+            'label' => 'Dirección',
+            'name' => 'direccion'
+        ])
+
         <!--FECHA DE NACIMIENTO-->
-        <div class="form-group">
-            <label for="fecha_nacimiento">FECHA DE NACIMIENTO</label>
-            <input type="date" class="form-control @error('fecha_nacimiento') is-invalid @enderror" id="fecha_nacimiento"
-                name="fecha_nacimiento" value="{{ old('fecha_nacimiento') }}">
-            @error('fecha_nacimiento')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
+        @include('components.date_input', [
+            'label' => 'Fecha de Nacimiento',
+            'name' => 'fecha_nacimiento'
+        ])
+
         <!--TELEFONO-->
-        <div class="form-group">
-            <label for="telefono">TELÉFONO</label>
-            <input type="text" class="form-control @error('telefono') is-invalid @enderror" id="telefono"
-                name="telefono" value="{{ old('telefono') }}">
-            @error('telefono')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
+        @include('components.text_input', [
+            'label' => 'Teléfono',
+            'name' => 'telefono'
+        ])
+        
         <!--TIPO DE PERSONAL-->
+        @include('components.select_input', [
+            'label' => 'Tipo de Personal',
+            'name' => 'id_tipo_personal',
+            ''
+        ])
         <div class="form-group">
             <label for="id_tipo_personal">TIPO PERSONAL</label>
             <select class="form-control @error('id_tipo_personal') is-invalid @enderror" id="id_tipo_personal"
