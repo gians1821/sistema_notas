@@ -141,7 +141,7 @@
 
                                 <a class="dropdown-item" href="{{ route('User.Logout') }}"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    Log out
+                                    Cerrar Sesión 
                                 </a>
 
                             </div>

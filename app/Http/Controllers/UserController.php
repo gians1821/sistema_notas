@@ -62,17 +62,26 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'profile_photo' => ['required', 'image', 'max:2048'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'same:password_confirmation'],
+            'password_confirmation' => 'required|same:password',
             'rol' => ['required', 'exists:roles,id'],
         ], [
             'name.required' => 'El nombre es obligatorio.',
+
             'profile_photo.required' => 'La imagen es obligatoria.',
             'profile_photo.image' => 'El archivo debe ser una imagen.',
             'profile_photo.max' => 'La imagen no puede pesar más de 2MB.',
+
             'email.required' => 'El correo electrónico es obligatorio.',
             'email.unique' => 'Este correo electrónico ya está registrado.',
+
             'password.required' => 'La contraseña es obligatoria.',
             'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+            'password.confirmed' => 'Las contraseñas no coinciden.',
+
+            'password_confirmation.required' => 'Confirme la contraseña.',
+            'password_confirmation.same' => 'Las contraseñas no coinciden.',
+
             'rol.required' => 'El rol es obligatorio.',
             'rol.exists' => 'El rol seleccionado no existe.',
         ]);

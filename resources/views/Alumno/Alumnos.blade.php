@@ -77,7 +77,7 @@
 
     <div id="mensaje">
         @if (session('datos'))
-            <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 {{ session('datos') }}
                 <button type="button" class="close" data-dismiss="alert" arialabel="Close">
                     <span aria-hidden="true">&times;</span>
@@ -107,15 +107,13 @@
                             {{ $itemalumnos->nombre_alumno . ' ' . $itemalumnos->apellido_alumno }}
                         </td>
                         <td>
-                            {{ ucwords(
-                                strtolower(
-                                    $itemalumnos->seccion->grado->nombre_grado .
-                                        ' ' .
-                                        $itemalumnos->seccion->nombre_seccion .
-                                        ' de ' .
-                                        $itemalumnos->seccion->grado->nivel->nombre_nivel,
-                                ),
-                            ) }}
+                        {{ ucwords(
+                            strtolower(
+                                ($itemalumnos->seccion->grado->nombre_grado ?? 'Desconocido') . ' ' .
+                                ($itemalumnos->seccion->nombre_seccion ?? 'Desconocida') . ' de ' .
+                                ($itemalumnos->seccion->grado->nivel->nombre_nivel ?? 'Desconocido')
+                            )
+                        ) }}
                         </td>
                         <td>
                         {{ $itemalumnos->padre->nombres . ' ' . $itemalumnos->padre->apellidos }}
