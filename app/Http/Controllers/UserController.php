@@ -135,8 +135,8 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $id,
-            'rol' => 'required|exists:roles,id', // Asegúrate de que el rol exista en la tabla roles
-            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validación opcional para la foto de perfil
+            'rol' => 'required|exists:roles,id', 
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ], [
             'name.required' => 'El nombre es obligatorio.',
             'email.required' => 'El correo electrónico es obligatorio.',

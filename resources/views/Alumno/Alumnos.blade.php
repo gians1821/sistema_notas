@@ -13,7 +13,7 @@
         <form class="form-inline my-2 my-lg-0" method="GET">
             <div class="input-group">
 
-                <select class="form-control ml-2 mr-2" style="width: 150px;" id="periodo" name="periodo" onchange="this.form.submit()">
+                <select class="form-control ml-2 mr-2" style="width: 150px;" id="periodo" name="periodo">
                     <option value="" selected>Periodo</option>
                     @foreach ($periodos as $periodo)
                         <option value="{{ $periodo->name }}" {{ request('periodo') == $periodo->name ? 'selected' : '' }}>

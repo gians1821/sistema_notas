@@ -19,6 +19,12 @@ class SeccionController extends Controller
         $this->middleware('auth');
     }
 
+    public function getSeccionesPorGrado($id_grado)
+    {
+        $secciones = Seccion::where('grado_id_grado', $id_grado)->get(); 
+        return response()->json($secciones); 
+    }
+
     public function index(Request $request)
     {
         $buscarporSeccion = $request->get('buscarporSeccion');

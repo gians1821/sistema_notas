@@ -13,6 +13,7 @@ use App\Http\Controllers\CatedraController;
 use App\Http\Controllers\CursoHasAlumnoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\GradoController;
 use App\Models\Alumno;
 use App\Models\User;
 
@@ -103,3 +104,7 @@ Route::get('User/{id_user}/confirmar', [UserController::class, 'confirmar'])->na
 Route::get('Capacidad/{id_competencia}/confirmar', [CapacidadController::class, 'confirmar'])->name('Capacidad.confirmar');
 // Confirmar Personal
 Route::get('Personal/{id_personal}/confirmar', [PersonalController::class, 'confirmar'])->name('Personal.confirmar');
+
+
+Route::get('/grados/{id_nivel}', [GradoController::class, 'getGradosPorNivel']);
+Route::get('/secciones/{id_grado}', [SeccionController::class, 'getSeccionesPorGrado']);

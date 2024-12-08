@@ -9,6 +9,7 @@ use App\Models\Nivel;
 use App\Models\Periodo;
 use App\Models\Seccion;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon; 
 use Illuminate\Support\Facades\DB;
 use App\Models\Padre;
 
@@ -101,11 +102,19 @@ class AlumnoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        $periodos = Periodo::all();
+        
+        $añoactual = Carbon::now()->year;
+        $periodos = Periodo::where('name', $añoactual)->get();
 
-        return view('Alumno.create', compact('periodos'));
+        $nivel = Nivel::all();
+
+
+
+
+
+        return view('Alumno.create', compact('periodos', 'nivel'));
     }
 
     /**
@@ -116,6 +125,15 @@ class AlumnoController extends Controller
         // Validar datos del formulario
         $data = $request->validate(
             [
+                'periodo' => 'required',
+                'profile_photo' => 'required|image|max:2048',
+                'dni_apoderado' => 'required|string|max:8',
+                'nombre_apoderado' => 'required|string|max:30',
+                'apellido_apoderado' => 'required|string|max:30',
+                'email_apoderado' => 'required|email|unique:padres,email',
+                'password' => 'required|string|min:8',
+                'confirmar_password' => 'required|same:password',
+                
                 'nombre_alumno' => 'required|string|max:30',
                 'apellido_alumno' => 'required|string|max:30',
                 'fecha_nacimiento' => 'required|date',
@@ -126,11 +144,40 @@ class AlumnoController extends Controller
                 'distrito' => 'required|string|max:30',
                 'estado_civil' => 'required|string|max:15',
                 'telefono' => 'required|string|max:15',
-                'nivel' => 'required|String|max:15',
-                'grado' => 'required|String|max:15',
-                'seccion' => 'required|String|max:15',
+                'nivel' => 'required',
+                'grado' => 'required',
+                'seccion' => 'required',
             ],
             [
+                'periodo.required' => 'Seleccione el periodo.',
+
+                'profile_photo.required' => 'La foto es obligatoria.',
+                'profile_photo.image' => 'El archivo debe ser una imagen.',
+                'profile_photo.max' => 'La imagen no debe exceder los 2MB.',
+
+                'dni_apoderado.required' => 'Ingrese el DNI del apoderado.',
+                'dni_apoderado.string' => 'El DNI del apoderado debe ser una cadena de texto.',
+                'dni_apoderado.max' => 'El DNI del apoderado no debe exceder los 8 caracteres.',
+
+                'nombre_apoderado.required' => 'Ingrese el nombre del apoderado.',
+                'nombre_apoderado.string' => 'El nombre del apoderado debe ser una cadena de texto.',
+                'nombre_apoderado.max' => 'El nombre del apoderado no debe exceder los 30 caracteres.',
+
+                'apellido_apoderado.required' => 'Ingrese el apellido del apoderado.',
+                'apellido_apoderado.string' => 'El apellido del apoderado debe ser una cadena de texto.',
+                'apellido_apoderado.max' => 'El apellido del apoderado no debe exceder los 30 caracteres.',
+
+                'email_apoderado.required' => 'Ingrese el correo electrónico del apoderado.',
+                'email_apoderado.email' => 'Ingrese un correo electrónico válido.',
+                'email_apoderado.unique' => 'El correo electrónico ya está registrado.',
+
+                'password.required' => 'Ingrese la contraseña.',
+                'password.string' => 'La contraseña debe ser una cadena de texto.',
+                'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+
+                'confirmar_password.required' => 'Confirme la contraseña.',
+                'confirmar_password.same' => 'Las contraseñas no coinciden.',
+
                 'nombre_alumno.required' => 'Ingrese el nombre del alumno.',
                 'nombre_alumno.string' => 'El nombre del alumno debe ser una cadena de texto.',
                 'nombre_alumno.max' => 'El nombre del alumno no debe exceder los 30 caracteres.',
@@ -171,29 +218,12 @@ class AlumnoController extends Controller
                 'telefono.max' => 'El teléfono no debe exceder los 15 caracteres.',
 
                 'nivel.required' => 'Seleccione el nivel.',
-                'nivel.max' => 'El nivel no debe exceder los 15 caracteres.',
 
                 'grado.required' => 'Seleccione el grado.',
-                'grado.max' => 'El grado no debe exceder los 15 caracteres.',
 
                 'seccion.required' => 'Seleccione la sección.',
-                'seccion.max' => 'La sección no debe exceder los 15 caracteres.',
             ],
         );
-
-        /*Buscar el id_seccion basado en nivel, grado y seccion
-        $seccion = DB::table('seccion')
-            ->join('grado', 'seccion.id_grado', '=', 'grado.id_grado')
-            ->join('nivel', 'grado.id_nivel', '=', 'nivel.id_nivel')
-            ->where('nivel.id_nivel', $request->nivel)
-            ->where('grado.id_grado', $request->grado)
-            ->where('seccion.id_seccion', $request->seccion)
-            ->select('seccion.id_seccion')
-            ->first();
-
-        if (!$seccion) {
-            return back()->withErrors(['seccion' => 'No se encontró una sección que coincida con la selección.']);
-        }*/
 
         $alumnos = new Alumno();
         $alumnos->nombre_alumno = $request->nombre_alumno;

@@ -42,7 +42,7 @@
                         ])
 
                         <div class="form-group">
-                            <label class="h5">Email</label>
+                            <label class="form-label"><strong>Email</strong></label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror" id="email_user" name="email" value="{{ $users->email }}">
                             @error('email')
                                 <div class="invalid-feedback">
@@ -54,11 +54,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="h5">Contraseña</label>
+                            <label class="form-label"><strong>Contraseña</strong></label>
                             <input type="password" class="form-control" id="password_user" name="password" placeholder="Dejar en blanco para no cambiar">
                         </div>
 
-                        <h2 class="h5 mt-3"> Listado de Roles</h2>
+                        <label class="form-label"><strong>Listado de Roles</strong></label>
                         <select class="form-control w-100 mr-4 @error('rol') is-invalid @enderror" id="rol" name="rol">
                             @foreach ($roles as $role)
                                 <option value="{{ $role->id }}" {{ $role->name === $rolecito ? 'selected' : '' }}>

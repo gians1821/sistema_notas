@@ -7,7 +7,7 @@ $message    - Para el mensaje de error
 -->
 
 <div class="form-group">
-    <label class="h5" for="{{ $name }}">{{ $label }}</label>
+    <label class="form-label" for="{{ $name }}"><strong>{{ $label }}</strong></label>
     <input type="password" class="form-control @error($name) is-invalid @enderror" id="{{ $name }}" name="{{ $name }}">
     @error($name)
         <span class="invalid-feedback" role="alert">

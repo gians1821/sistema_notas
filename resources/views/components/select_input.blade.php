@@ -8,7 +8,7 @@ $options    - Para los desplegables de la lista
 -->
 
 <div class="form-group">
-    <label class="h5" for="{{ $name }}">{{ $label }}</label>
+    <label class="form-label" for="{{ $name }}"><strong>{{ $label }}</strong></label>
     <select class="form-control @error($name) is-invalid @enderror" id="{{ $name }}" name="{{ $name }}">
         <option value="default" selected disabled>Seleccione opción</option>
         @foreach ($options as $option)

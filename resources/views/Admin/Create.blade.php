@@ -83,8 +83,10 @@
         </div>
     </form>
 
+@endsection
+
+@section('script')
     <script>
-        // Vista previa de la imagen seleccionada
         function previewImage(event) {
             const reader = new FileReader();
             const imagePreview = document.getElementById('imagePreview');
@@ -94,5 +96,4 @@
             reader.readAsDataURL(event.target.files[0]);
         }
     </script>
-@endsection
-
+@endsection('script')
