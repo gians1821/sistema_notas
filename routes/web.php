@@ -15,6 +15,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\GradoController;
 use App\Http\Controllers\NivelController;
+use App\Http\Controllers\PadreController;
 use App\Models\Alumno;
 use App\Models\User;
 
@@ -114,3 +115,7 @@ Route::get('/niveles', [NivelController::class, 'getNiveles']);
 Route::get('/grados/{id_nivel}', [GradoController::class, 'getGradosPorNivel']);
 Route::get('/secciones/{id_grado}', [SeccionController::class, 'getSeccionesPorGrado']);
 Route::get('/grado/{id_grado}/cursos', [CursoController::class, 'getCursosPorGrado']);
+
+
+
+Route::get('/buscar-padre', [PadreController::class, 'buscarPadre']);

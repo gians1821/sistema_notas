@@ -51,10 +51,11 @@
                 @foreach($alumnos as $alumno)
                     <div class="col-md-4 mb-3 text-center">
                         <div class="card" style="width: 70%;">
-                            <img src="{{ asset('images/pruebita.jpg') }}" class="card-img-top img-fluid rounded" 
+                            <img src="{{ $alumno->profile_photo ? asset('storage/' . $alumno->profile_photo) : asset('images/default-user.png') }}" 
+                                class="card-img-top img-fluid rounded mt-4" 
                                 style="width: 150px; height: 150px; margin: auto;">
                             <div class="card-body">
-                                <h4 class="card-title">{{ $alumno->nombre_alumno }} {{ $alumno->apellido_alumno }}</h4>
+                                <label class="form-label"><strong>{{ $alumno->nombre_alumno }} {{ $alumno->apellido_alumno }}</strong></label>
                                 <a href="" class="btn btn-primary">Ver Detalles</a>
                             </div>
                         </div>

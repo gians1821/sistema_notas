@@ -36,7 +36,7 @@
                     </div>
                     <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
                         
-                        <label for="profile_photo" class="form-label"><strong>Foto de Perfil</strong></label>
+                        <label for="profile_photo_Apoderado" class="form-label"><strong>Foto de Perfil</strong></label>
                             <div 
                                 class="img-fluid rounded-circle mb-3 d-flex justify-content-center align-items-center"
                                 style="width: 200px; height: 200px; background-color: #9e9fa0; overflow: hidden;">
@@ -44,18 +44,19 @@
                                     style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
 
-                            <input type="file" name="profile_photo_Apoderado" id="profile_photo_Apoderado" 
-                                class="form-control @error('profile_photo') is-invalid @enderror" accept="image/*"
+                            <input type="file" name="profile_photo_apoderado" id="profile_photo_Apoderado" 
+                                class="form-control @error('profile_photo_apoderado') is-invalid @enderror" accept="image/*"
                                 onchange="previewImage(event, 'apoderado')">
-                                @error('profile_photo')
+                                @error('profile_photo_apoderado')
                                     <div class="invalid-feedback"><strong> {{ $message }} </strong></div>
                                 @enderror
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" id="passwordFields">
                         @include('components.text_input', [
                             'name' => 'dni_apoderado',
                             'label' => 'DNI',
                         ])
+                        <button type="button" class="btn btn-success mb-3" style="width: 130px;" id="buscarPadre">Buscar DNI</button>
                         @include('components.text_input', [
                             'name' => 'nombre_apoderado',
                             'label' => 'Nombre',
@@ -93,7 +94,7 @@
                         
                     </div>
                     <div class="col-md-6 d-flex flex-column align-items-center justify-content-center"> 
-                        <label for="profile_photo" class="form-label"><strong>Foto de Perfil</strong></label>
+                        <label for="profile_photo_alumno" class="form-label"><strong>Foto de Perfil</strong></label>
                             <div 
                                 class="img-fluid rounded-circle mb-3 d-flex justify-content-center align-items-center"
                                 style="width: 200px; height: 200px; background-color: #9e9fa0; overflow: hidden;">
@@ -102,9 +103,9 @@
                             </div>
 
                             <input type="file" name="profile_photo_alumno" id="profile_photo_alumno" 
-                                class="form-control @error('profile_photo') is-invalid @enderror" accept="image/*"
-                                onchange="previewImage(event, 'alumno')"">
-                                @error('profile_photo')
+                                class="form-control @error('profile_photo_alumno') is-invalid @enderror" accept="image/*"
+                                onchange="previewImage(event, 'alumno')">
+                                @error('profile_photo_alumno')
                                     <div class="invalid-feedback"><strong> {{ $message }} </strong></div>
                                 @enderror
                     </div>
@@ -259,12 +260,12 @@
             }
         }
     </script>
+
     <script>
         function previewImage(event, type) {
             const reader = new FileReader();
             let imagePreview;
 
-            // Determina qué elemento de imagen actualizar según el tipo
             if (type === 'apoderado') {
                 imagePreview = document.getElementById('imagePreviewApoderado');
             } else if (type === 'alumno') {
@@ -273,14 +274,44 @@
 
             reader.onload = function () {
                 imagePreview.src = reader.result;
-                imagePreview.style.display = 'block'; // Muestra la imagen
+                imagePreview.style.display = 'block'; 
             };
 
-            // Lee el archivo seleccionado
             if (event.target.files[0]) {
                 reader.readAsDataURL(event.target.files[0]);
             }
         }
     </script>
 
+    <script>
+        document.getElementById('buscarPadre').addEventListener('click', function() {
+            const dni = document.querySelector('input[name="dni_apoderado"]').value;
+            if (!dni) {
+                alert('Por favor, ingrese un DNI válido.');
+                return;
+            }
+
+            fetch(`/buscar-padre?dni=${dni}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.querySelector('input[name="nombre_apoderado"]').value = data.padre.nombre;
+                        document.querySelector('input[name="apellido_apoderado"]').value = data.padre.apellido;
+                        document.querySelector('input[name="email_apoderado"]').value = data.padre.email;
+                        document.querySelector('#imagePreviewApoderado').src = data.padre.profile_photo;
+
+                        document.querySelector('input[name="nombre_apoderado"]').disabled = true;
+                        document.querySelector('input[name="apellido_apoderado"]').disabled = true;
+                        document.querySelector('input[name="email_apoderado"]').disabled = true;
+                        document.querySelector('#imagePreviewApoderado').disabled = true;
+
+                        document.querySelector('input[name="password"]').disabled = true;
+                        document.querySelector('input[name="confirmar_password"]').disabled = true;
+                    } else {
+                        alert('No se encontró ningún padre con ese DNI. Puede registrar un nuevo padre.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
 @endsection

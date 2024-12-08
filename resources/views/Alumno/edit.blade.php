@@ -3,96 +3,162 @@
     @include('components.sidebar_nav')
 @endsection
 @section('Contenido')
-    <!-- Registro de Alumnos -->
-    <h1 class="h3 "><strong>Editar</strong> Registro</h1>
-    <form method="POST" action="{{ route('Alumno.update', $alumnos->id_alumno) }}">
-        @method('put')
-        @csrf
-        <div class="row">
-            <!-- Columna izquierda -->
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="nombre_alumno">Id Alumno</label>
-                    <input type="text" class="form-control" id="id_alumno" name="id_alumno"
-                        value="{{ $alumnos->id_alumno }}" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="nombre_alumno">Nombre</label>
-                    <input type="text" class="form-control" id="nombre_alumno" name="nombre_alumno"
-                        value="{{ $alumnos->nombre_alumno }}">
-                </div>
-                <div class="form-group">
-                    <label for="apellido_alumno">Apellido</label>
-                    <input type="text" class="form-control" id="apellido_alumno" name="apellido_alumno"
-                        value="{{ $alumnos->apellido_alumno }}">
-                </div>
-                <div class="form-group">
-                    <label for="fecha_nacimiento">Fecha de Nacimiento</label>
-                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento"
-                        value="{{ $alumnos->fecha_nacimiento }}">
-                </div>
-                <div class="form-group">
-                    <label for="dni">DNI</label>
-                    <input type="text" class="form-control" id="dni" name="dni" value="{{ $alumnos->dni }}">
-                </div>
-                <div class="form-group">
-                    <label for="pais">País</label>
-                    <input type="text" class="form-control" id="pais" name="pais" value="{{ $alumnos->pais }}">
-                </div>
-                <div class="form-group">
-                    <label for="region">Región</label>
-                    <input type="text" class="form-control" id="region" name="region" value="{{ $alumnos->region }}">
-                </div>
-                <div class="form-group text-left">
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Actualizar</button>
-                    <a href="{{ route('Cancelar') }}" class="btn btn-danger"><i class="fas fa-ban"></i> Cancelar</a>
-                </div>
-            </div>
-            <!-- Columna derecha -->
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="distrito">Distrito</label>
-                    <input type="text" class="form-control" id="distrito" name="distrito"
-                        value="{{ $alumnos->distrito }}">
-                </div>
-                <div class="form-group">
-                    <label for="estado_civil">Estado Civil</label>
-                    <input type="text" class="form-control" id="estado_civil" name="estado_civil"
-                        value="{{ $alumnos->estado_civil }}">
-                </div>
-                <div class="form-group">
-                    <label for="telefono">Teléfono</label>
-                    <input type="text" class="form-control" id="telefono" name="telefono"
-                        value="{{ $alumnos->telefono }}">
-                </div>
-                <div class="form-group">
-                    <label for="nivel">Nivel</label>
-                    <select class="form-control" id="nivel" name="nivel">
-                        <option value="" selected disabled>Seleccione Nivel</option>
-                        <option value="Primaria">Primaria</option>
-                        <option value="Secundaria">Secundaria</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="grado">Grado</label>
-                    <select class="form-control" id="grado" name="grado">
-                        <option value="" selected disabled>Seleccione Grado</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="seccion">Sección</label>
-                    <select class="form-control" id="seccion" name="seccion">
-                        <option value="" selected disabled>Seleccione Sección</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="ciudad">Ciudad</label>
-                    <input type="text" class="form-control" id="ciudad" name="ciudad"
-                        value="{{ $alumnos->ciudad }}">
-                </div>
+
+    <style>
+        .error-message {
+            color: darkred; 
+            font-size: 0.8em; 
+            margin-top: 15px; 
+        }
+        .alert-success {
+            color: green;
+            font-size: 1.0em;
+            margin-top: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+    <h1 class="h3 mb-3 titulos text-center"><strong>Editar </strong> Alumno</h1>
+    <br>
+    <form method="POST" action="{{ route('Alumno.update', $alumnos->id_alumno) }}" enctype="multipart/form-data">
+    @method('put')
+    @csrf
+        <div class="card mx-auto" style="max-width: 800px;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            
+                        </div>
+                        <div class="col-md-6 d-flex flex-column align-items-center justify-content-center"> 
+                            <label for="profile_photo_alumno" class="form-label"><strong>Foto de Perfil</strong></label>
+                                <div 
+                                    class="img-fluid rounded-circle mb-3 d-flex justify-content-center align-items-center"
+                                    style="width: 200px; height: 200px; background-color: #9e9fa0; overflow: hidden;">
+                                    <img id="imagePreviewAlumno" src="{{ $alumnos->profile_photo ? asset('storage/' . $alumnos->profile_photo) : asset('images/default-user.png') }}" 
+                                        style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+
+                                <input type="file" name="profile_photo_alumno" id="profile_photo_alumno" 
+                                    class="form-control @error('profile_photo_alumno') is-invalid @enderror" accept="image/*"
+                                    onchange="previewImage(event, 'alumno')">
+                                    @error('profile_photo_alumno')
+                                        <div class="invalid-feedback"><strong> {{ $message }} </strong></div>
+                                    @enderror
+                        </div>
+                        <div class="col-md-3">
+                            
+                        </div>
+                    </div>
+                        
+
+                    <div class="row">
+                        <!-- Campos alineados a la izquierda -->
+                        <div class="col-md-4">
+                            @include('components.text_input', [
+                                'name' => 'dni',
+                                'label' => 'DNI',
+                                'value' => $alumnos->dni,
+                            ])
+                            @include('components.text_input', [
+                                'name' => 'fecha_nacimiento',
+                                'label' => 'Fecha de Nacimiento',
+                                'value' => $alumnos->fecha_nacimiento,
+                            ])
+                            @include('components.text_input', [
+                                'name' => 'pais',
+                                'label' => 'País',
+                                'value' => $alumnos->pais,
+                            ])
+                            @include('components.text_input', [
+                                'name' => 'ciudad',
+                                'label' => 'Ciudad',
+                                'value' => $alumnos->ciudad,
+                            ])
+                            <div class="form-group">
+                                <label class="form-label" for="seccion"><strong>Sección</strong></label>
+                                <select class="form-control @error('seccion') is-invalid @enderror" id="seccion" name="seccion">
+                                <option value="{{ $seccion->id_seccion }}" selected >{{ $seccion->nombre_seccion }}</option>
+                                </select>
+                                @error('seccion')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                        </div>
+                            <!-- Campos alineados en el centro -->
+                            <div class="col-md-4">
+                                @include('components.text_input', [
+                                    'name' => 'nombre_alumno',
+                                    'label' => 'Nombre',
+                                    'value' => $alumnos->nombre_alumno,
+                                ])
+                                @include('components.text_input', [
+                                    'name' => 'estado_civil',
+                                    'label' => 'Estado Civil',
+                                    'value' => $alumnos->estado_civil,
+                                ])
+                                @include('components.text_input', [
+                                    'name' => 'region',
+                                    'label' => 'Región',
+                                    'value' => $alumnos->region,
+                                ])
+                                <div class="form-group">
+                                    <label class="form-label" for="nivel"><strong>Nivel</strong></label>
+                                    <select class="form-control @error('nivel') is-invalid @enderror" id="nivel" name="nivel" onchange="fetchGrados(this.value)">
+                                        <option value="{{ $nivel->id_nivel }}" selected>{{ $nivel->nombre_nivel }}</option>
+                                        @foreach ($nivels as $itemniveles)
+                                            <option value="{{ $itemniveles->id_nivel }}"
+                                                {{ request('nivel') == $itemniveles->id_nivel ? 'selected' : '' }}>
+                                                {{ $itemniveles->nombre_nivel }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('nivel')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                            </div>
+                            <!-- Campos alineados a la derecha -->
+                            <div class="col-md-4">
+                                @include('components.text_input', [
+                                    'name' => 'apellido_alumno',
+                                    'label' => 'Apellido',
+                                    'value' => $alumnos->apellido_alumno,
+                                ])
+                                @include('components.text_input', [
+                                    'name' => 'telefono',
+                                    'label' => 'Teléfono',
+                                    'value' => $alumnos->telefono,
+                                ])
+                                @include('components.text_input', [
+                                    'name' => 'distrito',
+                                    'label' => 'Distrito',
+                                    'value' => $alumnos->distrito,
+                                ])
+                                <div class="form-group">
+                                    <label class="form-label" for="grado"><strong>Grado</strong></label>
+                                    <select class="form-control @error('grado') is-invalid @enderror" id="grado" name="grado" onchange="fetchSecciones(this.value)">
+                                        <option value="{{ $grado->id_grado }}" selected >{{ $grado->nombre_grado }}</option>    
+                                    </select>
+                                    @error('grado')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                    </div>
+                    <div class="d-flex justify-content-center mt-4 mb-3">
+                        <button type="submit" class="btn btn-primary mx-2"><i class="fas fa-save"></i> Actualizar </button>
+                        <a href="{{ route('Cancelar') }}" class="btn btn-danger mx-2"><i class="fas fa-ban"></i>Cancelar</a>
+                    </div>
             </div>
         </div>
     </form>
@@ -100,23 +166,46 @@
 
 @section('script')
     <script>
-        document.getElementById('nivel').addEventListener('change', function() {
-            var nivel = this.value;
-            var gradoSelect = document.getElementById('grado');
-            gradoSelect.innerHTML = '';
-
-            if (nivel === 'Primaria') {
-                var options = ['Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto', 'Sexto'];
-            } else if (nivel === 'Secundaria') {
-                var options = ['Primero', 'Segundo', 'Tercero', 'Cuarto', 'Quinto'];
+        function fetchGrados(nivelId) {
+            if (nivelId) {
+                fetch(`/grados/${nivelId}`) 
+                    .then(response => response.json())
+                    .then(data => {
+                        let gradoSelect = document.getElementById('grado');
+                        gradoSelect.innerHTML = '<option value="" selected disabled>Seleccione un Grado</option>';
+                        
+                        data.forEach(grado => {
+                            let option = document.createElement('option');
+                            option.value = grado.id_grado; 
+                            option.textContent = grado.nombre_grado; 
+                            gradoSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else {
+                document.getElementById('grado').innerHTML = '<option value="" selected disabled>Seleccione un Grado</option>'; 
             }
+        }
 
-            options.forEach(function(option) {
-                var opt = document.createElement('option');
-                opt.value = option;
-                opt.innerHTML = option;
-                gradoSelect.appendChild(opt);
-            });
-        });
+        function fetchSecciones(gradoId) {
+            if (gradoId) {
+                fetch(`/secciones/${gradoId}`) 
+                    .then(response => response.json())
+                    .then(data => {
+                        let seccionSelect = document.getElementById('seccion');
+                        seccionSelect.innerHTML = '<option value="" selected disabled>Seleccione una Sección</option>';
+                        
+                        data.forEach(seccion => {
+                            let option = document.createElement('option');
+                            option.value = seccion.id_seccion; 
+                            option.textContent = seccion.nombre_seccion; 
+                            seccionSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else {
+                document.getElementById('seccion').innerHTML = '<option value="" selected disabled>Seleccione una Sección</option>'; 
+            }
+        }
     </script>
 @endsection
