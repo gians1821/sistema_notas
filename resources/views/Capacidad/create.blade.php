@@ -10,42 +10,40 @@
         <div class="form-group">
             <label for="nivel">Nivel</label>
             <select class="form-control @error('nivel') is-invalid @enderror" id="nivel" name="nivel">
-                @error('nivel')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-                <option value="Nivel" selected disabled>Seleccione Nivel</option>
-                <option value="PRIMARIA">PRIMARIA</option>
-                <option value="SECUNDARIA">SECUNDARIA</option>
+                <option value="" disabled {{ old('nivel') ? '' : 'selected' }}>Seleccione Nivel</option>
             </select>
+            @error('nivel')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
         <div class="form-group">
             <label for="grado">Grado</label>
             <select class="form-control @error('grado') is-invalid @enderror" id="grado" name="grado">
-                @error('grado')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-                <option value="Grado" selected disabled>Seleccione Grado</option>
+                <option value="" disabled {{ old('grado') ? '' : 'selected' }}>Seleccione Grado</option>
             </select>
+            @error('grado')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
         <div class="form-group">
             <label for="curso">Curso</label>
             <select class="form-control @error('curso') is-invalid @enderror" id="curso" name="curso">
-                @error('curso')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-                <option value="Curso" selected disabled>Seleccione Curso</option>
+                <option value="" disabled {{ old('curso') ? '' : 'selected' }}>Seleccione Curso</option>
             </select>
+            @error('curso')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
         <div class="form-group">
             <label for="nombre_competencia">Nombre de la Capacidad</label>
-            <input type="text" class="form-control @error('nombre_competencia') is-invalid @enderror "
-                id="nombre_competencia" name="nombre_competencia">
+            <input type="text" class="form-control @error('nombre_competencia') is-invalid @enderror"
+                id="nombre_competencia" name="nombre_competencia" value="{{ old('nombre_competencia') }}">
             @error('nombre_competencia')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -57,42 +55,87 @@
     </form>
 @endsection
 @section('script')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
-        document.getElementById('nivel').addEventListener('change', function() {
-            var nivel = this.value;
-            var gradoSelect = document.getElementById('grado');
-            var cursoSelect = document.getElementById('curso');
-            gradoSelect.innerHTML =
-            '<option value="Grado" selected disabled>Seleccione Grado</option>'; // Agrega la opción por defecto
-            cursoSelect.innerHTML =
-            '<option value="Curso" selected disabled>Seleccione Curso</option>'; // Agrega la opción por defecto
+        $(document).ready(function() {
+            // Cargar niveles al iniciar la página
+            $.ajax({
+                url: '/niveles',
+                type: 'GET',
+                success: function(niveles) {
+                    $.each(niveles, function(key, nivel) {
+                        $('#nivel').append('<option value="' + nivel.id_nivel + '"' +
+                            (nivel.id_nivel == {{ old('nivel', 'null') }} ? ' selected' :
+                                '') + '>' +
+                            nivel.nombre_nivel + '</option>');
+                    });
 
-            if (nivel === 'PRIMARIA') {
-                options = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'CUARTO', 'QUINTO', 'SEXTO'];
-                cursoOp = ['CIENCIA Y AMBIENTE', 'ED. FÍSICA', 'ED. RELIGIOSA', 'PERSONAL SOCIAL', 'INGLÉS',
-                    'COMPORTAMIENTO', 'ARTE', 'MATEMÁTICA', 'COMUNICACIÓN', 'COMPUTACIÓN/LABORES',
-                    'TOTAL DE DEMÉRITOS'
-                ];
-            } else if (nivel === 'SECUNDARIA') {
-                options = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'CUARTO', 'QUINTO'];
-                cursoOp = ['CIUDADANÍA Y CÍVICA', 'CIENCIAS SOCIALES', 'ED. PARA EL TRABAJO.', 'ED. FÍSICA',
-                    'COMUNICACIÓN', 'ARTE Y CULTURA', 'INGLÉS', 'MATEMÁTICA', 'CIENCIA Y TECNOLOGÍA',
-                    'ED. RELIGIOSA', 'COMPORTAMIENTO', 'TOTAL DE DEMÉRITOS'
-                ];
-            }
-
-            options.forEach(function(option) {
-                var opt = document.createElement('option');
-                opt.value = option;
-                opt.innerHTML = option;
-                gradoSelect.appendChild(opt);
+                    // Disparar el evento change para cargar grados si hay un nivel seleccionado
+                    if ("{{ old('nivel') }}") {
+                        $('#nivel').trigger('change');
+                    }
+                },
+                error: function() {
+                    alert('Ocurrió un error al cargar los niveles.');
+                }
             });
 
-            cursoOp.forEach(function(option) {
-                var opt = document.createElement('option');
-                opt.value = option;
-                opt.innerHTML = option;
-                cursoSelect.appendChild(opt);
+            // Cargar grados cuando se selecciona un nivel
+            $('#nivel').change(function() {
+                var nivel = $(this).val();
+
+                $('#grado').empty().append('<option value="">Seleccione Grado</option>');
+
+                if (nivel) {
+                    $.ajax({
+                        url: '/grados/' + nivel,
+                        type: 'GET',
+                        success: function(grados) {
+                            $.each(grados, function(key, grado) {
+                                $('#grado').append('<option value="' + grado.id_grado +
+                                    '"' +
+                                    (grado.id_grado == {{ old('grado', 'null') }} ?
+                                        ' selected' : '') + '>' +
+                                    grado.nombre_grado + '</option>');
+                            });
+
+                            // Disparar el evento change para cargar cursos si hay un grado seleccionado
+                            if ("{{ old('grado') }}") {
+                                $('#grado').trigger('change');
+                            }
+                        },
+                        error: function() {
+                            alert('Ocurrió un error al cargar los grados.');
+                        }
+                    });
+                }
+            });
+
+            // Cargar cursos cuando se selecciona un grado
+            $('#grado').change(function() {
+                var gradoId = $(this).val();
+
+                $('#curso').empty().append('<option value="">Seleccione Curso</option>');
+
+                if (gradoId) {
+                    $.ajax({
+                        url: '/grado/' + gradoId + '/cursos',
+                        type: 'GET',
+                        success: function(cursos) {
+                            $.each(cursos, function(key, curso) {
+                                $('#curso').append('<option value="' + curso.id_curso +
+                                    '"' +
+                                    (curso.id_curso == {{ old('curso', 'null') }} ?
+                                        ' selected' : '') + '>' +
+                                    curso.nombre_curso + '</option>');
+                            });
+                        },
+                        error: function() {
+                            alert('Ocurrió un error al cargar los cursos.');
+                        }
+                    });
+                }
             });
         });
     </script>

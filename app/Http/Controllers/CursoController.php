@@ -43,23 +43,24 @@ class CursoController extends Controller
     public function store(Request $request)
     {
         // Validar datos del formulario
-        $data = $request->validate([
-            'nivel' => 'required|String|max:15',
-            'grado' => 'required|String|max:15',
-            'nombre_curso' => 'required|regex:/^[\p{L}\s.\/]+$/u|max:30',
-        ], [
+        $data = $request->validate(
+            [
+                'nivel' => 'required|String|max:15',
+                'grado' => 'required|String|max:15',
+                'nombre_curso' => 'required|regex:/^[\p{L}\s.\/]+$/u|max:30',
+            ],
+            [
+                'nombre_curso.required' => 'Ingrese el nombre del curso.',
+                'nombre_curso.regex' => 'El nombre del curso solo debe contener letras y espacios.',
+                'nombre_curso.max' => 'El nombre del curso no debe exceder los 30 caracteres.',
 
-            'nombre_curso.required' => 'Ingrese el nombre del curso.',
-            'nombre_curso.regex' => 'El nombre del curso solo debe contener letras y espacios.',
-            'nombre_curso.max' => 'El nombre del curso no debe exceder los 30 caracteres.',
+                'nivel.required' => 'Seleccione el nivel.',
+                'nivel.max' => 'El nivel no debe exceder los 15 caracteres.',
 
-            'nivel.required' => 'Seleccione el nivel.',
-            'nivel.max' => 'El nivel no debe exceder los 15 caracteres.',
-
-            'grado.required' => 'Seleccione el grado.',
-            'grado.max' => 'El grado no debe exceder los 15 caracteres.',
-
-        ]);
+                'grado.required' => 'Seleccione el grado.',
+                'grado.max' => 'El grado no debe exceder los 15 caracteres.',
+            ],
+        );
 
         // Obtener el valor de sección desde el formulario y asignarlo
         $nivel = $request->nivel;
@@ -112,11 +113,12 @@ class CursoController extends Controller
         }
 
         // Verificar si ya existe una sección con el mismo nivel y grado
-        $existeCurso = Curso::where('grado_id_grado', $id_grado)->where('nombre_curso', $data['nombre_curso'])->first();
+        $existeCurso = Curso::where('grado_id_grado', $id_grado)
+            ->where('nombre_curso', $data['nombre_curso'])
+            ->first();
         if ($existeCurso) {
             return redirect()->route('Curso.index')->with('datos', 'Ya existe el curso.');
         }
-
 
         $curso = new Curso();
         $curso->nombre_curso = mb_strtoupper($request->nombre_curso);
@@ -149,23 +151,24 @@ class CursoController extends Controller
     public function update(Request $request, $id_curso)
     {
         // Validar datos del formulario
-        $data = $request->validate([
-            'nivel' => 'required|String|max:15',
-            'grado' => 'required|String|max:15',
-            'nombre_curso' => 'required|regex:/^[\p{L}\s.\/]+$/u|max:30',
-        ], [
+        $data = $request->validate(
+            [
+                'nivel' => 'required|String|max:15',
+                'grado' => 'required|String|max:15',
+                'nombre_curso' => 'required|regex:/^[\p{L}\s.\/]+$/u|max:30',
+            ],
+            [
+                'nombre_curso.required' => 'Ingrese el nombre del curso.',
+                'nombre_curso.regex' => 'El nombre del curso solo debe contener letras y espacios.',
+                'nombre_curso.max' => 'El nombre del curso no debe exceder los 30 caracteres.',
 
-            'nombre_curso.required' => 'Ingrese el nombre del curso.',
-            'nombre_curso.regex' => 'El nombre del curso solo debe contener letras y espacios.',
-            'nombre_curso.max' => 'El nombre del curso no debe exceder los 30 caracteres.',
+                'nivel.required' => 'Seleccione el nivel.',
+                'nivel.max' => 'El nivel no debe exceder los 15 caracteres.',
 
-            'nivel.required' => 'Seleccione el nivel.',
-            'nivel.max' => 'El nivel no debe exceder los 15 caracteres.',
-
-            'grado.required' => 'Seleccione el grado.',
-            'grado.max' => 'El grado no debe exceder los 15 caracteres.',
-
-        ]);
+                'grado.required' => 'Seleccione el grado.',
+                'grado.max' => 'El grado no debe exceder los 15 caracteres.',
+            ],
+        );
         // Obtener el valor de sección desde el formulario y asignarlo
         $nivel = $request->nivel;
         $grado = $request->grado;
@@ -217,7 +220,9 @@ class CursoController extends Controller
         }
 
         // Verificar si ya existe una sección con el mismo nivel y grado
-        $existeCurso = Curso::where('grado_id_grado', $id_grado)->where('nombre_curso', $data['nombre_curso'])->first();
+        $existeCurso = Curso::where('grado_id_grado', $id_grado)
+            ->where('nombre_curso', $data['nombre_curso'])
+            ->first();
         if ($existeCurso) {
             return redirect()->route('Curso.index')->with('datos', 'Ya existe el curso.');
         }
@@ -230,8 +235,6 @@ class CursoController extends Controller
         return redirect()->route('Curso.index')->with('datos', 'Registro Actualizado..!');
     }
 
-
-
     public function confirmar($id_curso)
     {
         $curso = Curso::findOrFail($id_curso);
@@ -243,5 +246,14 @@ class CursoController extends Controller
         $curso = Curso::findOrFail($id_curso);
         $curso->delete();
         return redirect()->route('Curso.index')->with('datos', 'Registro Eliminado..');
+    }
+
+    public function getCursosPorGrado($id_grado)
+    {
+        // Obtener los cursos asociados al grado
+        $cursos = Curso::where('grado_id_grado', $id_grado)->get();
+
+        // Devolver los cursos en formato JSON
+        return response()->json($cursos);
     }
 }

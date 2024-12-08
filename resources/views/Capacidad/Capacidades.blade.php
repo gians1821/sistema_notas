@@ -1,149 +1,214 @@
 @extends('layout.plantilla')
+
 @section('BarraNavegacion')
     @include('components.sidebar_nav')
-@endsection('BarraNavegacion')
+@endsection
+
 @section('Contenido')
-    <!-- CONTENIDO DE LA PAGINA -->
-    <h1 class="h3 mb-3 titulos"><strong>Gestión de</strong> capacidades</h1>
+    <!-- Gestión de Capacidades -->
+    <h1 class="h3 mb-3 titulos"><strong>Gestión de</strong> Capacidades</h1>
     <br>
     <nav class="navbar navbar-light">
         @role('Admin')
-            <a class="btn btn-primary " href="{{ route('Capacidad.create') }}">
+            <a class="btn btn-primary" href="{{ route('Capacidad.create') }}">
                 <i class="fas fa-plus"></i> Nuevo Registro
             </a>
         @endrole
-        <form class="form-inline my-lg-0" method="GET">
+        <form class="form-inline my-lg-0" method="GET" action="{{ route('Capacidad.index') }}">
             <div class="d-flex align-items-center">
+                <!-- Campo de búsqueda por nombre -->
                 <input name="buscarporNombre" class="form-control mr-sm-2" type="search" placeholder="CAPACIDAD"
-                    aria-label="Search" value="{{ $buscarporNombre }}">
-                <select class="form-control w-auto mr-4" id="nivel" name="buscarporNivel">
-                    <option value="Nivel" selected disabled>SELECCIONE NIVEL</option>
-                    <option value="PRIMARIA">PRIMARIA</option>
-                    <option value="SECUNDARIA">SECUNDARIA</option>
+                    aria-label="Search" value="{{ old('buscarporNombre') }}">
+
+                <!-- Select de Nivel -->
+                <select class="form-control w-auto mr-4 @error('buscarporNivel') is-invalid @enderror" id="buscarporNivel"
+                    name="buscarporNivel">
+                    <option value="" disabled {{ old('buscarporNivel') ? '' : 'selected' }}>SELECCIONE NIVEL</option>
                 </select>
-                <select class="form-control w-auto mr-4" id="grado" disabled name="buscarporGrado">
-                    <option value="Grado" selected disabled>SELECCIONE GRADO</option>
+                @error('buscarporNivel')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+
+                <!-- Select de Grado -->
+                <select class="form-control w-auto mr-4 @error('buscarporGrado') is-invalid @enderror" id="buscarporGrado"
+                    name="buscarporGrado" {{ old('buscarporNivel') ? '' : 'disabled' }}>
+                    <option value="" disabled {{ old('buscarporGrado') ? '' : 'selected' }}>SELECCIONE GRADO</option>
                 </select>
-                <select class="form-control w-auto mr-4" id="curso" disabled name="buscarporCurso">
-                    <option value="Curso" selected disabled>SELECCIONE CURSO</option>
+                @error('buscarporGrado')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+
+                <!-- Select de Curso -->
+                <select class="form-control w-auto mr-4 @error('buscarporCurso') is-invalid @enderror" id="buscarporCurso"
+                    name="buscarporCurso" {{ old('buscarporGrado') ? '' : 'disabled' }}>
+                    <option value="" disabled {{ old('buscarporCurso') ? '' : 'selected' }}>SELECCIONE CURSO</option>
                 </select>
+                @error('buscarporCurso')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+
+                <!-- Botón de búsqueda -->
                 <button class="btn btn-success" type="submit">BUSCAR</button>
             </div>
         </form>
     </nav>
 
-
-
+    <!-- Mensajes de sesión -->
     <div id="mensaje">
         @if (session('datos'))
             <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
                 {{ session('datos') }}
-                <button type="button" class="close" data-dismiss="alert" arialabel="Close">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         @endif
     </div>
     <br>
-    <table class="table  text-center ">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col" class="w-25">CAPACIDAD_ID</th>
-                <th scope="col">NIVEL</th>
-                <th scope="col">GRADO</th>
-                <th scope="col">CURSO</th>
-                <th scope="col">COMPETENCIA</th>
-                <th scope="col">ACCIONES</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (count($capacidad) <= 0)
-                <tr>
-                    <td colspan="6">No hay registros</td>
-                </tr>
-            @else
-                @foreach ($capacidad as $itemcapacidad)
-                    <tr>
-                        <td>{{ $itemcapacidad->id_competencia }}</td>
-                        <td>{{ $itemcapacidad->curso && $itemcapacidad->curso->grado && $itemcapacidad->curso->grado->nivel ? $itemcapacidad->curso->grado->nivel->nombre_nivel : 'No asignado' }}
-                        </td> <!-- Asegúrate de ajustar 'nombre_nivel' según el nombre real del campo en tu modelo Nivel -->
-                        <td>{{ $itemcapacidad->curso && $itemcapacidad->curso->grado ? $itemcapacidad->curso->grado->nombre_grado : 'No asignado' }}
-                        </td>
-                        <td>{{ $itemcapacidad->curso ? mb_strtoupper($itemcapacidad->curso->nombre_curso) : 'No asignado' }}
-                        </td>
-                        <td>{{ mb_strtoupper($itemcapacidad->nombre_competencia) }}</td>
-                        <td>
-                            @role('Admin')
-                                <a href="{{ route('Capacidad.edit', $itemcapacidad->id_competencia) }}" class="btn btn-info">
-                                    <img src="{{ asset('plantilla\src\img\logo\editar_blanco.png') }}" alt="Editar"
-                                        style="width: 30px; height: 30px;">
-                                </a>
-                                <a href="{{ route('Capacidad.confirmar', $itemcapacidad->id_competencia) }}"
-                                    class="btn btn-danger btnsm ms-2">
-                                    <img src="{{ asset('plantilla\src\img\logo\eliminar.png') }}" alt="Eliminar"
-                                        style="width: 30px; height: 30px;">
-                                </a>
-                            @endrole
-                        </td>
-                    </tr>
-                @endforeach
-            @endif
-        </tbody>
-    </table>
-    {{ $capacidad->appends(['buscarporNombre' => $buscarporNombre, 'buscarporGrado' => $buscarporGrado, 'buscarporNivel' => $buscarporNivel, 'buscarporCurso' => $buscarporCurso])->links() }}
-@endsection('Contenido')
+
+    <!-- Tabla de Capacidades -->
+    @include('components.items_table', [
+        'data' => $capacidades, // Los elementos a mostrar en la tabla
+        'headers' => ['ID', 'Competencia', 'Curso', 'Grado', 'Nivel', 'Acciones'], // Los títulos de las columnas
+        'columns_data' => [
+            'id_competencia',
+            'nombre_competencia',
+            'curso.nombre_curso',
+            'curso.grado.nombre_grado',
+            'curso.grado.nivel.nombre_nivel',
+        ], // Las propiedades de los modelos a mostrar
+        'edit_route' => 'Capacidad.edit', // Ruta para editar
+        'delete_route' => 'Capacidad.destroy', // Ruta para eliminar
+    ])
+
+    <!-- Paginación -->
+    {{ $capacidades->links() }}
+@endsection
+
 @section('script')
-    <script>
-        setTimeout(function() {
-            document.querySelector('#mensaje').remove();
-        }, 3000);
-    </script>
-    <script>
-        document.getElementById('nivel').addEventListener('change', function() {
-            var nivel = this.value;
-            var gradoSelect = document.getElementById('grado');
-            var cursoSelect = document.getElementById('curso');
-            gradoSelect.innerHTML =
-            '<option value="Grado" selected disabled>SELECCIONE GRADO</option>'; // Agrega la opción por defecto
-            cursoSelect.innerHTML =
-            '<option value="Curso" selected disabled>SELECCIONE CURSO</option>'; // Agrega la opción por defecto
-            gradoSelect.disabled = false;
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-            if (nivel === 'Nivel') {
-                var options = ['Grado'];
-                var cursoOp = ['Curso'];
-            }
-            if (nivel === 'PRIMARIA') {
-                var options = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'CUARTO', 'QUINTO', 'SEXTO'];
-                var cursoOp = ['CIENCIA Y AMBIENTE', 'ED. FíSICA', 'ED. RELIGIOSA', 'PERSONAL SOCIAL', 'INGLÉS',
-                    'COMPORTAMIENTO', 'ARTE', 'MATEMÁTICA', 'COMUNICACIÓN', 'COMPUTACIÓN/LABORES',
-                    'TOTAL DE DEMÉRITOS'
-                ];
-            } else if (nivel === 'SECUNDARIA') {
-                var options = ['PRIMERO', 'SEGUNDO', 'TERCERO', 'CUARTO', 'QUINTO'];
-                var cursoOp = ['CIUDADANÍA Y CÍVICA', 'CIENCIAS SOCIALES', 'ED. PARA EL TRABAJO.', 'ED. FÍSICA',
-                    'COMUNICACIÓN', 'ARTE Y CULTURA', 'INGLÉS', 'MATEMÁTICA', 'CIENCIA Y TECNOLOGÍA',
-                    'ED. RELIGIOSA', 'COMPORTAMIENTO', 'TOTAL DE DEMÉRITOS'
-                ];
+    <script>
+        $(document).ready(function() {
+            // Función para cargar niveles
+            function cargarNiveles(selectedNivel = null) {
+                $.ajax({
+                    url: '/niveles',
+                    type: 'GET',
+                    success: function(niveles) {
+                        niveles.forEach(function(nivel) {
+                            $('#buscarporNivel').append('<option value="' + nivel.id_nivel +
+                                '"' +
+                                (nivel.id_nivel == "{{ old('buscarporNivel') }}" ?
+                                    ' selected' : '') + '>' +
+                                nivel.nombre_nivel + '</option>');
+                        });
+
+                        // Si hay un nivel seleccionado, cargar grados
+                        if ("{{ old('buscarporNivel') }}") {
+                            $('#buscarporNivel').trigger('change');
+                        }
+                    },
+                    error: function() {
+                        alert('Ocurrió un error al cargar los niveles.');
+                    }
+                });
             }
 
-            options.forEach(function(option) {
-                var opt = document.createElement('option');
-                opt.value = option;
-                opt.innerHTML = option;
-                gradoSelect.appendChild(opt);
+            // Función para cargar grados
+            function cargarGrados(nivelId, selectedGrado = null) {
+                $.ajax({
+                    url: '/grados/' + nivelId,
+                    type: 'GET',
+                    success: function(grados) {
+                        $('#buscarporGrado').empty().append(
+                            '<option value="" disabled {{ old('buscarporGrado') ? '' : 'selected' }}>SELECCIONE GRADO</option>'
+                            );
+                        $('#buscarporCurso').empty().append(
+                            '<option value="" disabled selected>SELECCIONE CURSO</option>').prop(
+                            'disabled', true);
+
+                        grados.forEach(function(grado) {
+                            $('#buscarporGrado').append('<option value="' + grado.id_grado +
+                                '"' +
+                                (grado.id_grado == "{{ old('buscarporGrado') }}" ?
+                                    ' selected' : '') + '>' +
+                                grado.nombre_grado + '</option>');
+                        });
+
+                        $('#buscarporGrado').prop('disabled', false);
+
+                        // Si hay un grado seleccionado, cargar cursos
+                        if ("{{ old('buscarporGrado') }}") {
+                            $('#buscarporGrado').trigger('change');
+                        }
+                    },
+                    error: function() {
+                        alert('Ocurrió un error al cargar los grados.');
+                    }
+                });
+            }
+
+            // Función para cargar cursos
+            function cargarCursos(gradoId, selectedCurso = null) {
+                $.ajax({
+                    url: '/grado/' + gradoId + '/cursos',
+                    type: 'GET',
+                    success: function(cursos) {
+                        $('#buscarporCurso').empty().append(
+                            '<option value="" disabled selected>SELECCIONE CURSO</option>');
+
+                        cursos.forEach(function(curso) {
+                            $('#buscarporCurso').append('<option value="' + curso.id_curso +
+                                '"' +
+                                (curso.id_curso == "{{ old('buscarporCurso') }}" ?
+                                    ' selected' : '') + '>' +
+                                curso.nombre_curso + '</option>');
+                        });
+
+                        $('#buscarporCurso').prop('disabled', false);
+                    },
+                    error: function() {
+                        alert('Ocurrió un error al cargar los cursos.');
+                    }
+                });
+            }
+
+            // Cargar niveles al iniciar
+            cargarNiveles();
+
+            // Evento cambio en el select de nivel
+            $('#buscarporNivel').change(function() {
+                var nivelId = $(this).val();
+                if (nivelId) {
+                    cargarGrados(nivelId, "{{ old('buscarporGrado') }}");
+                } else {
+                    $('#buscarporGrado').empty().append(
+                        '<option value="" disabled selected>SELECCIONE GRADO</option>').prop('disabled',
+                        true);
+                    $('#buscarporCurso').empty().append(
+                        '<option value="" disabled selected>SELECCIONE CURSO</option>').prop('disabled',
+                        true);
+                }
             });
 
-            cursoOp.forEach(function(option) {
-                var opt = document.createElement('option');
-                opt.value = option;
-                opt.innerHTML = option;
-                cursoSelect.appendChild(opt);
+            // Evento cambio en el select de grado
+            $('#buscarporGrado').change(function() {
+                var gradoId = $(this).val();
+                if (gradoId) {
+                    cargarCursos(gradoId, "{{ old('buscarporCurso') }}");
+                } else {
+                    $('#buscarporCurso').empty().append(
+                        '<option value="" disabled selected>SELECCIONE CURSO</option>').prop('disabled',
+                        true);
+                }
             });
-        });
-        document.getElementById('grado').addEventListener('change', function() {
-            var cursoSelect = document.getElementById('curso');
-            cursoSelect.disabled = false;
         });
     </script>
 @endsection

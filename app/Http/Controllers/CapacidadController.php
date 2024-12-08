@@ -23,68 +23,60 @@ class CapacidadController extends Controller
 
     public function index(Request $request)
     {
-        $buscarporNombre = $request->get('buscarporNombre');
-        $buscarporGrado = $request->get('buscarporGrado');
-        $buscarporNivel = $request->get('buscarporNivel');
-        $buscarporCurso = $request->get('buscarporCurso');
+        // Obtener filtros desde la solicitud
+        $buscarporNombre = $request->input('buscarporNombre');
+        $buscarporGrado = $request->input('buscarporGrado');
+        $buscarporNivel = $request->input('buscarporNivel');
+        $buscarporCurso = $request->input('buscarporCurso');
 
-        $id_grado = null;
-        $id_curso = [];
+        // Iniciar la consulta
+        $capacidades = Capacidad::query()->with('curso.grado.nivel');
 
-        // Buscar id_grado basado en el nivel y grado
+        // Filtrar por nombre de competencia
+        if ($buscarporNombre) {
+            $capacidades->where('nombre_competencia', 'like', '%' . mb_strtoupper($buscarporNombre) . '%');
+        }
+
+        // Filtrar por curso
+        if ($buscarporCurso) {
+            $capacidades->where('id_curso', $buscarporCurso);
+        }
+
+        // Filtrar por grado
+        if ($buscarporGrado) {
+            $capacidades->whereHas('curso.grado', function ($query) use ($buscarporGrado) {
+                $query->where('id_grado', $buscarporGrado);
+            });
+        }
+
+        // Filtrar por nivel
         if ($buscarporNivel) {
-            $nivel = Nivel::where('nombre_nivel', 'like', '%' . $buscarporNivel . '%')->first();
-            if ($nivel) {
-                $id_nivel = $nivel->id_nivel;
-                if ($buscarporGrado) {
-                    $grado = Grado::where('nombre_grado', 'like', '%' . $buscarporGrado . '%')
-                        ->where('id_nivel', $id_nivel)  // Asumiendo que el Grado está relacionado con Nivel
-                        ->first();
-                    if ($grado) {
-                        $id_grado = $grado->id_grado;
-                    }
-                }
-            }
+            $capacidades->whereHas('curso.grado.nivel', function ($query) use ($buscarporNivel) {
+                $query->where('id_nivel', $buscarporNivel);
+            });
         }
 
-        // Buscar id_curso basado en id_grado y nombre del curso
-        if ($id_grado) {
-            $cursos = Curso::where('grado_id_grado', $id_grado);
+        // Paginación
+        $capacidades = $capacidades->paginate(10);
 
-            if ($buscarporCurso) {
-                $cursos = $cursos->where(strtoupper('nombre_curso'), 'like', '%' . $buscarporCurso . '%');
-            }
-
-            $cursos = $cursos->get();
-            if ($cursos) {
-                $id_curso = $cursos->pluck('id_curso')->toArray();
-            }
-        }
-
-        // Buscar compeetencia
-        $capacidad = Capacidad::where('id_competencia', '>', '0')
-            ->where(function ($query) use ($buscarporNombre, $id_curso) {
-                if ($buscarporNombre) {
-                    $query->where('nombre_competencia', 'like', '%' . mb_strtoupper($buscarporNombre) . '%');
-                }
-                if (!empty($id_curso)) {
-                    $query->whereIn('id_curso', $id_curso);
-                }
-            })
-            ->paginate($this::PAGINATION);
-
-        $capacidad->appends([
+        // Mantener los filtros en la paginación
+        $capacidades->appends([
             'buscarporNombre' => $buscarporNombre,
             'buscarporGrado' => $buscarporGrado,
             'buscarporNivel' => $buscarporNivel,
-            'buscarporCurso' => $buscarporCurso
+            'buscarporCurso' => $buscarporCurso,
         ]);
 
-        return view('Capacidad.Capacidades', compact('capacidad', 'buscarporNombre', 'buscarporGrado', 'buscarporNivel', 'buscarporCurso'));
+        // Definir encabezados y columnas
+        $headers = ['ID', 'Nivel', 'Grado', 'Curso', 'Competencia'];
+        $columns_data = ['id_competencia', 'curso.grado.nivel.nombre_nivel', 'curso.grado.nombre_grado', 'curso.nombre_curso', 'nombre_competencia'];
+
+        // Definir rutas
+        $edit_route = 'Capacidad.edit';
+        $delete_route = 'Capacidad.destroy';
+
+        return view('Capacidad.Capacidades', compact('capacidades', 'buscarporNombre', 'buscarporGrado', 'buscarporNivel', 'buscarporCurso', 'headers', 'columns_data', 'edit_route', 'delete_route'));
     }
-
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -99,97 +91,49 @@ class CapacidadController extends Controller
      */
     public function store(Request $request)
     {
-        // Validar datos del formulario
-        $data = $request->validate([
-            'nivel' => 'required|String|max:15',
-            'grado' => 'required|String|max:15',
-            'curso' => 'required|regex:/^[\p{L}\s.\/]+$/u|max:30',
-            'nombre_competencia' => 'required|regex:/^[\pL\s.]+$/u|max:30', //LETRAS Y TILDES
-        ], [
+        $data = $request->validate(
+            [
+                'nivel' => 'required|integer', // Ahora esperamos un ID numérico
+                'grado' => 'required|integer', // Ahora esperamos un ID numérico
+                'curso' => 'required|integer', // Ahora esperamos un ID numérico
+                'nombre_competencia' => 'required|regex:/^[\pL\s.]+$/u|max:30', // Letras, espacios y tildes
+            ],
+            [
+                'nombre_competencia.required' => 'Ingrese el nombre de la competencia.',
+                'nombre_competencia.regex' => 'El nombre de la competencia solo debe contener letras y espacios.',
+                'nombre_competencia.max' => 'El nombre de la competencia no debe exceder los 30 caracteres.',
 
-            'nombre_competencia.required' => 'Ingrese el nombre del curso.',
-            'nombre_competencia.regex' => 'El nombre del curso solo debe contener letras y espacios.',
-            'nombre_competencia.max' => 'El nombre del curso no debe exceder los 30 caracteres.',
+                'nivel.required' => 'Seleccione el nivel.',
+                'nivel.integer' => 'El nivel seleccionado no es válido.',
 
-            'nivel.required' => 'Seleccione el nivel.',
-            'nivel.max' => 'El nivel no debe exceder los 15 caracteres.',
+                'grado.required' => 'Seleccione el grado.',
+                'grado.integer' => 'El grado seleccionado no es válido.',
 
-            'grado.required' => 'Seleccione el grado.',
-            'grado.max' => 'El grado no debe exceder los 15 caracteres.',
+                'curso.required' => 'Seleccione el curso.',
+                'curso.integer' => 'El curso seleccionado no es válido.',
+            ],
+        );
 
-            'curso.required' => 'Seleccione el curso.',
-            'curso.max' => 'El curso no debe exceder los 30 caracteres.',
+        // Obtener los IDs seleccionados desde el formulario
+        $nivelId = $request->nivel; // ID del nivel
+        $gradoId = $request->grado; // ID del grado
+        $cursoId = $request->curso; // ID del curso
 
-        ]);
-
-        // Obtener el valor de sección desde el formulario y asignarlo
-        $nivel = $request->nivel;
-        $grado = $request->grado;
-        $curso = $request->curso;
-
-        // Variable para almacenar el valor de id_seccion
-        $id_grado = 0;
-
-        // Lógica para asignar el valor de id_grado basado en nivel
-        switch ($nivel) {
-            case 'PRIMARIA':
-                switch ($grado) {
-                    case 'PRIMERO':
-                        $id_grado = 1;
-                        break;
-                    case 'SEGUNDO':
-                        $id_grado = 2;
-                        break;
-                    case 'TERCERO':
-                        $id_grado = 3;
-                        break;
-                    case 'CUARTO':
-                        $id_grado = 4;
-                        break;
-                    case 'QUINTO':
-                        $id_grado = 5;
-                        break;
-                    case 'SEXTO':
-                        $id_grado = 6;
-                        break;
-                }
-                break;
-            case 'SECUNDARIA':
-                switch ($grado) {
-                    case 'PRIMERO':
-                        $id_grado = 7;
-                        break;
-                    case 'SEGUNDO':
-                        $id_grado = 8;
-                        break;
-                    case 'TERCERO':
-                        $id_grado = 9;
-                        break;
-                    case 'CUARTO':
-                        $id_grado = 10;
-                        break;
-                    case 'QUINTO':
-                        $id_grado = 11;
-                        break;
-                }
-                break;
-        }
-        // Obtener el id_curso del curso que cumple con las condiciones
-        $cursoEncontrado = Curso::where('grado_id_grado', $id_grado)
-            ->whereRaw('LOWER(nombre_curso) = ?', [strtolower($curso)]) // Aquí usas el nombre del curso seleccionado
-            ->pluck('id_curso') // Extrae solo el valor de 'id_curso'
+        // Verificar si ya existe una capacidad con el mismo curso y nombre de competencia
+        $existeCapacidad = Capacidad::where('id_curso', $cursoId)
+            ->where('nombre_competencia', $data['nombre_competencia'])
             ->first();
 
-        //Verificar si ya existe una sección con el mismo nivel y grado
-        $existeCapacidad = Capacidad::where('id_curso', $cursoEncontrado)->where('nombre_competencia', $data['nombre_competencia'])->first();
         if ($existeCapacidad) {
-            return redirect()->route('Capacidad.index')->with('datos', 'Ya existe');
+            return redirect()->route('Capacidad.index')->with('datos', 'Ya existe una capacidad con este curso y competencia.');
         }
 
+        // Crear y guardar la nueva capacidad
         $capacidad = new Capacidad();
-        $capacidad->nombre_competencia = strtoupper($request->nombre_competencia);
-        $capacidad->id_curso = $cursoEncontrado;
+        $capacidad->nombre_competencia = $request->nombre_competencia;
+        $capacidad->id_curso = $cursoId; // Usamos directamente el ID del curso seleccionado
         $capacidad->save();
+
         return redirect()->route('Capacidad.index')->with('datos', 'Registro Guardado..!');
     }
 
@@ -215,97 +159,71 @@ class CapacidadController extends Controller
      */
     public function update(Request $request, $id_competencia)
     {
-        $data = $request->validate([
-            'nivel' => 'required|String|max:15',
-            'grado' => 'required|String|max:15',
-            'required|regex:/^[\p{L}\s.\/]+$/u|max:30',
-            'nombre_competencia' => 'required|regex:/^[\pL\s]+$/u|max:15', //LETRAS Y TILDES
-        ], [
+        // Validar los datos de la solicitud
+        $data = $request->validate(
+            [
+                'nivel' => 'required|integer|exists:nivels,id_nivel',
+                'grado' => 'required|integer|exists:grados,id_grado',
+                'curso' => 'required|integer|exists:cursos,id_curso',
+                'nombre_competencia' => 'required|regex:/^[\pL\s]+$/u|max:30', // LETRAS Y TILDES
+            ],
+            [
+                'nombre_competencia.required' => 'Ingrese el nombre de la competencia.',
+                'nombre_competencia.regex' => 'El nombre de la competencia solo debe contener letras y espacios.',
+                'nombre_competencia.max' => 'El nombre de la competencia no debe exceder los 30 caracteres.',
 
-            'nombre_competencia.required' => 'Ingrese el nombre del curso.',
-            'nombre_competencia.regex' => 'El nombre del curso solo debe contener letras y espacios.',
-            'nombre_competencia.max' => 'El nombre del curso no debe exceder los 30 caracteres.',
+                'nivel.required' => 'Seleccione el nivel.',
+                'nivel.integer' => 'El nivel seleccionado no es válido.',
+                'nivel.exists' => 'El nivel seleccionado no existe.',
 
-            'nivel.required' => 'Seleccione el nivel.',
-            'nivel.max' => 'El nivel no debe exceder los 15 caracteres.',
+                'grado.required' => 'Seleccione el grado.',
+                'grado.integer' => 'El grado seleccionado no es válido.',
+                'grado.exists' => 'El grado seleccionado no existe.',
 
-            'grado.required' => 'Seleccione el grado.',
-            'grado.max' => 'El grado no debe exceder los 15 caracteres.',
+                'curso.required' => 'Seleccione el curso.',
+                'curso.integer' => 'El curso seleccionado no es válido.',
+                'curso.exists' => 'El curso seleccionado no existe.',
+            ],
+        );
 
-            'curso.required' => 'Seleccione el curso.',
-            'curso.max' => 'El curso no debe exceder los 30 caracteres.',
+        // Obtener los valores de los selects
+        $nivel_id = $request->nivel;
+        $grado_id = $request->grado;
+        $curso_id = $request->curso;
+        $nombre_competencia = $request->nombre_competencia;
 
-        ]);
-
-        // Obtener el valor de sección desde el formulario y asignarlo
-        $nivel = $request->nivel;
-        $grado = $request->grado;
-        $curso = $request->curso;
-
-        // Variable para almacenar el valor de id_seccion
-        $id_grado = 0;
-
-        // Lógica para asignar el valor de id_grado basado en nivel
-        switch ($nivel) {
-            case 'PRIMARIA':
-                switch ($grado) {
-                    case 'PRIMERO':
-                        $id_grado = 1;
-                        break;
-                    case 'SEGUNDO':
-                        $id_grado = 2;
-                        break;
-                    case 'TERCERO':
-                        $id_grado = 3;
-                        break;
-                    case 'CUARTO':
-                        $id_grado = 4;
-                        break;
-                    case 'QUINTO':
-                        $id_grado = 5;
-                        break;
-                    case 'SEXTO':
-                        $id_grado = 6;
-                        break;
-                }
-                break;
-            case 'SECUNDARIA':
-                switch ($grado) {
-                    case 'PRIMERO':
-                        $id_grado = 7;
-                        break;
-                    case 'SEGUNDO':
-                        $id_grado = 8;
-                        break;
-                    case 'TERCERO':
-                        $id_grado = 9;
-                        break;
-                    case 'CUARTO':
-                        $id_grado = 10;
-                        break;
-                    case 'QUINTO':
-                        $id_grado = 11;
-                        break;
-                }
-                break;
+        // Verificar que el grado pertenece al nivel seleccionado
+        $grado = Grado::find($grado_id);
+        if (!$grado || $grado->id_nivel != $nivel_id) {
+            return redirect()
+                ->back()
+                ->withErrors(['grado' => 'El grado seleccionado no pertenece al nivel elegido.'])
+                ->withInput();
         }
-        // Obtener el id_curso del curso que cumple con las condiciones
-        $cursoEncontrado = Curso::where('grado_id_grado', $id_grado)
-            ->whereRaw('LOWER(nombre_curso) = ?', [strtolower($curso)]) // Aquí usas el nombre del curso seleccionado
-            ->pluck('id_curso') // Extrae solo el valor de 'id_curso'
-            ->first();
 
-        //Verificar si ya existe una capcaidad 
-        $existeCapacidad = Capacidad::where('id_curso', $cursoEncontrado)->where('nombre_competencia', $data['nombre_competencia'])->first();
+        // Verificar que el curso pertenece al grado seleccionado
+        $curso = Curso::find($curso_id);
+        if (!$curso || $curso->grado_id_grado != $grado_id) {
+            return redirect()
+                ->back()
+                ->withErrors(['curso' => 'El curso seleccionado no pertenece al grado elegido.'])
+                ->withInput();
+        }
+
+        // Verificar si ya existe una capacidad con el mismo curso y nombre, excluyendo la actual
+        $existeCapacidad = Capacidad::where('id_curso', $curso_id)->where('nombre_competencia', $nombre_competencia)->where('id_competencia', '!=', $id_competencia)->first();
+
         if ($existeCapacidad) {
-            return redirect()->route('Capacidad.index')->with('datos', 'Ya existe');
+            return redirect()->route('Capacidad.edit', $id_competencia)->with('datos', 'Ya existe una competencia con este curso y nombre.')->withInput();
         }
 
+        // Actualizar la capacidad existente
         $capacidad = Capacidad::findOrFail($id_competencia);
-        $capacidad->nombre_competencia = strtoupper($request->nombre_competencia);
-        $capacidad->id_curso = $cursoEncontrado;
+        $capacidad->nombre_competencia = $nombre_competencia;
+        $capacidad->id_curso = $curso_id;
         $capacidad->save();
-        return redirect()->route('Capacidad.index')->with('datos', 'Registro Actualizado..!');
+
+        return redirect()->route('Capacidad.index')->with('datos', 'Registro Actualizado Correctamente.');
     }
 
     /**

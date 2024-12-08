@@ -1,3 +1,11 @@
+<!-- VARIABLES
+    $headers
+    $data
+    $columns_data
+    $edit_route
+    $delete_route
+-->
+
 <table class="table text-center">
     <thead class="thead-dark">
         <tr>
@@ -15,7 +23,7 @@
             @foreach ($data as $item)
                 <tr>
                     @foreach ($columns_data as $property)
-                        <td>{{ $item->$property }}</td>
+                        <td>{{ mb_strtoupper(data_get($item, $property)) }}</td>
                     @endforeach
                     <td>
 
