@@ -60,7 +60,7 @@ Route::put('Nota/{id_alumno}/{id_curso}', [CursoHasAlumnoController::class, 'upd
 Route::get('/Catedra', [CatedraController::class, 'index'])->name('Catedra.index');
 Route::get('/Catedra/pdf', [CatedraController::class, 'pdf'])->name('Catedra.pdf');
 Route::get('/Catedra/pdfalumno/{id_alumno}', [CatedraController::class, 'PdfAlumno'])->name('Catedra.pdfalumno');
-Route::post('/Alumno/pdfalumnos/{idseccion}', [AlumnoController::class, 'generarPdf'])->name('Alumno.generarPdf');
+Route::post('/Alumno/pdfalumnos', [AlumnoController::class, 'generarPdf'])->name('Alumno.generarPdf');
 
 
 // Cancelar Alumno

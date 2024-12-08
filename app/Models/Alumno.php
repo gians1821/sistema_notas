@@ -22,7 +22,7 @@ class Alumno extends Model
 
     public function padre()
     {
-        return $this->belongsTo(Padre::class, 'padre_id');
+        return $this->belongsTo(Padre::class, 'padre_id'); 
     }
 
 }

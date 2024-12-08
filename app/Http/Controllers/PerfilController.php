@@ -40,12 +40,15 @@ class PerfilController extends Controller
         // Validate the input
         $request->validate([
             'name' => 'required|unique:roles,name',
-            'descripcion' => 'required'
+            'descripcion' => 'required',
+            'permissions' => 'required|array|min:3'
         ],
         [
             'name.required' => 'Ingrese nombre del rol',
             'name.unique' => 'El nombre del rol ya existe',
             'descripcion.required' => 'Ingrese una descripción para el rol',
+            'permissions.required' => 'Debe seleccionar al menos 3 permisos',
+            'permissions.min' => 'Debe seleccionar al menos 3 permisos'
         ]);
     
         $role = Role::create([
@@ -91,15 +94,15 @@ class PerfilController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:roles,name,' . $id, 
             'descripcion' => 'required', 
-            'permissions' => 'array|exists:permissions,id', 
+            'permissions' => 'required|array|min:3' 
         ], [
             'name.required' => 'El nombre del rol es obligatorio.',
             'name.string' => 'El nombre del rol debe ser un texto válido.',
             'name.max' => 'El nombre del rol no puede exceder los 255 caracteres.',
             'name.unique' => 'El nombre del rol ya existe en el sistema. Por favor, elige otro.',
             'descripcion.required' => 'Ingrese una descripción para el rol',
-            'permissions.array' => 'Los permisos deben ser seleccionados correctamente.',
-            'permissions.exists' => 'Uno o más permisos seleccionados no existen.',
+            'permissions.required' => 'Debe seleccionar al menos 3 permisos',
+            'permissions.min' => 'Debe seleccionar al menos 3 permisos'
         ]);
 
         $rol = Role::findOrFail($id);

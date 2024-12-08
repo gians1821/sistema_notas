@@ -52,6 +52,9 @@
                             </div>
                         @endforeach
                     </div>
+                    @if ($errors->has('permissions'))
+                        <span class="error-message text-danger"><strong>{{ $errors->first('permissions') }}</strong></span>
+                    @endif
                 </div>
 
                 <!-- Descripción del rol -->

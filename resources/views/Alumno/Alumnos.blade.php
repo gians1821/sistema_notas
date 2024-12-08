@@ -31,42 +31,69 @@
                     aria-label="Search" value="{{ request('buscarporApell') }}">
 
                 <!-- Selección de nivel con envío automático -->
-                <select class="form-control ml-2 mr-2" style="width: 130px;" id="nivel" name="nivel" onchange="this.form.submit()">
-                    <option value="" selected>Nivel</option>
-                    @foreach ($niveles as $itemniveles)
-                        <option value="{{ $itemniveles->id_nivel }}"
-                            {{ request('nivel') == $itemniveles->id_nivel ? 'selected' : '' }}>
-                            {{ $itemniveles->nombre_nivel }}
-                        </option>
-                    @endforeach
-                </select>
+                <div class="position-relative">
+                    <select class="form-control ml-2 mr-2 @error('nivel') is-invalid @enderror" style="width: 130px;" id="nivel" name="nivel" onchange="this.form.submit()">
+                        <option value="" selected>Nivel</option>
+                        @foreach ($niveles as $itemniveles)
+                            <option value="{{ $itemniveles->id_nivel }}"
+                                {{ request('nivel') == $itemniveles->id_nivel ? 'selected' : '' }}>
+                                {{ $itemniveles->nombre_nivel }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('nivel')
+                        <div class="invalid-feedback d-flex justify-content-center align-items-center">
+                            <strong>
+                                {{ $message }}
+                            </strong>
+                        </div>
+                    @enderror
+                </div>
 
                 <!-- Selección de grado -->
-                <select class="form-control ml-2 mr-2" style="width: 130px;" id="grado" name="grado" onchange="this.form.submit()">
-                    <option value="" selected>Grado</option>
-                    <!-- Agrega opciones de grado dinámicamente o manualmente -->
-                    @foreach (App\Models\Grado::where('id_nivel', $nivel)->get() as $grado)
-                        <option value="{{ $grado->id_grado }}" {{ request('grado') == $grado->id_grado ? 'selected' : '' }}>
-                            {{ $grado->nombre_grado }}
-                        </option>
-                    @endforeach
-                </select>
+                <div class="position-relative">
+                    <select class="form-control ml-2 mr-2 @error('grado') is-invalid @enderror" style="width: 130px;" id="grado" name="grado" onchange="this.form.submit()">
+                        <option value="" selected>Grado</option>
+                        <!-- Agrega opciones de grado dinámicamente o manualmente -->
+                        @foreach (App\Models\Grado::where('id_nivel', $nivel)->get() as $grado)
+                            <option value="{{ $grado->id_grado }}" {{ request('grado') == $grado->id_grado ? 'selected' : '' }}>
+                                {{ $grado->nombre_grado }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('grado')
+                        <div class="invalid-feedback d-flex justify-content-center align-items-center">
+                            <strong>
+                                {{ $message }}
+                            </strong>
+                        </div>
+                    @enderror
+                </div>
 
                 <!-- Selección de sección -->
-                <select class="form-control ml-2 mr-2" style="width: 130px;" id="seccion" name="seccion" onchange="this.form.submit()">
-                    <option value="" selected>Sección</option>
-                    <!-- Agrega opciones de sección dinámicamente o manualmente -->
-                    @foreach (App\Models\Seccion::where('grado_id_grado', request('grado'))->get() as $seccion)
-                        <option value="{{ $seccion->id_seccion }}"
-                            {{ request('seccion') == $seccion->id_seccion ? 'selected' : '' }}>
-                            {{ $seccion->nombre_seccion }}
-                        </option>
-                    @endforeach
-                </select>
+                <div class="position-relative">
+                    <select class="form-control ml-2 mr-2 @error('seccion') is-invalid @enderror"" style="width: 130px;" id="seccion" name="seccion" onchange="this.form.submit()">
+                        <option value="" selected>Sección</option>
+                        <!-- Agrega opciones de sección dinámicamente o manualmente -->
+                        @foreach (App\Models\Seccion::where('grado_id_grado', request('grado'))->get() as $seccion)
+                            <option value="{{ $seccion->id_seccion }}"
+                                {{ request('seccion') == $seccion->id_seccion ? 'selected' : '' }}>
+                                {{ $seccion->nombre_seccion }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('seccion')
+                        <div class="invalid-feedback d-flex justify-content-center align-items-center">
+                            <strong>
+                                {{ $message }}
+                            </strong>
+                        </div>
+                    @enderror
+                </div>
 
                 <!-- Botón de búsqueda -->
                 <div class="input-group-append ml-2 mr-4">
-                    <button class="btn btn-success my-2 my-sm-0" type="submit" style="width: 100px;"><strong> Buscar </strong></button>
+                    <button class="btn btn-success my-2 my-sm-0" type="submit" style="width: 120px; height: 37px;"><strong> Buscar </strong></button>
                 </div>
             </div>
         </form>
@@ -116,7 +143,7 @@
                         ) }}
                         </td>
                         <td>
-                        {{ $itemalumnos->padre->nombres . ' ' . $itemalumnos->padre->apellidos }}
+                            {{ $itemalumnos->padre->user->name }}
                         </td>
                         <td>
                             {{ $itemalumnos->telefono }}
@@ -146,13 +173,15 @@
             {{ $alumnos->appends(['buscarporNom' => $buscarporNom, 'buscarporApell' => $buscarporApell])->links() }}
         </div>
         <div>
-            <form
-                action="{{ route('Alumno.generarPdf', [
-                    'idseccion' => $seccion ? $seccion->id_seccion : '0', // Usa '0' si $seccion es nulo
-                ]) }}"
-                method="POST" target="_blank">
+            <form action="{{ route('Alumno.generarPdf', [
+                        'nivel' => request('nivel'),
+                        'grado' => request('grado'),
+                        'seccion' => request('seccion'),
+                        ]) }}"
+                                
+                method="POST" target="{{ $nueva_pagina }}">
                 @csrf
-                <button type="submit" class="btn btn-secondary">Generar PDF</button>
+                <button type="submit" class="btn btn-secondary">Reporte de Alumnos</button>
             </form>
         </div>
     </div>

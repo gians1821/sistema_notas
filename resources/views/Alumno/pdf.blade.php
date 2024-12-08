@@ -96,13 +96,16 @@
   </header>
   <br>
   <div class="info-section">
-    <p><strong>Grado:</strong> {{ App\Models\Grado::where('id_grado', $seccion->grado_id_grado)->get()[0]->nombre_grado .  ' de ' . App\Models\Nivel::where('id_nivel', App\Models\Grado::where('id_grado', $seccion->grado_id_grado)->get()[0]->id_nivel)->get()[0]->nombre_nivel}}</p>
+    <p><strong>Nivel:</strong> {{ $nivel->nombre_nivel }}</p>
+  </div>
+  <div class="info-section">
+    <p><strong>Grado:</strong> {{ $grado->nombre_grado }}</p>
   </div>
   <div class="info-section">
     <p><strong>Sección:</strong> {{ $seccion->nombre_seccion}}</p>
   </div>
   <div class="description">
-    <p>Lista de Estudiantes correspondiente al año escolar 2024.</p>
+    <p>Lista de Estudiantes correspondiente al año escolar {{ $año_actual }}.</p>
   </div>
 
   <div class="content">
@@ -110,14 +113,20 @@
       <thead>
         <tr>
           <th scope="col">Id</th>
-          <th scope="col">Alumno</th>
+          <th scope="col" style="text-align: center;">Alumno</th>
+          <th scope="col" style="text-align: center;">Apoderado</th>
+          <th scope="col" style="text-align: center;">Telefono</th>
+          <th scope="col" style="text-align: center;">Año de Matricula</th>
         </tr>
       </thead>
       <tbody>
         @foreach($alumnos as $alumno)
         <tr>
-          <td>{{$alumno['id_alumno']}}</td>
-          <td>{{$alumno['nombre_alumno'] . ' ' . $alumno['apellido_alumno']}}</td>
+          <td style="text-align: center;">{{$alumno['id_alumno']}}</td>
+          <td style="text-align: center;">{{$alumno['nombre_alumno'] . ' ' . $alumno['apellido_alumno']}}</td>
+          <td style="text-align: center;">{{$alumno['padre']['user']['name']}}</td>
+          <td style="text-align: center;">{{$alumno['telefono']}}</td>
+          <td style="text-align: center;">{{$alumno['periodo']}}</td>
         </tr>
         @endforeach
       </tbody>

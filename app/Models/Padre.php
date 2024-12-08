@@ -20,6 +20,15 @@ class Padre extends Model
         'id_users',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_users'); 
+    }
+
+    public function alumnos()
+    {
+        return $this->hasMany(Alumno::class, 'id');
+    }
 
 
 }

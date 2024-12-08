@@ -13,7 +13,7 @@
             <div class="card-body">
                 <div class="row">
                     <!-- Columna para la imagen y el input -->
-                    <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
+                    <div class="col-md-6 d-flex flex-column align-items-center justify-content-center mt-2">
                         <label for="profile_photo" class="form-label"><strong>Foto de Perfil</strong></label>
                         <div 
                             class="img-fluid rounded-circle mb-5 d-flex justify-content-center align-items-center"

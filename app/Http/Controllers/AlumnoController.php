@@ -38,7 +38,8 @@ class AlumnoController extends Controller
         $seccion = $request->get('seccion');
         $periodo = $request->get('periodo');
 
-        
+        $nueva_pagina = '_self';
+
         $query = Alumno::query();
 
         if ($buscarporNom) {
@@ -53,6 +54,7 @@ class AlumnoController extends Controller
             $query->whereHas('seccion', function ($query) use ($seccion) {
                 $query->where('id_seccion', $seccion); 
             });
+            $nueva_pagina = '_blank';
         }
 
         if ($grado) {
@@ -97,7 +99,7 @@ class AlumnoController extends Controller
 
         return view('Alumno.Alumnos', compact(
             'alumnos', 'periodos' , 'periodo' ,'buscarporNom', 'buscarporApell', 'nivel', 'grado', 
-            'seccion', 'niveles', 'grados', 'secciones'
+            'seccion', 'niveles', 'grados', 'secciones', 'nueva_pagina'
         ));
     }
 
@@ -524,25 +526,40 @@ class AlumnoController extends Controller
 
     public function generarPdf(Request $request)
     {
-        $idseccion = (int) $request->idseccion;
-
-        $query = Alumno::query();
-
-        if ($idseccion) {
-            $query->whereHas('seccion', function ($query) use ($idseccion) {
-                $query->where('id_seccion', $idseccion); 
-            });
-        }
-
-        $alumnos = $query->paginate($this::PAGINACION);
-
-        $alumnos->appends([
-            'seccion' => $idseccion,
+        $request->validate([
+            'nivel' => 'required',
+            'grado' => 'required',
+            'seccion' => 'required',
+        ], [
+            'nivel.required' => 'Seleccione el nivel.',
+            'grado.required' => 'Seleccione el grado.',
+            'seccion.required' => 'Seleccione la sección.',
         ]);
+        
+        $año_actual = Carbon::now()->year;
 
-        $seccion = Seccion::where('id_seccion', $idseccion)->get()[0];
-        $pdf = Pdf::loadView('Alumno.pdf', ['alumnos' => $alumnos, 'seccion' => $seccion]);
-
+        $nivelId = $request->input('nivel');
+        $gradoId = $request->input('grado');
+        $seccionId = $request->input('seccion');
+    
+        $nivel = Nivel::find($nivelId);
+        $grado = Grado::find($gradoId);
+        $seccion = Seccion::find($seccionId);
+    
+        if (!$nivel || !$grado || !$seccion) {
+            return back()->withErrors(['error' => 'No se encontraron los datos seleccionados.']);
+        }
+    
+        $alumnos = Alumno::where('seccion_id_seccion', $seccionId)->get();
+    
+        $pdf = Pdf::loadView('Alumno.pdf', [
+            'alumnos' => $alumnos,
+            'nivel' => $nivel,
+            'grado' => $grado,
+            'seccion' => $seccion,
+            'año_actual' => $año_actual,
+        ]);
+    
         return $pdf->stream('alumnos.pdf');
     }
 }
