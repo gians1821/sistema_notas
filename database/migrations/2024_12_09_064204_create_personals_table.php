@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('personals', function (Blueprint $table) {
             $table->bigIncrements('id_personal');
-            $table->string('periodo', 5);
+            $table->unsignedBigInteger('user_id')->index('users_user_id_foreign');
             $table->unsignedBigInteger('id_tipo_personal')->index('personals_id_tipo_personal_foreign');
             $table->string('nombre', 30);
             $table->string('apellido', 30);
@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('direccion', 45);
             $table->date('fecha_nacimiento');
             $table->string('telefono', 15);
-            $table->unsignedBigInteger('curso_id_curso')->nullable()->index('personals_curso_id_curso_foreign');
             $table->timestamps();
         });
     }

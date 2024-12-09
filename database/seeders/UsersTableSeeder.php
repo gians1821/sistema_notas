@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class UsersTableSeeder extends Seeder
 {
@@ -17,14 +16,15 @@ class UsersTableSeeder extends Seeder
     {
         
 
-        DB::table('users')->delete();
+        \DB::table('users')->delete();
         
-        DB::table('users')->insert(array (
+        \DB::table('users')->insert(array (
             0 => 
             array (
                 'id' => 1,
                 'name' => 'GianFranco',
                 'email' => 'Gian@gmail.com',
+                'profile_photo' => NULL,
                 'email_verified_at' => NULL,
                 'password' => '$2y$12$k1auoB0YUcXdcQihVTHmeuDR3irqL7hhp2cwWAiWKmlgd91o2hMOy',
                 'remember_token' => NULL,
@@ -36,6 +36,7 @@ class UsersTableSeeder extends Seeder
                 'id' => 2,
                 'name' => 'Jhonatan',
                 'email' => 'Jm@gmail.com',
+                'profile_photo' => NULL,
                 'email_verified_at' => NULL,
                 'password' => '$2y$12$YwBp.OzykM3oke2f8kxgqe5Y1sDj0AnR4d7/e.OBCFELX0oDdSkye',
                 'remember_token' => NULL,
@@ -47,6 +48,7 @@ class UsersTableSeeder extends Seeder
                 'id' => 3,
                 'name' => 'Fabian Ruiz',
                 'email' => 'fruiz@mail.com',
+                'profile_photo' => NULL,
                 'email_verified_at' => NULL,
                 'password' => '$2y$12$PRO.GF7682LwQsGwuE3Jru.geBFdHAOSN7hzZxSz/765Lw2Ru30Ia',
                 'remember_token' => NULL,
@@ -58,6 +60,7 @@ class UsersTableSeeder extends Seeder
                 'id' => 4,
                 'name' => 'Secretaria',
                 'email' => 'secretaria@gmail.com',
+                'profile_photo' => NULL,
                 'email_verified_at' => NULL,
                 'password' => '$2y$12$.MYT.P7bnwPrQJeMKWEB9eiOnZUlz.DpShe/0kAMbC/EdJnVUc3nm',
                 'remember_token' => NULL,
@@ -69,6 +72,7 @@ class UsersTableSeeder extends Seeder
                 'id' => 6,
                 'name' => 'Gian',
                 'email' => 'gianfrancosr182015@gmail.com',
+                'profile_photo' => NULL,
                 'email_verified_at' => NULL,
                 'password' => '$2y$12$mpwkq3sT5DsGERrxbb8Hmux7sjOLxPKHMKf/hC3kHROLtzlwGS/I2',
                 'remember_token' => NULL,
@@ -80,11 +84,36 @@ class UsersTableSeeder extends Seeder
                 'id' => 7,
                 'name' => 'PRUEBA',
                 'email' => 'mail@mail.com',
+                'profile_photo' => NULL,
                 'email_verified_at' => NULL,
                 'password' => '$2y$12$4o3nfe4qNimZw.Sa.z8uf.T69xJvwz6eVJZaS9EMLtwprXlKKcv/a',
                 'remember_token' => NULL,
                 'created_at' => '2024-12-05 16:01:03',
                 'updated_at' => '2024-12-05 16:01:03',
+            ),
+            6 => 
+            array (
+                'id' => 8,
+                'name' => 'miguelramos',
+                'email' => 'miguelramos@mail.com',
+                'profile_photo' => NULL,
+                'email_verified_at' => NULL,
+                'password' => '$2y$12$GqzliCoVzCzzNmCd7xlqe.hXs0xZCVLFjz90KkvpdF73wpb74fQbW',
+                'remember_token' => NULL,
+                'created_at' => '2024-12-09 06:48:38',
+                'updated_at' => '2024-12-09 06:48:38',
+            ),
+            7 => 
+            array (
+                'id' => 9,
+                'name' => 'jhonconnor',
+                'email' => 'jhonconnor@mail.com',
+                'profile_photo' => NULL,
+                'email_verified_at' => NULL,
+                'password' => '$2y$12$/04OJqSgqKoON8/VsQjm5e7N0GGcU52Krmmfbv0hdDlafetIVYAu2',
+                'remember_token' => NULL,
+                'created_at' => '2024-12-09 06:49:08',
+                'updated_at' => '2024-12-09 06:49:08',
             ),
         ));
         

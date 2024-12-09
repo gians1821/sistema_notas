@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('personals', function (Blueprint $table) {
             $table->foreign(['id_tipo_personal'], 'personals_ibfk_1')->references(['id_tipo_personal'])->on('tipo_personals')->onUpdate('no action')->onDelete('cascade');
+            $table->foreign(['user_id'], 'personals_ibfk_2')->references(['id'])->on('users')->onUpdate('no action')->onDelete('cascade');
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('personals', function (Blueprint $table) {
             $table->dropForeign('personals_ibfk_1');
+            $table->dropForeign('personals_ibfk_2');
         });
     }
 };
