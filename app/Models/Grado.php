@@ -23,7 +23,7 @@ class Grado extends Model
         return $this->hasMany(Seccion::class,'id_grado','grado_id_grado');
     } 
 
-    public function curso(){
-        return $this->hasMany(Curso::class,'id_grado','grado_id_grado');
-    } 
+    public function cursos(){
+        return $this->hasMany(Curso::class, 'grado_id_grado', 'id_grado');
+    }
 }

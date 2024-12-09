@@ -47,6 +47,12 @@
     </li>
     <!-- AQUI ES DONDE TRABAJAREMOS -->
     <!-- GESTION DE ALUMNOS -->
+    
+    <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Info') ? 'active' : '' }}">
+        <a class="sidebar-link" href="{{ URL::to('/Info') }}">
+            <i class="align-middle" data-feather="info"></i> <span> Informacion General </span>
+        </a>
+    </li>
     @hasanyrole('Admin|Secretaria')
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Alumno') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ URL::to('/Alumno') }}">
