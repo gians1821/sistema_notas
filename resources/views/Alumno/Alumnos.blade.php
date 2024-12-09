@@ -102,7 +102,7 @@
     </nav>
     <br>
 
-    <div id="mensaje">
+    <div id="mensaje1">
         @if (session('datos'))
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 {{ session('datos') }}
@@ -112,6 +112,18 @@
             </div>
         @endif
     </div>
+
+    <div id="mensaje2">
+        @if (session('danger'))
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                {{ session('danger') }}
+                <button type="button" class="close" data-dismiss="alert" arialabel="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+    </div>
+
     <table class="table text-center">
         <thead class="thead-dark ">
             <tr>
@@ -153,9 +165,7 @@
                         <td>
 
                             
-                                <a href="{{ route('Alumno.edit', $itemalumnos->id_alumno) }}" class="btn btn-secondary">
-                                    Matrícula
-                                </a>
+                                
                                 <a href="{{ route('Alumno.edit', $itemalumnos->id_alumno) }}" class="btn btn-info">
                                     <img src="{{ asset('plantilla\src\img\logo\editar_blanco.png') }}" alt="Editar"
                                         style="width: 30px; height: 30px;">
@@ -193,7 +203,12 @@
 @section('script')
     <script>
         setTimeout(function() {
-            document.querySelector('#mensaje').remove();
+            document.querySelector('#mensaje1').remove();
+        }, 3000);
+    </script>
+    <script>
+        setTimeout(function() {
+            document.querySelector('#mensaje2').remove();
         }, 3000);
     </script>
 @endsection
