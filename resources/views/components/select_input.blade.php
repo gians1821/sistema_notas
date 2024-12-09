@@ -5,7 +5,8 @@ $name       - Nombre del modelo a llamar
 $label      - Para la etiqueta del input
 $message    - Para el mensaje de error
 $options    - Para los desplegables de la lista
-$property
+$id_property        - el nombre del id (distinto de 'id')
+$property           - el nombre del campo mostrado (distinto de 'name')
 -->
 
 <div class="form-group">

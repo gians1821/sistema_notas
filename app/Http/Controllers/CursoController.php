@@ -256,4 +256,15 @@ class CursoController extends Controller
         // Devolver los cursos en formato JSON
         return response()->json($cursos);
     }
+
+    public function getCurso($id)
+    {
+        $curso = Curso::where('id_curso', $id)->first();
+
+        if ($curso) {
+            return response()->json($curso);
+        } else {
+            return response()->json(['error' => 'Curso no encontrado'], 404);
+        }
+    }
 }

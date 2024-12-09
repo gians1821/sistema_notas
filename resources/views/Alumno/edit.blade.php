@@ -168,7 +168,7 @@
     <script>
         function fetchGrados(nivelId) {
             if (nivelId) {
-                fetch(`/grados/${nivelId}`) 
+                fetch(`/api/grados/${nivelId}`) 
                     .then(response => response.json())
                     .then(data => {
                         let gradoSelect = document.getElementById('grado');
@@ -189,7 +189,7 @@
 
         function fetchSecciones(gradoId) {
             if (gradoId) {
-                fetch(`/secciones/${gradoId}`) 
+                fetch(`/api/secciones/${gradoId}`) 
                     .then(response => response.json())
                     .then(data => {
                         let seccionSelect = document.getElementById('seccion');

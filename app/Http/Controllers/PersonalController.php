@@ -322,4 +322,16 @@ class PersonalController extends Controller
         $personal->delete();
         return redirect()->route('Personal.index')->with('datos', 'Registro Eliminado..');
     }
+
+    public function getDocente($id)
+    {
+        $docente = Personal::where('id_personal', $id)->first();
+
+        if ($docente)
+        {
+            return response()->json($docente);
+        } else {
+            return response()->json(['error' => 'Docente no encontrado'], 404);
+        }
+    }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\CursoPorGradoController;
 use App\Http\Controllers\CapacidadController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\CatedraController;
+use App\Http\Controllers\CatedrasController;
 use App\Http\Controllers\CursoHasAlumnoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PerfilController;
@@ -55,6 +56,9 @@ Route::resource('/CursoPorGrado', CursoPorGradoController::class);
 Route::resource('/Capacidad', CapacidadController::class);
 // Pages Personal
 Route::resource('/Personal', PersonalController::class);
+// Pages Catedras
+Route::resource('/catedras', CatedrasController::class);
+
 // Pages Nota/Catedra
 Route::resource('/Nota', CursoHasAlumnoController::class);
 Route::get('/Nota/{id_alumno}/{id_curso}/edit', [CursoHasAlumnoController::class, 'edit'])->name('Nota.edit');
@@ -85,6 +89,10 @@ Route::get('/CancelarCapacidad', function () {
 Route::get('/CancelarUsuario', function () {
     return redirect()->route('admin.usuarios.index')->with('datos', 'Accion Cancelada..!');
 })->name('CancelarUsuario');
+// Cancelar Catedras
+Route::get('/CancelarCatedras', function () {
+    return redirect()->route('catedras.index')->with('datos', 'Accion Cancelada..!');
+})->name('CancelarCatedras');
 // Cancelar Personal
 Route::get('/CancelarPersonal', function () {
     return redirect()->route('Personal.index')->with('datos', 'Accion Cancelada..!');
@@ -112,9 +120,11 @@ Route::get('Capacidad/{id_competencia}/confirmar', [CapacidadController::class, 
 Route::get('Personal/{id_personal}/confirmar', [PersonalController::class, 'confirmar'])->name('Personal.confirmar');
 
 // FUNCIONES BACKEND 
-Route::get('/niveles', [NivelController::class, 'getNiveles']);
-Route::get('/grados/{id_nivel}', [GradoController::class, 'getGradosPorNivel']);
-Route::get('/secciones/{id_grado}', [SeccionController::class, 'getSeccionesPorGrado']);
-Route::get('/grado/{id_grado}/cursos', [CursoController::class, 'getCursosPorGrado']);
-Route::get('/buscar-padre', [PadreController::class, 'buscarPadre']);
-Route::get('/tipos_personal', [TipoPersonalController::class, 'getTiposPersonal']);
+Route::get('/api/niveles', [NivelController::class, 'getNiveles']);
+Route::get('/api/grados/{id_nivel}', [GradoController::class, 'getGradosPorNivel']);
+Route::get('/api/secciones/{id_grado}', [SeccionController::class, 'getSeccionesPorGrado']);
+Route::get('/api/grado/{id_grado}/cursos', [CursoController::class, 'getCursosPorGrado']);
+Route::get('/api/buscar-padre', [PadreController::class, 'buscarPadre']);
+Route::get('/api/tipos_personal', [TipoPersonalController::class, 'getTiposPersonal']);
+Route::get('/api/docente/{id}', [PersonalController::class, 'getDocente']);
+Route::get('/api/curso/{id}', [CursoController::class, 'getCurso']);

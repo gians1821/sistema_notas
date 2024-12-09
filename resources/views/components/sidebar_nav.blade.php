@@ -114,5 +114,13 @@
             </a>
         </li>
     @endrole
+    @role('Admin')
+        <!-- GESTION DE PERSONAL -->
+        <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'catedra') ? 'active' : '' }}">
+            <a class="sidebar-link" href="{{ route('catedras.index') }}">
+                <i class="align-middle" data-feather="check-circle"></i> <span> Cátedras </span>
+            </a>
+        </li>
+    @endrole
     
 </ul>

@@ -67,7 +67,7 @@
         $(document).ready(function() {
             // Cargar niveles al iniciar la página y seleccionar el nivel actual
             $.ajax({
-                url: '/niveles', // URL para obtener los niveles
+                url: '/api/niveles', // URL para obtener los niveles
                 type: 'GET',
                 success: function(niveles) {
                     $.each(niveles, function(key, nivel) {
@@ -91,7 +91,7 @@
 
                 if (nivel) {
                     $.ajax({
-                        url: '/grados/' + nivel,
+                        url: '/api/grados/' + nivel,
                         type: 'GET',
                         success: function(grados) {
                             $.each(grados, function(key, grado) {
@@ -118,7 +118,7 @@
 
                 if (gradoId) {
                     $.ajax({
-                        url: '/grado/' + gradoId + '/cursos',
+                        url: '/api/grado/' + gradoId + '/cursos',
                         type: 'GET',
                         success: function(cursos) {
                             $.each(cursos, function(key, curso) {

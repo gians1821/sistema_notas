@@ -99,7 +99,7 @@
             // Función para cargar niveles
             function cargarNiveles(selectedNivel = null) {
                 $.ajax({
-                    url: '/niveles',
+                    url: '/api/niveles',
                     type: 'GET',
                     success: function(niveles) {
                         niveles.forEach(function(nivel) {
@@ -124,7 +124,7 @@
             // Función para cargar grados
             function cargarGrados(nivelId, selectedGrado = null) {
                 $.ajax({
-                    url: '/grados/' + nivelId,
+                    url: '/api/grados/' + nivelId,
                     type: 'GET',
                     success: function(grados) {
                         $('#buscarporGrado').empty().append(
@@ -158,7 +158,7 @@
             // Función para cargar cursos
             function cargarCursos(gradoId, selectedCurso = null) {
                 $.ajax({
-                    url: '/grado/' + gradoId + '/cursos',
+                    url: '/api/grado/' + gradoId + '/cursos',
                     type: 'GET',
                     success: function(cursos) {
                         $('#buscarporCurso').empty().append(
