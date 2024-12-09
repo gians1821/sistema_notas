@@ -151,7 +151,7 @@ class UserController extends Controller
                     'dni' => 'required|numeric|digits:8|unique:padres,dni,' . ($padres ? $padres->id : null),
                     'email' => 'required|email|max:255|unique:users,email,' . $id,
                     'password' => 'nullable|string|min:8|confirmed',
-                    'password_confirmation' => 'required|same:password',
+                    'password_confirmation' => 'nullable|same:password',
                     'rol' => 'required|exists:roles,id',
                     'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 ],
@@ -169,7 +169,6 @@ class UserController extends Controller
 
                     'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
 
-                    'password_confirmation.required' => 'Confirme la contraseña.',
                     'password_confirmation.same' => 'Las contraseñas no coinciden.',
 
                     'rol.required' => 'El rol es obligatorio.',
@@ -194,7 +193,7 @@ class UserController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|max:255|unique:users,email,' . $id,
                 'password' => 'nullable|string|min:8|confirmed',
-                'password_confirmation' => 'required|same:password',
+                'password_confirmation' => 'nullable|same:password',
                 'rol' => 'required|exists:roles,id',
                 'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ],
@@ -206,10 +205,8 @@ class UserController extends Controller
                 'email.email' => 'El correo electrónico no es válido.',
                 'email.unique' => 'Este correo electrónico ya está registrado.',
 
-                'password.required' => 'La contraseña es obligatoria.',
                 'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
 
-                'password_confirmation.required' => 'Confirme la contraseña.',
                 'password.confirmed' => 'Las contraseñas no coinciden.',
 
                 'rol.required' => 'El rol es obligatorio.',
@@ -268,7 +265,9 @@ class UserController extends Controller
     public function destroy($id_user)
     {
         $user = User::findOrFail($id_user);
-        if ($user->rol == 'Padre') {
+        $roles = DB::table('model_has_roles')->where('model_id', $id_user)->first();
+        $rol = Role::where('id', $roles->role_id)->first();
+        if ($rol->name == 'Padre') {
             $padre = Padre::where('id_users', $id_user)->first();
             $alumno = Alumno::where('padre_id', $padre->id)->first();
             if ($alumno) {
@@ -280,7 +279,8 @@ class UserController extends Controller
             }
         } else {
             $user->delete();
-            return redirect()->route('admin.usuarios.index')->with('datos', 'Registro Eliminado');
+            return redirect()->route('admin.usuarios.index')->with('datos', 'Registro Eliminado..');
         }
+        
     }
 }
