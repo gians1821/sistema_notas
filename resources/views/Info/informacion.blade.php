@@ -134,7 +134,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6 text-center">
-                                            <p><strong>Nombre Completo: </strong> {{ $alumnos->nombre_alumno . ' ' . $alumnos->apellido_alumno }}</p>
+                                            <p><strong>Alumno: </strong> {{ $alumnos->nombre_alumno . ' ' . $alumnos->apellido_alumno }}</p>
                                             <p><strong>Año Matricula: </strong> {{ $alumnos->periodo }}</p>
                                             <p><strong>País: </strong> {{ $alumnos->pais }} </p>
                                             <p><strong>Departamento: </strong> {{ $alumnos->region }} </p>
