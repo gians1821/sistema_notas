@@ -55,12 +55,17 @@
     }
 
     .signature-section {
-      margin-top: 50px;
+      margin-top: 0px;
       text-align: center;
     }
 
+    .signature-section img {
+        display: block; 
+        margin-left: 0 auto; 
+    }
+
     .signature {
-      margin-top: 50px;
+      margin-top: 0px;
       display: inline-block;
       text-align: center;
     }
@@ -136,13 +141,10 @@
   <br>
   <div class="signature-section">
     <div class="signature">
-      <p class="director">Firma del Director del Colegio</p>
-    </div>
-    <div class="seal">
-      <img src="plantilla/src/img/logo/sello.png" alt="Sello del Colegio">
+        <p class="director">Firma de la Secretaria</p>
+            <img src="plantilla/src/img/logo/Firma_secretaria.png" alt="Firma de la Secretaria">
     </div>
   </div>
-
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>

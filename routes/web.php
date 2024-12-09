@@ -17,6 +17,7 @@ use App\Http\Controllers\GradoController;
 use App\Http\Controllers\NivelController;
 use App\Http\Controllers\PadreController;
 use App\Http\Controllers\TipoPersonalController;
+use App\Http\Controllers\InfoController;
 use App\Models\Alumno;
 use App\Models\User;
 
@@ -42,6 +43,9 @@ Route::resource('/Perfil', PerfilController::class)->names('admin.perfil');
 Route::get('/CancelarUsuario', function () {
     return redirect()->route('admin.usuarios.index')->with('datos', 'Accion Cancelada..!');
 })->name('CancelarUsuario');
+
+
+Route::get('/Info', [InfoController::class, 'show'])->name('Info');
 
 // Pages Alumnos
 Route::resource('/Alumno', AlumnoController::class);

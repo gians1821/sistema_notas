@@ -21,6 +21,16 @@
                     style="width: 200px; height: 200px; object-fit: cover;">
                 <h2>{{ auth()->user()->name }}</h2>
                 <p>{{ auth()->user()->email }}</p>
+                <div id="mensaje1">
+                    @if (session('datos'))
+                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                            {{ session('datos') }}
+                            <button type="button" class="close" data-dismiss="alert" arialabel="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
+                </div>
             </div>
             <div class="col-md-8">
                 <form>
@@ -52,11 +62,13 @@
                     <div class="col-md-4 mb-3 text-center">
                         <div class="card" style="width: 70%;">
                             <img src="{{ $alumno->profile_photo ? asset('storage/' . $alumno->profile_photo) : asset('images/default-user.png') }}" 
-                                class="card-img-top img-fluid rounded mt-4" 
+                                class="card-img-top img-fluid rounded-circle mt-4" 
                                 style="width: 150px; height: 150px; margin: auto;">
                             <div class="card-body">
                                 <label class="form-label"><strong>{{ $alumno->nombre_alumno }} {{ $alumno->apellido_alumno }}</strong></label>
-                                <a href="" class="btn btn-primary">Ver Detalles</a>
+                                <div>
+                                    <a href="{{ route('Info') }}" class="btn btn-primary">Ver Detalles</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -66,3 +78,10 @@
     </div>
 
 @endsection('Contenido')
+@section('script')
+    <script>
+        setTimeout(function() {
+            document.querySelector('#mensaje1').remove();
+        }, 3000);
+    </script>
+@endsection('script')

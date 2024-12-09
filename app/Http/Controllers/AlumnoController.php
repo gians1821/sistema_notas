@@ -255,41 +255,50 @@ class AlumnoController extends Controller
                 ],
             );
 
-            $user = new User();
-            $user->name = $request->nombre_apoderado . ' ' . $request->apellido_apoderado;
-            $user->email = $request->email_apoderado;
-            $imagePath_user = $request->file('profile_photo_apoderado')->store('profile_photos', 'public');
-            $user->profile_photo = $imagePath_user;
-            $user->password = bcrypt($request->password);
-            $user->save();
+            $seccion = Seccion::where('id_seccion', $request->seccion)->first();
+            if ($seccion->capacidad > 0) {
 
-            $user->assignRole('Padre'); 
+                $user = new User();
+                $user->name = $request->nombre_apoderado . ' ' . $request->apellido_apoderado;
+                $user->email = $request->email_apoderado;
+                $imagePath_user = $request->file('profile_photo_apoderado')->store('profile_photos', 'public');
+                $user->profile_photo = $imagePath_user;
+                $user->password = bcrypt($request->password);
+                $user->save();
 
-            $padres = new Padre();
-            $padres->dni = $request->dni_apoderado;
-            $padres->nombres = $request->nombre_apoderado;
-            $padres->apellidos = $request->apellido_apoderado;
-            $padres->id_users = $user->id;
-            $padres->save();
+                $user->assignRole('Padre'); 
 
-            $alumnos = new Alumno();
-            $periodo = Carbon::now()->year;
-            $alumnos->periodo = $periodo;
-            $imagePath_alumno = $request->file('profile_photo_alumno')->store('profile_photos', 'public');
-            $alumnos->profile_photo = $imagePath_alumno;
-            $alumnos->nombre_alumno = $request->nombre_alumno;
-            $alumnos->apellido_alumno = $request->apellido_alumno;
-            $alumnos->fecha_nacimiento = $request->fecha_nacimiento;
-            $alumnos->dni = $request->dni;
-            $alumnos->pais = $request->pais;
-            $alumnos->region = $request->region;
-            $alumnos->ciudad = $request->ciudad;
-            $alumnos->distrito = $request->distrito;
-            $alumnos->estado_civil = $request->estado_civil;
-            $alumnos->telefono = $request->telefono;
-            $alumnos->seccion_id_seccion = $request->seccion;
-            $alumnos->padre_id = $padres->id;
-            $alumnos->save();
+                $padres = new Padre();
+                $padres->dni = $request->dni_apoderado;
+                $padres->nombres = $request->nombre_apoderado;
+                $padres->apellidos = $request->apellido_apoderado;
+                $padres->id_users = $user->id;
+                $padres->save();
+
+                $alumnos = new Alumno();
+                $periodo = Carbon::now()->year;
+                $alumnos->periodo = $periodo;
+                $imagePath_alumno = $request->file('profile_photo_alumno')->store('profile_photos', 'public');
+                $alumnos->profile_photo = $imagePath_alumno;
+                $alumnos->nombre_alumno = $request->nombre_alumno;
+                $alumnos->apellido_alumno = $request->apellido_alumno;
+                $alumnos->fecha_nacimiento = $request->fecha_nacimiento;
+                $alumnos->dni = $request->dni;
+                $alumnos->pais = $request->pais;
+                $alumnos->region = $request->region;
+                $alumnos->ciudad = $request->ciudad;
+                $alumnos->distrito = $request->distrito;
+                $alumnos->estado_civil = $request->estado_civil;
+                $alumnos->telefono = $request->telefono;
+                $alumnos->seccion_id_seccion = $request->seccion;
+                $alumnos->padre_id = $padres->id;
+                $alumnos->save();
+
+                $seccion->capacidad -= 1;
+                $seccion->save();
+            } else {
+                return redirect()->route('Alumno.index')->with('danger', 'La sección seleccionada ya no tiene capacidad.');
+            }
 
         } else {
 
@@ -367,24 +376,33 @@ class AlumnoController extends Controller
                 ],
             );
 
-            $alumnos = new Alumno();
-            $periodo = Carbon::now()->year;
-            $alumnos->periodo = $periodo;
-            $imagePath_alumno = $request->file('profile_photo_alumno')->store('profile_photos', 'public');
-            $alumnos->profile_photo = $imagePath_alumno;
-            $alumnos->nombre_alumno = $request->nombre_alumno;
-            $alumnos->apellido_alumno = $request->apellido_alumno;
-            $alumnos->fecha_nacimiento = $request->fecha_nacimiento;
-            $alumnos->dni = $request->dni;
-            $alumnos->pais = $request->pais;
-            $alumnos->region = $request->region;
-            $alumnos->ciudad = $request->ciudad;
-            $alumnos->distrito = $request->distrito;
-            $alumnos->estado_civil = $request->estado_civil;
-            $alumnos->telefono = $request->telefono;
-            $alumnos->seccion_id_seccion = $request->seccion;
-            $alumnos->padre_id = $padre->id;
-            $alumnos->save();
+            $seccion = Seccion::where('id_seccion', $request->seccion)->first();
+            if ($seccion->capacidad > 0) {
+
+                $alumnos = new Alumno();
+                $periodo = Carbon::now()->year;
+                $alumnos->periodo = $periodo;
+                $imagePath_alumno = $request->file('profile_photo_alumno')->store('profile_photos', 'public');
+                $alumnos->profile_photo = $imagePath_alumno;
+                $alumnos->nombre_alumno = $request->nombre_alumno;
+                $alumnos->apellido_alumno = $request->apellido_alumno;
+                $alumnos->fecha_nacimiento = $request->fecha_nacimiento;
+                $alumnos->dni = $request->dni;
+                $alumnos->pais = $request->pais;
+                $alumnos->region = $request->region;
+                $alumnos->ciudad = $request->ciudad;
+                $alumnos->distrito = $request->distrito;
+                $alumnos->estado_civil = $request->estado_civil;
+                $alumnos->telefono = $request->telefono;
+                $alumnos->seccion_id_seccion = $request->seccion;
+                $alumnos->padre_id = $padre->id;
+                $alumnos->save();
+
+                $seccion->capacidad -= 1;
+                $seccion->save();
+            } else {
+                return redirect()->route('Alumno.index')->with('danger', 'La sección seleccionada ya no tiene capacidad.');
+            }
         }
 
         return redirect()->route('Alumno.index')->with('datos', 'Registro Guardado..!');
@@ -520,6 +538,9 @@ class AlumnoController extends Controller
     public function destroy($id_alumno)
     {
         $alumno = Alumno::findOrFail($id_alumno);
+        $seccion = Seccion::where('id_seccion', $alumno->seccion_id_seccion)->first();
+        $seccion->capacidad += 1;
+        $seccion->save();
         $alumno->delete();
         return redirect()->route('Alumno.index')->with('datos', 'Registro Eliminado..');
     }
