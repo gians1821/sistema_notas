@@ -4,7 +4,7 @@
 @endsection('BarraNavegacion')
 @section('Contenido')
     <!-- CONTENIDO DE LA PAGINA -->
-    <h1 class="h3 mb-3 titulos"><strong>Gestión de</strong> usuarios</h1>
+    <h1 class="h3 mb-3 titulos"><strong>Gestión de</strong> Usuarios</h1>
     <br>
     <nav class="navbar navbar-light">
 

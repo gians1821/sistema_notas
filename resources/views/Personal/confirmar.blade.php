@@ -9,9 +9,11 @@
         <div class="card-body">
             <h5 class="card-title">¿Estas seguro de eliminar?</h5>
             <form action="{{ route('Personal.destroy', $personal->id_personal) }}" method="POST">
-                <h5>DNI: {{ $personal->dNI }}</h5>
+                <h5>DNI: {{ $personal->dni }}</h5>
                 <h5>{{ mb_strtoupper($personal->tipopersonal->nombre_tipopersonal) }}: {{ $personal->nombre }}
                     {{ $personal->apellido }} </h5>
+                <h5>USUARIO ASOCIADO: {{ $personal->user->email }} </h5>
+
                 @method('delete')
                 @csrf
                 <p class="card-text">No podras recuperar la informacion una vez eliminada.</p>

@@ -93,7 +93,7 @@ class PersonalController extends Controller
             // Relacionar el usuario con el personal
             $personal->user_id = $user->id;
             $personal->save(); // Actualizar el personal con el user_id
-            
+
             // Asignar el rol si el tipo de personal es DOCENTE
             $tipo_personal = TipoPersonal::where('id_tipo_personal', $validatedData['id_tipo_personal'])->first();
 
@@ -105,14 +105,14 @@ class PersonalController extends Controller
                         $user->assignRole($rolDocente->name);
                     }
                 }
-            
+
                 if ($tipo_personal->nombre_tipopersonal == 'DIRECTOR') {
                     $rolDirector = Role::where('name', 'Director')->first();
                     if ($rolDirector) {
                         $user->assignRole($rolDirector->name);
                     }
                 }
-            
+
                 $user->save();
             }
 
@@ -308,6 +308,17 @@ class PersonalController extends Controller
     public function destroy($id_personal)
     {
         $personal = Personal::findOrFail($id_personal);
+
+        // Buscar el usuario asociado
+        $user = $personal->user;
+
+        // Eliminar el usuario si existe
+        if ($user) {
+            $user->delete();
+        }
+
+        // Eliminar el registro de Personal
+        $personal->delete();
         $personal->delete();
         return redirect()->route('Personal.index')->with('datos', 'Registro Eliminado..');
     }

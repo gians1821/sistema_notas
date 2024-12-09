@@ -23,6 +23,10 @@ class Personal extends Model
         return $this->hasOne('App\Models\Curso','id_curso','curso_id_curso');
     } 
 
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
 }
 
 
