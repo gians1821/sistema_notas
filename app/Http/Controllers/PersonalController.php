@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class PersonalController extends Controller
 {
@@ -75,6 +76,7 @@ class PersonalController extends Controller
         \DB::beginTransaction();
 
         try {
+            // Crear el usuario
             $user = new User();
             $user->name = $validatedData['username'];
             $user->email = $validatedData['email'];
@@ -94,26 +96,40 @@ class PersonalController extends Controller
             $personal->user_id = $user->id;
             $personal->save(); // Actualizar el personal con el user_id
 
-            // Asignar el rol si el tipo de personal es DOCENTE
+            // Asignar el rol si el tipo de personal es DOCENTE o DIRECTOR
             $tipo_personal = TipoPersonal::where('id_tipo_personal', $validatedData['id_tipo_personal'])->first();
 
-            if ($tipo_personal && ($tipo_personal->nombre_tipopersonal == 'DOCENTE' || $tipo_personal->nombre_tipopersonal == 'DIRECTOR')) {
-                // Asignar el rol al usuario si es 'DOCENTE' o 'DIRECTOR'
+            if ($tipo_personal) {
+                // Asignar rol si es 'DOCENTE' o 'DIRECTOR'
                 if ($tipo_personal->nombre_tipopersonal == 'DOCENTE') {
-                    $rolDocente = Role::where('name', 'Docente')->first();
-                    if ($rolDocente) {
-                        $user->assignRole($rolDocente->name);
-                    }
+                    $id_rol_docente = Role::where('name', 'Docente')->first()->id;
+                    DB::table('model_has_roles')->insert([
+                        'role_id' => $id_rol_docente,
+                        'model_id' => $user->id,
+                        'model_type' => User::class, // Establecer el tipo dinámicamente
+                    ]);
+                } else if ($tipo_personal->nombre_tipopersonal == 'DIRECTOR') {
+                    $id_rol_director = Role::where('name', 'Director')->first()->id;
+                    DB::table('model_has_roles')->insert([
+                        'role_id' => $id_rol_director,
+                        'model_id' => $user->id,
+                        'model_type' => User::class, // Establecer el tipo dinámicamente
+                    ]);
+                } else if ($tipo_personal->nombre_tipopersonal == 'ASISTENTE') {
+                    $id_rol_asistente = Role::where('name', 'Asistente')->first()->id;
+                    DB::table('model_has_roles')->insert([
+                        'role_id' => $id_rol_asistente,
+                        'model_id' => $user->id,
+                        'model_type' => User::class, // Establecer el tipo dinámicamente
+                    ]);
+                } else if ($tipo_personal->nombre_tipopersonal == 'ADMINISTRADOR') {
+                    $id_rol_administrador = Role::where('name', 'Admin')->first()->id;
+                    DB::table('model_has_roles')->insert([
+                        'role_id' => $id_rol_administrador,
+                        'model_id' => $user->id,
+                        'model_type' => User::class, // Establecer el tipo dinámicamente
+                    ]);
                 }
-
-                if ($tipo_personal->nombre_tipopersonal == 'DIRECTOR') {
-                    $rolDirector = Role::where('name', 'Director')->first();
-                    if ($rolDirector) {
-                        $user->assignRole($rolDirector->name);
-                    }
-                }
-
-                $user->save();
             }
 
             // Confirmar la transacción
@@ -327,8 +343,7 @@ class PersonalController extends Controller
     {
         $docente = Personal::where('id_personal', $id)->first();
 
-        if ($docente)
-        {
+        if ($docente) {
             return response()->json($docente);
         } else {
             return response()->json(['error' => 'Docente no encontrado'], 404);

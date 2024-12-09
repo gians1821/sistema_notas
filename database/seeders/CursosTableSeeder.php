@@ -17,30 +17,6 @@ class CursosTableSeeder extends Seeder
         // Eliminar datos existentes en la tabla cursos
         DB::table('cursos')->delete();
 
-<<<<<<< HEAD
-        \DB::table('cursos')->delete();
-        
-        \DB::table('cursos')->insert(array (
-            0 => 
-            array (
-                'id_curso' => 1,
-                'grado_id_grado' => 1,
-                'nombre_curso' => 'MATEMÁTICAS',
-                'created_at' => '2024-12-09 06:26:24',
-                'updated_at' => '2024-12-09 06:26:24',
-            ),
-            1 => 
-            array (
-                'id_curso' => 2,
-                'grado_id_grado' => 1,
-                'nombre_curso' => 'COMUNICACIÓN',
-                'created_at' => '2024-12-09 06:26:31',
-                'updated_at' => '2024-12-09 06:26:31',
-            ),
-        ));
-        
-        
-=======
         // Lista de nombres de cursos
         $nombresCursos = [
             'Matemáticas',
@@ -68,6 +44,5 @@ class CursosTableSeeder extends Seeder
         }
 
         DB::table('cursos')->insert($cursos);
->>>>>>> testing
     }
 }
