@@ -4,13 +4,13 @@
         PRINCIPAL
     </li>
     <!-- DASHBOARD -->
-    
+
     @can('Home.index')
-    <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Home') ? 'active' : '' }}">
-        <a class="sidebar-link" href="{{ route('Home.index') }}">
-            <i class="align-middle" data-feather="home"></i> <span> Inicio </span>
-        </a>
-    </li>
+        <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Home') ? 'active' : '' }}">
+            <a class="sidebar-link" href="{{ route('Home.index') }}">
+                <i class="align-middle" data-feather="home"></i> <span> Inicio </span>
+            </a>
+        </li>
     @endcan
 
     <!-- PROFILE -->
@@ -43,7 +43,7 @@
 
     <!-- TITULO 2 -->
     <li class="sidebar-header">
-        GESTION ACADEMICA
+        GESTIÓN ACADÉMICA
     </li>
     <!-- AQUI ES DONDE TRABAJAREMOS -->
     <!-- GESTION DE ALUMNOS -->
@@ -54,11 +54,11 @@
             </a>
         </li>
     @endhasanyrole
-    <!-- GESTION DE GRADOS -->
     @role('Admin')
+        <!-- GESTION DE GRADOS -->
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Seccion') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ URL::to('/Seccion') }}">
-                <i class="align-middle" data-feather="check-circle"></i> <span> Gestión Grados </span>
+                <i class="align-middle" data-feather="check-circle"></i> <span> Grados </span>
             </a>
         </li>
         <!-- GESTION DE CURSOS -->
@@ -82,15 +82,6 @@
             </a>
         </li>
     @endrole
-    @role('Admin')
-        <!-- GESTION DE PERSONAL -->
-        <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Personal') ? 'active' : '' }}">
-            <a class="sidebar-link" href="{{ route('Personal.index') }}">
-                <i class="align-middle" data-feather="check-circle"></i> <span> Gestión de Personal </span>
-            </a>
-        </li>
-    @endrole
-    <!-- GESTION DE CATEDRAS -->
     <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Catedra') ? 'active' : '' }}">
         <a class="sidebar-link" href="{{ route('Catedra.index') }}">
             <i class="align-middle" data-feather="check-circle"></i> <span> Gestión Notas </span>
@@ -111,4 +102,17 @@
             <i class="align-middle" data-feather="check-circle"></i> <span> Registrar Notas </span>
         </a>
     </li>
+    <!-- TITULO 3 -->
+    <li class="sidebar-header">
+        GESTIÓN ADMINISTRATIVA
+    </li>
+    @role('Admin')
+        <!-- GESTION DE PERSONAL -->
+        <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Personal') ? 'active' : '' }}">
+            <a class="sidebar-link" href="{{ route('Personal.index') }}">
+                <i class="align-middle" data-feather="check-circle"></i> <span> Personal </span>
+            </a>
+        </li>
+    @endrole
+    
 </ul>
