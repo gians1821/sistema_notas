@@ -97,12 +97,23 @@ class PersonalController extends Controller
             // Asignar el rol si el tipo de personal es DOCENTE
             $tipo_personal = TipoPersonal::where('id_tipo_personal', $validatedData['id_tipo_personal'])->first();
 
-            if ($tipo_personal && $tipo_personal->nombre_tipopersonal == 'DOCENTE') {
-                // Asignar el rol al usuario
-                $rol = Role::find($request->input('docente')); // Asegúrate de que 'docente' es el nombre del rol
-                if ($rol) {
-                    $user->assignRole($rol->name);
+            if ($tipo_personal && ($tipo_personal->nombre_tipopersonal == 'DOCENTE' || $tipo_personal->nombre_tipopersonal == 'DIRECTOR')) {
+                // Asignar el rol al usuario si es 'DOCENTE' o 'DIRECTOR'
+                if ($tipo_personal->nombre_tipopersonal == 'DOCENTE') {
+                    $rolDocente = Role::where('name', 'Docente')->first();
+                    if ($rolDocente) {
+                        $user->assignRole($rolDocente->name);
+                    }
                 }
+            
+                if ($tipo_personal->nombre_tipopersonal == 'DIRECTOR') {
+                    $rolDirector = Role::where('name', 'Director')->first();
+                    if ($rolDirector) {
+                        $user->assignRole($rolDirector->name);
+                    }
+                }
+            
+                $user->save();
             }
 
             // Confirmar la transacción
