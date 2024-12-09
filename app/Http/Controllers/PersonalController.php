@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Personal;
 use App\Models\TipoPersonal;
 use App\Models\Curso;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class PersonalController extends Controller
 {
@@ -46,7 +49,6 @@ class PersonalController extends Controller
         return view('Personal.Personal', compact('personal', 'buscarporNombre', 'buscarporApellido', 'buscarporTipoPersonal'));
     }
 
-
     public function create()
     {
         $tipos_personal = TipoPersonal::get();
@@ -55,7 +57,69 @@ class PersonalController extends Controller
 
     public function store(Request $request)
     {
-        
+        // Validación de los datos
+        $validatedData = $request->validate([
+            'dni' => 'required|unique:personals,dni|digits:8',
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'direccion' => 'required|string|max:255',
+            'fecha_nacimiento' => 'required|date|before:today',
+            'telefono' => 'required|string|max:15',
+            'id_tipo_personal' => 'required|exists:tipo_personals,id_tipo_personal',
+            'username' => 'required|string|max:255|unique:users,name',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        // Iniciar la transacción
+        \DB::beginTransaction();
+
+        try {
+            $user = new User();
+            $user->name = $validatedData['username'];
+            $user->email = $validatedData['email'];
+            $user->password = Hash::make($validatedData['password']); // Cifrado de la contraseña
+            $user->save(); // Guardar el usuario
+
+            // Crear un nuevo registro en la tabla 'personals'
+            $personal = new Personal();
+            $personal->dni = $validatedData['dni'];
+            $personal->nombre = $validatedData['nombre'];
+            $personal->apellido = $validatedData['apellido'];
+            $personal->direccion = $validatedData['direccion'];
+            $personal->fecha_nacimiento = $validatedData['fecha_nacimiento'];
+            $personal->telefono = $validatedData['telefono'];
+            $personal->id_tipo_personal = $validatedData['id_tipo_personal'];
+            // Relacionar el usuario con el personal
+            $personal->user_id = $user->id;
+            $personal->save(); // Actualizar el personal con el user_id
+            
+            // Asignar el rol si el tipo de personal es DOCENTE
+            $tipo_personal = TipoPersonal::where('id_tipo_personal', $validatedData['id_tipo_personal'])->first();
+
+            if ($tipo_personal && $tipo_personal->nombre_tipopersonal == 'DOCENTE') {
+                // Asignar el rol al usuario
+                $rol = Role::find($request->input('docente')); // Asegúrate de que 'docente' es el nombre del rol
+                if ($rol) {
+                    $user->assignRole($rol->name);
+                }
+            }
+
+            // Confirmar la transacción
+            \DB::commit();
+
+            return redirect()->route('Personal.index')->with('success', 'Personal y usuario registrados exitosamente.');
+        } catch (\Exception $e) {
+            // Si algo falla, revertir la transacción
+            \DB::rollBack();
+
+            // O puedes mostrar el error en el log para más detalles
+            \Log::error($e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+            return redirect()
+                ->back()
+                ->withErrors(['error' => 'Hubo un error al registrar el personal y el usuario.']);
+        }
     }
 
     public function edit($id_personal)
@@ -85,7 +149,6 @@ class PersonalController extends Controller
         }
 
         $messages = [
-
             'dNI.required' => 'Ingrese el DNI del personal.',
             'dNI.regex' => 'El DNI del personal debe ser solo números.',
             'dNI.max' => 'El DNI del personal no debe exceder los 8 dígitos.',
@@ -208,7 +271,6 @@ class PersonalController extends Controller
                 return redirect()->route('Personal.index')->with('datos', 'Ya existe personal para este curso');
             }
         }
-
 
         $personal = Personal::findOrFail($id_personal);
         $personal->id_tipo_personal = $id_tipopersonal;

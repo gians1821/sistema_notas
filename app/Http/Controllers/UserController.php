@@ -27,13 +27,11 @@ class UserController extends Controller
     {
         $buscarpor = $request->get('buscarpor');
         $filtrarPorRol = $request->get('rol');
-        $roles = Role::all(); 
+        $roles = Role::all();
 
-        $query = User::with('roles')
-            ->where(function ($query) use ($buscarpor) {
-                $query->where('name', 'like', "%$buscarpor%")
-                    ->orWhere('email', 'like', "%$buscarpor%");
-            });
+        $query = User::with('roles')->where(function ($query) use ($buscarpor) {
+            $query->where('name', 'like', "%$buscarpor%")->orWhere('email', 'like', "%$buscarpor%");
+        });
 
         if (!empty($filtrarPorRol)) {
             $query->whereHas('roles', function ($q) use ($filtrarPorRol) {
@@ -61,37 +59,40 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // Validar los datos del formulario
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'profile_photo' => ['required', 'image', 'max:2048'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8', 'confirmed', 'same:password_confirmation'],
-            'password_confirmation' => 'required|same:password',
-            'rol' => ['required', 'exists:roles,id'],
-        ], [
-            'name.required' => 'El nombre es obligatorio.',
+        $validated = $request->validate(
+            [
+                'name' => ['required', 'string', 'max:255'],
+                'profile_photo' => ['required', 'image', 'max:2048'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+                'password' => ['required', 'string', 'min:8', 'confirmed', 'same:password_confirmation'],
+                'password_confirmation' => 'required|same:password',
+                'rol' => ['required', 'exists:roles,id'],
+            ],
+            [
+                'name.required' => 'El nombre es obligatorio.',
 
-            'profile_photo.required' => 'La imagen es obligatoria.',
-            'profile_photo.image' => 'El archivo debe ser una imagen.',
-            'profile_photo.max' => 'La imagen no puede pesar más de 2MB.',
+                'profile_photo.required' => 'La imagen es obligatoria.',
+                'profile_photo.image' => 'El archivo debe ser una imagen.',
+                'profile_photo.max' => 'La imagen no puede pesar más de 2MB.',
 
-            'email.required' => 'El correo electrónico es obligatorio.',
-            'email.unique' => 'Este correo electrónico ya está registrado.',
+                'email.required' => 'El correo electrónico es obligatorio.',
+                'email.unique' => 'Este correo electrónico ya está registrado.',
 
-            'password.required' => 'La contraseña es obligatoria.',
-            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
-            'password.confirmed' => 'Las contraseñas no coinciden.',
+                'password.required' => 'La contraseña es obligatoria.',
+                'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+                'password.confirmed' => 'Las contraseñas no coinciden.',
 
-            'password_confirmation.required' => 'Confirme la contraseña.',
-            'password_confirmation.same' => 'Las contraseñas no coinciden.',
+                'password_confirmation.required' => 'Confirme la contraseña.',
+                'password_confirmation.same' => 'Las contraseñas no coinciden.',
 
-            'rol.required' => 'El rol es obligatorio.',
-            'rol.exists' => 'El rol seleccionado no existe.',
-        ]);
-    
+                'rol.required' => 'El rol es obligatorio.',
+                'rol.exists' => 'El rol seleccionado no existe.',
+            ],
+        );
+
         // Guardar la imagen en el almacenamiento y obtener la ruta
         $imagePath = $request->file('profile_photo')->store('profile_photos', 'public');
-    
+
         // Crear el usuario
         $usuario = new User();
         $usuario->name = $request->name;
@@ -100,18 +101,17 @@ class UserController extends Controller
         if ($request->filled('password')) {
             $usuario->password = bcrypt($request->password);
         }
-    
+
         // Guardar el usuario antes de asignar roles
         $usuario->save();
-    
+
         // Asignar el rol al usuario
         $rol = Role::find($request->input('rol'));
         $usuario->assignRole($rol->name);
-    
+
         // Redirigir con mensaje de éxito
         return redirect()->route('admin.usuarios.index')->with('datos', 'Usuario registrado correctamente');
     }
-    
 
     /**
      * Display the specified resource.
@@ -127,18 +127,13 @@ class UserController extends Controller
     public function edit($id)
     {
         $users = User::findOrFail($id);
-        $id_rol = DB::table('model_has_roles')
-            ->where('model_id', $id)
-            ->value('role_id');
-        $rolecito = DB::table('roles')
-            ->where('id', $id_rol)
-            ->value('name');
-        
+        $id_rol = DB::table('model_has_roles')->where('model_id', $id)->value('role_id');
+        $rolecito = DB::table('roles')->where('id', $id_rol)->value('name');
+
         $roles = Role::all();
         $padre = Padre::where('id_users', $id)->first();
-        
-        return view('Admin.Edit', compact('users', 'rolecito' ,'roles', 'padre'));
-        
+
+        return view('Admin.Edit', compact('users', 'rolecito', 'roles', 'padre'));
     }
 
     /**
@@ -148,41 +143,43 @@ class UserController extends Controller
     {
         Log::info($request->all());
         $padres = Padre::where('id_users', $id)->first();
-        
-        if ($padres){
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'dni' => 'required|numeric|digits:8|unique:padres,dni,' . ($padres ? $padres->id : null),
-                'email' => 'required|email|max:255|unique:users,email,' . $id,
-                'password' => 'nullable|string|min:8|confirmed',
-                'password_confirmation' => 'required|same:password',
-                'rol' => 'required|exists:roles,id', 
-                'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            ], [
 
-                'name.required' => 'El nombre es obligatorio.',
-                
-                'dni.required' => 'El DNI es obligatorio.',
-                'dni.numeric' => 'El DNI debe ser un número.',
-                'dni.digits' => 'El DNI debe tener 8 dígitos.',
-                'dni.unique' => 'Este DNI ya está registrado.',
+        if ($padres) {
+            $request->validate(
+                [
+                    'name' => 'required|string|max:255',
+                    'dni' => 'required|numeric|digits:8|unique:padres,dni,' . ($padres ? $padres->id : null),
+                    'email' => 'required|email|max:255|unique:users,email,' . $id,
+                    'password' => 'nullable|string|min:8|confirmed',
+                    'password_confirmation' => 'required|same:password',
+                    'rol' => 'required|exists:roles,id',
+                    'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                ],
+                [
+                    'name.required' => 'El nombre es obligatorio.',
 
-                'email.required' => 'El correo electrónico es obligatorio.',
-                'email.email' => 'El correo electrónico no es válido.',
-                'email.unique' => 'Este correo electrónico ya está registrado.',
+                    'dni.required' => 'El DNI es obligatorio.',
+                    'dni.numeric' => 'El DNI debe ser un número.',
+                    'dni.digits' => 'El DNI debe tener 8 dígitos.',
+                    'dni.unique' => 'Este DNI ya está registrado.',
 
-                'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+                    'email.required' => 'El correo electrónico es obligatorio.',
+                    'email.email' => 'El correo electrónico no es válido.',
+                    'email.unique' => 'Este correo electrónico ya está registrado.',
 
-                'password_confirmation.required' => 'Confirme la contraseña.',
-                'password_confirmation.same' => 'Las contraseñas no coinciden.',
+                    'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
 
-                'rol.required' => 'El rol es obligatorio.',
-                'rol.exists' => 'El rol seleccionado no existe.',
+                    'password_confirmation.required' => 'Confirme la contraseña.',
+                    'password_confirmation.same' => 'Las contraseñas no coinciden.',
 
-                'profile_photo.image' => 'El archivo debe ser una imagen.',
-                'profile_photo.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg, gif.',
-                'profile_photo.max' => 'La imagen no puede pesar más de 2MB.',
-            ]);
+                    'rol.required' => 'El rol es obligatorio.',
+                    'rol.exists' => 'El rol seleccionado no existe.',
+
+                    'profile_photo.image' => 'El archivo debe ser una imagen.',
+                    'profile_photo.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg, gif.',
+                    'profile_photo.max' => 'La imagen no puede pesar más de 2MB.',
+                ],
+            );
             $padre = Padre::findOrFail($padres->id);
             $nombreCompleto = $request->name;
             $nombre = explode(' ', $nombreCompleto);
@@ -192,36 +189,37 @@ class UserController extends Controller
             $padre->save();
         }
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:8|confirmed',
-            'password_confirmation' => 'required|same:password',
-            'rol' => 'required|exists:roles,id', 
-            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ], [
+        $request->validate(
+            [
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:users,email,' . $id,
+                'password' => 'nullable|string|min:8|confirmed',
+                'password_confirmation' => 'required|same:password',
+                'rol' => 'required|exists:roles,id',
+                'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ],
+            [
+                'name.required' => 'El nombre es obligatorio.',
+                'name.string' => 'El nombre debe ser una cadena de texto.',
 
-            'name.required' => 'El nombre es obligatorio.',
-            'name.string' => 'El nombre debe ser una cadena de texto.',
+                'email.required' => 'El correo electrónico es obligatorio.',
+                'email.email' => 'El correo electrónico no es válido.',
+                'email.unique' => 'Este correo electrónico ya está registrado.',
 
-            'email.required' => 'El correo electrónico es obligatorio.',
-            'email.email' => 'El correo electrónico no es válido.',
-            'email.unique' => 'Este correo electrónico ya está registrado.',
+                'password.required' => 'La contraseña es obligatoria.',
+                'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
 
-            'password.required' => 'La contraseña es obligatoria.',
-            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+                'password_confirmation.required' => 'Confirme la contraseña.',
+                'password.confirmed' => 'Las contraseñas no coinciden.',
 
-            'password_confirmation.required' => 'Confirme la contraseña.',
-            'password.confirmed' => 'Las contraseñas no coinciden.',
+                'rol.required' => 'El rol es obligatorio.',
+                'rol.exists' => 'El rol seleccionado no existe.',
 
-            'rol.required' => 'El rol es obligatorio.',
-            'rol.exists' => 'El rol seleccionado no existe.',
-
-            'profile_photo.image' => 'El archivo debe ser una imagen.',
-            'profile_photo.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg, gif.',
-            'profile_photo.max' => 'La imagen no puede pesar más de 2MB.',
-
-        ]);
+                'profile_photo.image' => 'El archivo debe ser una imagen.',
+                'profile_photo.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg, gif.',
+                'profile_photo.max' => 'La imagen no puede pesar más de 2MB.',
+            ],
+        );
 
         $usuario = User::findOrFail($id);
         $usuario->name = $request->name;
@@ -229,7 +227,7 @@ class UserController extends Controller
         if ($request->filled('password')) {
             $usuario->password = bcrypt($request->password);
         }
-        
+
         $newRoleId = $request->input('rol');
 
         if ($request->hasFile('profile_photo')) {
@@ -269,17 +267,20 @@ class UserController extends Controller
 
     public function destroy($id_user)
     {
-        
         $user = User::findOrFail($id_user);
-        $padre = Padre::where('id_users', $id_user)->first();
-        $alumno = Alumno::where('padre_id', $padre->id)->first();
-        if ($alumno) {
-            return redirect()->route('admin.usuarios.index')->with('danger', 'El usuario no se puede eliminar porque tiene un hijo registrado');
-        }
-        else {
+        if ($user->rol == 'Padre') {
+            $padre = Padre::where('id_users', $id_user)->first();
+            $alumno = Alumno::where('padre_id', $padre->id)->first();
+            if ($alumno) {
+                return redirect()->route('admin.usuarios.index')->with('danger', 'El usuario no se puede eliminar porque tiene un hijo registrado');
+            } else {
+                $user->delete();
+                $padre->delete();
+                return redirect()->route('admin.usuarios.index')->with('datos', 'Registro Eliminado..');
+            }
+        } else {
             $user->delete();
-            $padre->delete();
-            return redirect()->route('admin.usuarios.index')->with('datos', 'Registro Eliminado..');
+            return redirect()->route('admin.usuarios.index')->with('datos', 'Registro Eliminado');
         }
     }
 }
