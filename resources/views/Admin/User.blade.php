@@ -76,11 +76,7 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>
-                            @foreach ($user->roles as $role)
-                                {{ $role->name }}@if (!$loop->last)
-                                    ,
-                                @endif
-                            @endforeach
+                            {{ $user->roles->first()->name ?? 'No tiene rol' }}
                         </td>
                         <td>
 
