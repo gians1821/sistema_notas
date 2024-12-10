@@ -122,6 +122,8 @@ Route::get('User/{id_user}/confirmar', [UserController::class, 'confirmar'])->na
 Route::get('Capacidad/{id_competencia}/confirmar', [CapacidadController::class, 'confirmar'])->name('Capacidad.confirmar');
 // Confirmar Personal
 Route::get('Personal/{id_personal}/confirmar', [PersonalController::class, 'confirmar'])->name('Personal.confirmar');
+// Confirmar Catedra
+Route::get('catedras/{id_catedra}/confirmar', [CatedrasController::class, 'confirmar'])->name('catedras.confirmar');
 
 // FUNCIONES BACKEND 
 Route::get('/api/niveles', [NivelController::class, 'getNiveles']);
