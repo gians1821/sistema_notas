@@ -16,10 +16,11 @@ class Curso extends Model
 
     public function grado(){
         return $this->belongsTo(Grado::class, 'grado_id_grado');
-    } 
+    }
 
-    // public function personal() {
-    //     return $this->belongsTo('App\Models\Personal', 'id_curso', 'curso_id_curso');
-    // }
+    public function catedra()
+    {
+        return $this->hasOne(Catedra::class, 'curso_id');
+    }
 
 }

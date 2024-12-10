@@ -22,11 +22,37 @@ class Catedra extends Model
 
     public function periodo()
     {
-        return $this->belongsTo(Periodo::class);
+        return $this->belongsTo(Periodo::class, 'curso_id');
     }
 
     public function docente()
     {
-        return $this->belongsTo(Personal::class);
+        return $this->belongsTo(Personal::class, 'docente_id');
+    }
+
+    public function seccion()
+    {
+        return $this->belongsTo(Seccion::class, 'seccion_id');
+    }
+
+    // **Definición del Accessor**
+    public function getDocenteFullnameAttribute()
+    {
+        // Verificar que la relación 'docente' esté cargada y no sea nula
+        if ($this->docente) {
+            return "{$this->docente->nombre} {$this->docente->apellido}";
+        }
+
+        return 'Sin Docente';
+    }
+
+    // **Definición del Accessor**
+    public function getCursoCompletoAttribute()
+    {
+        if ($this->curso) {
+            return "{$this->curso->nombre_curso} de {$this->seccion->grado->nombre_grado} {$this->seccion->nombre_seccion} de {$this->seccion->grado->nivel->nombre_nivel}";
+        }
+
+        return 'Sin Curso asignado en Cátedra';
     }
 }

@@ -109,14 +109,14 @@
         </div>
 
         <div class="card p-3">
-            <div class="row">
-                @include('components.select_input', [
-                    'name' => 'seccion_id',
-                    'label' => 'Seccion',
-                    'options' => [],
-                ])
-            </div>
-        </div>
+           <div class="row">
+               @include('components.select_input', [
+                   'name' => 'seccion_id',
+                   'label' => 'Seccion',
+                   'options' => [],
+               ])
+           </div>
+       </div>
 
         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Registrar</button>
         <a href="{{ route('CancelarCatedras') }}" class="btn btn-danger"><i class="fas fa-ban"></i> Cancelar</a>
