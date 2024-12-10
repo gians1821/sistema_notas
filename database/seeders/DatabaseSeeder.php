@@ -43,5 +43,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(TipoPersonalsTableSeeder::class);
         $this->call(PersonalsTableSeeder::class);
+        $this->call(CatedrasTableSeeder::class);
     }
 }

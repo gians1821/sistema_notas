@@ -89,23 +89,25 @@
         </li>
     @endrole
     <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Catedra') ? 'active' : '' }}">
-        <a class="sidebar-link" href="{{ route('Catedra.index') }}">
-            <i class="align-middle" data-feather="check-circle"></i> <span> Gestión Notas </span>
-        </a>
-    </li>
-    <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Catedra') ? 'active' : '' }}">
-        <a class="sidebar-link" href="{{ route('Catedra.index') }}">
-            <i class="align-middle" data-feather="check-circle"></i> <span> Reporte de Notas </span>
-        </a>
-    </li>
-    <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Catedra') ? '' : '' }}">
-        <a class="sidebar-link" href="{{ route('Catedra.index') }}">
-            <i class="align-middle" data-feather="check-circle"></i> <span> Revisar Notas </span>
-        </a>
-    </li>
-    <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Catedra') ? '' : '' }}">
-        <a class="sidebar-link" href="{{ route('Catedra.index') }}">
-            <i class="align-middle" data-feather="check-circle"></i> <span> Registrar Notas </span>
+        <a class="sidebar-link" href="{{ route('notas.index') }}">
+            <i class="align-middle" data-feather="check-circle"></i>
+            <span>
+                @role('Admin')
+                    Notas
+                @endrole
+    
+                @role('Docente')
+                    Registrar Notas
+                @endrole
+    
+                @role('Director')
+                    Revisar Notas
+                @endrole
+    
+                @role('Padre')
+                    Reporte de Notas
+                @endrole
+            </span>
         </a>
     </li>
     <!-- TITULO 3 -->

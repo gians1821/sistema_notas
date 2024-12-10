@@ -19,6 +19,7 @@ use App\Http\Controllers\NivelController;
 use App\Http\Controllers\PadreController;
 use App\Http\Controllers\TipoPersonalController;
 use App\Http\Controllers\InfoController;
+use App\Http\Controllers\NotaController;
 use App\Models\Alumno;
 use App\Models\User;
 
@@ -62,6 +63,8 @@ Route::resource('/Capacidad', CapacidadController::class);
 Route::resource('/Personal', PersonalController::class);
 // Pages Catedras
 Route::resource('/catedras', CatedrasController::class);
+// Pages Notas
+Route::resource('/notas', NotaController::class);
 
 // Pages Nota/Catedra
 Route::resource('/Nota', CursoHasAlumnoController::class);
