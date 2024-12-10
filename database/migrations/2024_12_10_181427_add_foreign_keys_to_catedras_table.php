@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreign(['periodo_id'], 'catedras_ibfk_1')->references(['id'])->on('periodos')->onUpdate('no action')->onDelete('cascade');
             $table->foreign(['docente_id'], 'catedras_ibfk_2')->references(['id_personal'])->on('personals')->onUpdate('no action')->onDelete('cascade');
             $table->foreign(['curso_id'], 'catedras_ibfk_3')->references(['id_curso'])->on('cursos')->onUpdate('no action')->onDelete('cascade');
+            $table->foreign(['seccion_id'], 'catedras_ibfk_4')->references(['id_seccion'])->on('seccions')->onUpdate('no action')->onDelete('cascade');
         });
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->dropForeign('catedras_ibfk_1');
             $table->dropForeign('catedras_ibfk_2');
             $table->dropForeign('catedras_ibfk_3');
+            $table->dropForeign('catedras_ibfk_4');
         });
     }
 };
