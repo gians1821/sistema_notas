@@ -39,9 +39,9 @@ class DatabaseSeeder extends Seeder
         $this->call(CacheLocksTableSeeder::class);
 
         $this->call(CursosTableSeeder::class);
-        // $this->call(CompetenciasTableSeeder::class);
+        $this->call(CompetenciasTableSeeder::class);
 
         $this->call(TipoPersonalsTableSeeder::class);
-        // $this->call(PersonalsTableSeeder::class);
+        $this->call(PersonalsTableSeeder::class);
     }
 }

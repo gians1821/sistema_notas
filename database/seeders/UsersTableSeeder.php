@@ -91,30 +91,6 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-12-05 16:01:03',
                 'updated_at' => '2024-12-05 16:01:03',
             ),
-            6 => 
-            array (
-                'id' => 8,
-                'name' => 'miguelramos',
-                'email' => 'miguelramos@mail.com',
-                'profile_photo' => NULL,
-                'email_verified_at' => NULL,
-                'password' => '$2y$12$GqzliCoVzCzzNmCd7xlqe.hXs0xZCVLFjz90KkvpdF73wpb74fQbW',
-                'remember_token' => NULL,
-                'created_at' => '2024-12-09 06:48:38',
-                'updated_at' => '2024-12-09 06:48:38',
-            ),
-            7 => 
-            array (
-                'id' => 9,
-                'name' => 'jhonconnor',
-                'email' => 'jhonconnor@mail.com',
-                'profile_photo' => NULL,
-                'email_verified_at' => NULL,
-                'password' => '$2y$12$/04OJqSgqKoON8/VsQjm5e7N0GGcU52Krmmfbv0hdDlafetIVYAu2',
-                'remember_token' => NULL,
-                'created_at' => '2024-12-09 06:49:08',
-                'updated_at' => '2024-12-09 06:49:08',
-            ),
         ));
         
         
