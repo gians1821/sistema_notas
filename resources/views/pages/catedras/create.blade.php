@@ -53,7 +53,6 @@
                             'options' => [], // Inicialmente vacío, se llenará después con AJAX -->'id_property' => 'id_curso',
                             'id_property' => 'id_curso',
                             'property' => 'nombre_curso',
-                            'attributes' => 'class="form-select bg-info text-white"',
                         ])
                     </div>
                 </div>
@@ -109,6 +108,16 @@
             </div>
         </div>
 
+        <div class="card p-3">
+           <div class="row">
+               @include('components.select_input', [
+                   'name' => 'seccion_id',
+                   'label' => 'Seccion',
+                   'options' => [],
+               ])
+           </div>
+       </div>
+
         <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Registrar</button>
         <a href="{{ route('CancelarCatedras') }}" class="btn btn-danger"><i class="fas fa-ban"></i> Cancelar</a>
     </form>
@@ -118,13 +127,13 @@
     <!-- Para cursos -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Verificar si el selector es encontrado antes de agregar eventos
             const nivelSelect = document.querySelector('[name="id_nivel"]');
             const gradoSelect = document.querySelector('[name="id_grado"]');
             const cursoSelect = document.querySelector('[name="curso_id"]');
+            const seccionSelect = document.querySelector('[name="seccion_id"]');
 
             if (nivelSelect) {
-                // AJAX para cargar grados según el nivel seleccionado
+                // Cargar grados según el nivel seleccionado
                 nivelSelect.addEventListener('change', function() {
                     const nivelId = this.value;
                     if (nivelId) {
@@ -136,15 +145,22 @@
                                     gradoSelect.innerHTML +=
                                         `<option value="${grado.id_grado}">${grado.nombre_grado}</option>`;
                                 });
-                                // Limpiar el curso
+                                // Limpiar el curso y sección cuando se cambia el nivel
                                 cursoSelect.innerHTML = '<option value="">Seleccione un curso</option>';
+                                seccionSelect.innerHTML =
+                                    '<option value="">Seleccione una sección</option>';
                             });
+                    } else {
+                        // Si no hay nivel seleccionado, limpiamos los demás
+                        gradoSelect.innerHTML = '<option value="">Seleccione un grado</option>';
+                        cursoSelect.innerHTML = '<option value="">Seleccione un curso</option>';
+                        seccionSelect.innerHTML = '<option value="">Seleccione una sección</option>';
                     }
                 });
             }
 
             if (gradoSelect) {
-                // AJAX para cargar cursos según el grado seleccionado
+                // Cargar cursos según el grado seleccionado
                 gradoSelect.addEventListener('change', function() {
                     const gradoId = this.value;
                     if (gradoId) {
@@ -156,7 +172,30 @@
                                     cursoSelect.innerHTML +=
                                         `<option value="${curso.id_curso}">${curso.nombre_curso}</option>`;
                                 });
+                                // Limpiar la sección cuando se cambia el grado
+                                seccionSelect.innerHTML =
+                                    '<option value="">Seleccione una sección</option>';
                             });
+                    } else {
+                        // Si no se seleccionó grado, limpiar cursos y secciones
+                        cursoSelect.innerHTML = '<option value="">Seleccione un curso</option>';
+                        seccionSelect.innerHTML = '<option value="">Seleccione una sección</option>';
+                    }
+
+                    if (gradoId) {
+                        fetch(`/api/secciones/${gradoId}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                seccionSelect.innerHTML =
+                                    '<option value="">Seleccione una sección</option>';
+                                data.forEach(seccion => {
+                                    seccionSelect.innerHTML +=
+                                        `<option value="${seccion.id_seccion}">${seccion.nombre_seccion}</option>`;
+                                });
+                            });
+                    } else {
+                        // Si no hay curso seleccionado, limpiar secciones
+                        seccionSelect.innerHTML = '<option value="">Seleccione una sección</option>';
                     }
                 });
             }

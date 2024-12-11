@@ -142,7 +142,6 @@ class PersonalController extends Controller
 
             // O puedes mostrar el error en el log para más detalles
             \Log::error($e->getMessage());
-            return response()->json(['error' => $e->getMessage()], 500);
             return redirect()
                 ->back()
                 ->withErrors(['error' => 'Hubo un error al registrar el personal y el usuario.']);

@@ -18,4 +18,8 @@ class Capacidad extends Model
         return $this->hasOne('App\Models\Curso','id_curso','id_curso');
     } 
 
+    public function nota() {
+        return $this->hasOne(Nota::class, 'competencia_id');
+    }
+
 }

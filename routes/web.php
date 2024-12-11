@@ -19,6 +19,7 @@ use App\Http\Controllers\NivelController;
 use App\Http\Controllers\PadreController;
 use App\Http\Controllers\TipoPersonalController;
 use App\Http\Controllers\InfoController;
+use App\Http\Controllers\NotaController;
 use App\Models\Alumno;
 use App\Models\User;
 
@@ -62,6 +63,8 @@ Route::resource('/Capacidad', CapacidadController::class);
 Route::resource('/Personal', PersonalController::class);
 // Pages Catedras
 Route::resource('/catedras', CatedrasController::class);
+// Pages Notas
+Route::resource('/notas', NotaController::class);
 
 // Pages Nota/Catedra
 Route::resource('/Nota', CursoHasAlumnoController::class);
@@ -108,6 +111,9 @@ Route::get('/CancelarNota', function () {
 Route::get('/CancelarCurso', function () {
     return redirect()->route('Curso.index')->with('datos', 'Accion Cancelada..!');
 })->name('CancelarCurso');
+Route::get('/CancelarNotas', function () {
+    return redirect()->route('notas.index')->with('datos', 'Accion Cancelada..!');
+})->name('CancelarNotas');
 // Confirmar Alumno
 Route::get('Alumno/{id_alumno}/confirmar', [AlumnoController::class, 'confirmar'])->name('Alumno.confirmar');
 // Confirmar Perfil
@@ -122,6 +128,10 @@ Route::get('User/{id_user}/confirmar', [UserController::class, 'confirmar'])->na
 Route::get('Capacidad/{id_competencia}/confirmar', [CapacidadController::class, 'confirmar'])->name('Capacidad.confirmar');
 // Confirmar Personal
 Route::get('Personal/{id_personal}/confirmar', [PersonalController::class, 'confirmar'])->name('Personal.confirmar');
+// Confirmar Catedra
+Route::get('catedras/{id_catedra}/confirmar', [CatedrasController::class, 'confirmar'])->name('catedras.confirmar');
+// Confirmar Nota
+Route::get('notas/{id_nota}/confirmar', [NotaController::class, 'confirmar'])->name('notas.confirmar');
 
 // FUNCIONES BACKEND 
 Route::get('/api/niveles', [NivelController::class, 'getNiveles']);

@@ -16,7 +16,7 @@ class Grado extends Model
     ];
 
     public function nivel(){
-        return $this->hasOne('App\Models\Nivel','id_nivel','id_nivel');
+        return $this->hasOne(Nivel::class,'id_nivel','id_nivel');
     } 
 
     public function seccion(){
