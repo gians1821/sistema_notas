@@ -12,29 +12,45 @@
         </a>
         <form class="form-inline my-lg-0 m-2" method="GET">
             <div class="input-group ">
-                <select class="form-control ml-2 " id="nivel" name="buscarporNivel">
-                    <option value="Nivel" selected>Nivel</option>
-                    <option value="Primaria">PRIMARIA</option>
-                    <option value="Secundaria">SECUNDARIA</option>
-                </select>
-                <select class="form-control ml-2 " id="grado" name="buscarporGrado">
-                    <option value="" selected>Grado</option>
-                    <option value="PRIMERO">PRIMERO</option>
-                    <option value="SEGUNDO">SEGUNDO</option>
-                    <option value="TERCERO">TERCERO</option>
-                    <option value="CUARTO">CUARTO</option>
-                    <option value="QUINTO">QUINTO</option>
-                    <option value="SEXTO">SEXTO</option>
-                </select>
-                <select class="form-control ml-2 " id="seccion" name="buscarporSeccion">
-                    <option value="" selected>Seccion</option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                </select>
-                <div class="input-group-append ml-2">
-                    <button class="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
-                </div>
+            <div class="position-relative">
+
+                    <select class="form-control ml-2 mr-2" style="width: 220px;" id="nivel" name="nivel" onchange="this.form.submit()">
+                        <option value="" selected>Nivel</option>
+                        @foreach ($niveles as $itemniveles)
+                            <option value="{{ $itemniveles->id_nivel }}"
+                                {{ request('nivel') == $itemniveles->id_nivel ? 'selected' : '' }}>
+                                {{ $itemniveles->nombre_nivel }}
+                            </option>
+                        @endforeach
+                    </select>
+            </div>
+
+
+            <div class="position-relative">
+                    <select class="form-control ml-2 mr-2" style="width: 220px;" id="grado" name="grado" onchange="this.form.submit()">
+                        <option value="" selected>Grado</option>
+                        <!-- Agrega opciones de grado dinámicamente o manualmente -->
+                        @foreach (App\Models\Grado::where('id_nivel', $nivel)->get() as $grado)
+                            <option value="{{ $grado->id_grado }}" {{ request('grado') == $grado->id_grado ? 'selected' : '' }}>
+                                {{ $grado->nombre_grado }}
+                            </option>
+                        @endforeach
+                    </select>
+            </div>
+
+            <div class="position-relative">
+                    <select class="form-control ml-2 mr-2" style="width: 220px;" id="seccion" name="seccion" onchange="this.form.submit()">
+                        <option value="" selected>Sección</option>
+                        <!-- Agrega opciones de sección dinámicamente o manualmente -->
+                        @foreach (App\Models\Seccion::where('grado_id_grado', request('grado'))->get() as $seccion)
+                            <option value="{{ $seccion->id_seccion }}"
+                                {{ request('seccion') == $seccion->id_seccion ? 'selected' : '' }}>
+                                {{ $seccion->nombre_seccion }}
+                            </option>
+                        @endforeach
+                    </select>
+            </div>
+
             </div>
         </form>
     </nav>
@@ -61,12 +77,12 @@
             </tr>
         </thead>
         <tbody>
-            @if (count($seccion) <= 0)
+            @if (count($filtro) <= 0)
                 <tr>
                     <td colspan="5">No hay registros</td>
                 </tr>
             @else
-                @foreach ($seccion as $itemseccion)
+                @foreach ($filtro as $itemseccion)
                     <tr>
                         <td>{{ $itemseccion->id_seccion }}</td>
                         <td>{{ $itemseccion->grado && $itemseccion->grado->nivel ? $itemseccion->grado->nivel->nombre_nivel : 'No asignado' }}
@@ -85,7 +101,7 @@
             @endif
         </tbody>
     </table>
-    {{ $seccion->appends(['buscarporSeccion' => $buscarporSeccion, 'buscarporGrado' => $buscarporGrado, 'buscarporNivel' => $buscarporNivel])->links() }};
+    {{ $filtro->appends(['seccion' => $seccion, 'grado' => $grado, 'nivel' => $nivel])->links() }};
 @endsection('Contenido')
 @section('script')
     <script>

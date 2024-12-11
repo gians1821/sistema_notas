@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\Padre;
+use App\Models\Promedio;
 
 class AlumnoController extends Controller
 {
@@ -255,9 +256,9 @@ class AlumnoController extends Controller
                 $user->save();
 
                 DB::table('model_has_roles')->insert([
-                    'role_id' => 3,
+                    'role_id' => 4,
                     'model_id' => $user->id,
-                    'model_type' => User::class, // Establecer el tipo dinámicamente
+                    'model_type' => User::class, 
                 ]);
 
                 $padres = new Padre();
@@ -403,6 +404,10 @@ class AlumnoController extends Controller
                 // Suponiendo que Catedra tiene una columna 'curso_id' que apunta a la tabla cursos
                 // y que Capacidad (competencia) utiliza 'id_curso' para relacionarse
                 $competencias = Capacidad::where('id_curso', $catedra->curso_id)->get();
+                $promedio = new Promedio();
+                $promedio->valor = 'NAA';
+                $promedio->alumno_id_alumno = $alumnos->id_alumno;
+                $promedio->save();
                 // Iterar sobre cada competencia relacionada con el curso de esta cátedra
                 foreach ($competencias as $competencia) {
                     $nota = new Nota();
@@ -413,6 +418,7 @@ class AlumnoController extends Controller
                     $nota->nota2 = 'SN';
                     $nota->nota3 = 'SN';
                     $nota->nota_final = 'SN';
+                    $nota->id_promedio = $promedio->id;
                     $nota->save();
                 }
             }

@@ -27,49 +27,39 @@ class SeccionController extends Controller
 
     public function index(Request $request)
     {
-        $buscarporSeccion = $request->get('buscarporSeccion');
-        $buscarporGrado = $request->get('buscarporGrado');
-        $buscarporNivel = $request->get('buscarporNivel');
-        // Inicializa una variable para guardar el id_grado encontrado
-        $id_grado = [];
-        $id_nivel = [];
+        $nivel = $request->get('nivel');
+        $grado = $request->get('grado');
+        $seccion = $request->get('seccion');
+    
+        // Iniciar la consulta en Seccion
+        $query = Seccion::query();
+    
+        if ($nivel) {
 
-        // Si hay un valor para buscar por grado, busca el id_grado correspondiente
-        if ($buscarporGrado) {
-            $grado = Grado::where('nombre_grado', 'like', '%' . $buscarporGrado . '%')->get();
-            if ($grado) {
-                $id_grado = $grado->pluck('id_grado')->toArray();
+            $grados = Grado::where('id_nivel', $nivel)->pluck('id_grado'); 
+    
+            if ($grados->isNotEmpty()) {
+                $query->whereIn('grado_id_grado', $grados);
             }
         }
 
-        if ($buscarporNivel) {
-            $nivel = Nivel::where('nombre_nivel', 'like', '%' . $buscarporNivel . '%')->get();
-            if ($nivel) {
-                $id_nivel = $nivel->pluck('id_nivel')->toArray();
-            }
+        if ($grado) {
+            $query->where('grado_id_grado', $grado);
         }
-
-        $seccion = Seccion::where('id_seccion', '>', '0')
-            ->where(function ($query) use ($buscarporSeccion, $id_grado, $id_nivel) {
-                //FILTRAR POR NOMBRE
-                if ($buscarporSeccion) {
-                    $query->where('nombre_seccion', 'like', '%' . $buscarporSeccion . '%');
-                }
-                //FILTAR SOLO POR GRADO-COMO SELECT GRADO YA TIENE OPCIONES 
-                if (!empty($id_grado)) {
-                    $query->whereIn('grado_id_grado', $id_grado);
-                }
-                //FILTRAR POR GRADO Y NIVEL
-                if (!empty($id_nivel)) {
-                    $query->whereHas('grado', function ($q) use ($id_nivel) {
-                        $q->where('id_nivel', $id_nivel);
-                    });
-                }
-            })
-            ->paginate($this::PAGINATION);
-        $seccion->appends(['buscarporSeccion' => $buscarporSeccion, 'buscarporGrado' => $buscarporGrado, 'buscarporNivel' => $buscarporNivel]);
-
-        return view('Seccion.Seccion', compact('seccion', 'buscarporSeccion', 'buscarporGrado', 'buscarporNivel'));
+    
+        if ($seccion) {
+            $query->where('id_seccion', $seccion); 
+        }
+    
+        $filtro = $query->paginate($this::PAGINATION);
+    
+        $niveles = Nivel::all();
+        $grados = Grado::all();
+        $secciones = Seccion::all();
+    
+        $filtro->appends(['nivel' => $nivel, 'grado' => $grado, 'seccion' => $seccion]);
+    
+        return view('Seccion.Seccion', compact('filtro', 'niveles', 'grados', 'secciones', 'seccion', 'grado', 'nivel'));
     }
 
     /**
