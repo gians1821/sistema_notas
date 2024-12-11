@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alumno;
+use App\Models\Catedra;
+use App\Models\Curso;
 use App\Models\CursoHasAlumno;
 use App\Models\Nota;
+use App\Models\Personal;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -15,8 +18,29 @@ class NotaController extends Controller
 
     public function index(Request $request)
     {
-        $notas = Nota::get();
-        return view('pages.notas.index', compact('notas'));
+        // Obtener todos los profesores (docentes) con tipo personal 1
+        $docentes = Personal::where('id_tipo_personal', '1')->orderBy('id_personal')->get();
+
+        // Obtener todos los cursos
+        $cursos = Curso::orderBy('id_curso')->get();
+
+        // Obtener todas las cátedras
+        $catedras = Catedra::with(['curso', 'docente', 'seccion'])
+                            ->orderBy('id')
+                            ->get();
+
+        // Inicializar la consulta de notas
+        $query = Nota::with(['catedra.curso', 'catedra.docente', 'catedra.seccion', 'alumno', 'competencia']);
+
+        // Filtrar por cátedra si se proporciona
+        if ($request->has('catedra_id') && !empty($request->catedra_id)) {
+            $query->where('catedra_id', $request->catedra_id);
+        }
+
+        // Obtener las notas filtradas
+        $notas = $query->paginate(15); // Puedes ajustar la paginación según tus necesidades
+
+        return view('pages.notas.index', compact('notas', 'catedras'));
     }
 
     /**
@@ -48,7 +72,8 @@ class NotaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $nota = Nota::where('id', $id)->first();
+        return view('pages.notas.edit', compact('nota'));
     }
 
     /**
@@ -56,7 +81,20 @@ class NotaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $nota = Nota::findOrFail($id);
+
+        // Validar los datos de entrada
+        $request->validate([
+            'nota1' => 'required|string|max:10',
+            'nota2' => 'required|string|max:10',
+            'nota3' => 'required|string|max:10',
+            'nota_final' => 'required|string|max:10',
+        ]);
+
+        // Actualizar solo los campos editables
+        $nota->update($request->only(['nota1', 'nota2', 'nota3', 'nota_final']));
+
+        return redirect()->route('notas.index')->with('success', 'Nota actualizada correctamente.');
     }
 
     /**
