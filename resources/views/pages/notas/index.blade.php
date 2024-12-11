@@ -56,6 +56,9 @@
         'edit_route' => 'notas.edit', // Ruta para editar
         'delete_route' => 'notas.confirmar', // Ruta para eliminar
     ])
+
+    {{ $notas->links() }}
+
 @endsection
 
 @push('scripts')

@@ -113,7 +113,8 @@
         <div class="carousel-inner">
             
             <!-- Aqui logica de rehuso -->
-            <div class="carousel-item active">
+            @foreach ($alumnos as $index => $alumno)
+            <div class="carousel-item {{ $index == $indexito ? 'active' : '' }}">
                 <div class="container container-sections">
                     <div class="row">
                         <div class="col-md-6">
@@ -122,28 +123,28 @@
                                     <label class="form-label mb-3"><strong>Datos del Alumno</strong></label>
                                     <div class="col-md-6 mx-auto d-flex flex-column align-items-center"> 
                                         <label for="profile_photo_alumno" class="form-label"><strong>Foto de Perfil</strong></label>
-                                        <img src="{{ $alumnos->profile_photo ? asset('storage/' . $alumnos->profile_photo) : asset('images/default-user.png') }}" 
+                                        <img src="{{ $alumnos[$index]->profile_photo ? asset('storage/' . $alumnos[$index]->profile_photo) : asset('images/default-user.png') }}" 
                                             alt="Foto de Perfil" 
                                             class="img-fluid rounded-circle mb-3" 
                                             style="width: 200px; height: 200px;">
                                     </div>
-                                    <p><strong>DNI: </strong> {{ $alumnos->dni }}</p>
-                                    <p><strong>Apoderado: </strong> {{ $alumnos->padre->nombres . ' ' . $alumnos->padre->apellidos }}</p>
-                                    <p><strong>Telefóno: </strong> {{ $alumnos->telefono }}</p>
+                                    <p><strong>DNI: </strong> {{ $alumnos[$index]->dni }}</p>
+                                    <p><strong>Apoderado: </strong> {{ $alumnos[$index]->padre->nombres . ' ' . $alumnos[$index]->padre->apellidos }}</p>
+                                    <p><strong>Telefóno: </strong> {{ $alumnos[$index]->telefono }}</p>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6 text-center">
-                                            <p><strong>Alumno: </strong> {{ $alumnos->nombre_alumno . ' ' . $alumnos->apellido_alumno }}</p>
-                                            <p><strong>Año Matricula: </strong> {{ $alumnos->periodo }}</p>
-                                            <p><strong>País: </strong> {{ $alumnos->pais }} </p>
-                                            <p><strong>Departamento: </strong> {{ $alumnos->region }} </p>
+                                            <p><strong>Alumno: </strong> {{ $alumnos[$index]->nombre_alumno . ' ' . $alumnos[$index]->apellido_alumno }}</p>
+                                            <p><strong>Año Matricula: </strong> {{ $alumnos[$index]->periodo }}</p>
+                                            <p><strong>País: </strong> {{ $alumnos[$index]->pais }} </p>
+                                            <p><strong>Departamento: </strong> {{ $alumnos[$index]->region }} </p>
                                         </div>
                                         <div class="col-md-6 text-center">
-                                            <p><strong>Nivel: </strong> {{ $alumnos->seccion->grado->nivel->nombre_nivel }} </p>
-                                            <p><strong>Grado: </strong> {{ $alumnos->seccion->grado->nombre_grado }} </p>
-                                            <p><strong>Seccion: </strong> {{ $alumnos->seccion->nombre_seccion }} </p>
-                                            <p><strong>Nacimiento: </strong> {{ $alumnos->fecha_nacimiento }} </p>
+                                            <p><strong>Nivel: </strong> {{ $alumnos[$index]->seccion->grado->nivel->nombre_nivel }} </p>
+                                            <p><strong>Grado: </strong> {{ $alumnos[$index]->seccion->grado->nombre_grado }} </p>
+                                            <p><strong>Seccion: </strong> {{ $alumnos[$index]->seccion->nombre_seccion }} </p>
+                                            <p><strong>Nacimiento: </strong> {{ $alumnos[$index]->fecha_nacimiento }} </p>
                                         </div>
                                     </div>
                                 </div>
@@ -157,9 +158,9 @@
                                     </div>
                                     
                                     <ul>
-                                        @foreach ($alumnos->seccion->grado->cursos as $curso)
+                                        @foreach ($alumnos[$index]->seccion->grado->cursos as $curso)
                                             <li><strong>{{ $curso->nombre_curso }}: </strong> 
-                                                Prof. {{ $curso->personal ? $curso->personal->nombre . ' ' . $curso->personal->apellido : 'No asignado' }}
+                                                Prof. {{ $curso->catedra->docente ? $curso->catedra->docente->nombre . ' ' . $curso->catedra->docente->apellido : 'No asignado' }}
                                             </li>
                                         @endforeach
                                     </ul>
@@ -172,9 +173,13 @@
                                         <label class="form-label mb-3"><strong>Notas del Alumno</strong></label>
                                     </div>
                                     <ul>
-                                        @foreach ($alumnos->seccion->grado->cursos as $curso) 
-                                            <li><strong>{{ $curso->nombre_curso }}: </strong>  </li> 
+                                        @foreach ($alumnos[$index]->seccion->grado->cursos as $index2 => $curso)
+                                            <li>
+                                                <strong>{{ $curso->nombre_curso }}:</strong>
+                                                {{ $alumnos[$index]->promedios[$index2]->valor ?? 'Sin nota' }}
+                                            </li>
                                         @endforeach
+                                        
                                     </ul>
                                 </div>
                             </div>
@@ -190,7 +195,7 @@
                     </div>
                 </div>
             </div>
-
+            @endforeach
         <!-- hasta aqui -->
         </div>
 

@@ -12,7 +12,7 @@ class CursoPorGradoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    const PAGINATION = 6;
+    const PAGINATION = 8;
 
     public function __construct()
     {
@@ -26,20 +26,17 @@ class CursoPorGradoController extends Controller
 
         $query = Curso::query();
 
-        // Si hay un valor para buscar por grado, busca el id_grado correspondiente
-        if ($grado) {
-            $query->whereHas('grado', function ($query) use ($grado) {
-                $query->where('id_grado', $grado); // Cambia 'grado' por el campo correcto en la tabla 'grado'
-            });
+        if ($nivel) {
+
+            $grados = Grado::where('id_nivel', $nivel)->pluck('id_grado'); 
+    
+            if ($grados->isNotEmpty()) {
+                $query->whereIn('grado_id_grado', $grados);
+            }
         }
 
-        if ($nivel) {
-            
-            $query->whereHas('grado', function ($query) use ($nivel) {
-                $query->whereHas('nivel', function ($query) use ($nivel) {
-                    $query->where('id_nivel', $nivel); // Cambia 'nivel' por el campo correcto en la tabla 'nivel'
-                });
-            });
+        if ($grado) {
+            $query->where('grado_id_grado', $grado);
         }
 
         $curso = $query->paginate(self::PAGINATION);
@@ -49,7 +46,7 @@ class CursoPorGradoController extends Controller
             'grado' => $grado,
         ]);
 
-        $niveles = Nivel::all(); // Con esto envio todos los niveles a la vista
+        $niveles = Nivel::all(); 
         $grados = Grado::all();
 
         return view('CursoPorGrado.cursoxGrado', compact('curso', 'nivel', 'grado' , 'niveles', 'grados'));

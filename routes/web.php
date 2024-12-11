@@ -47,7 +47,7 @@ Route::get('/CancelarUsuario', function () {
 })->name('CancelarUsuario');
 
 
-Route::get('/Info', [InfoController::class, 'show'])->name('Info');
+Route::get('/Info/{indexito}', [InfoController::class, 'show'])->name('Info');
 
 // Pages Alumnos
 Route::resource('/Alumno', AlumnoController::class);

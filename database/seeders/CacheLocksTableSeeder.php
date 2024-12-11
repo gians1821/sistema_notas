@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CacheLocksTableSeeder extends Seeder
 {
@@ -16,7 +17,7 @@ class CacheLocksTableSeeder extends Seeder
     {
         
 
-        \DB::table('cache_locks')->delete();
+        DB::table('cache_locks')->delete();
         
         
         

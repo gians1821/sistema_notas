@@ -22,6 +22,7 @@ class Nota extends Model
         'nota2',
         'nota3',
         'nota_final',
+        'id_promedio',
         'visibilidad'
     ];
 

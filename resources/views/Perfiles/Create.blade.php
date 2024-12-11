@@ -28,7 +28,9 @@
                 <div class="mb-3">
                     <label for="name" class="form-label"><strong>Nombre del Rol</strong></label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="Ingrese el nombre del rol">
-                    
+                    @if ($errors->has('name'))
+                        <span class="error-message text-danger"><strong>{{ $errors->first('name') }}</strong></span>
+                    @endif
                 </div>
 
                 <!-- Selección de Permisos -->

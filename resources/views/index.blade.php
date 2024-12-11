@@ -58,7 +58,7 @@
             <hr style="border: 1px solid #0a0a0a; margin: 10px 0;">
             <h3 class="mt-5 mb-4">Información de sus Hijo(s)</h3>
             <div class="row">
-                @foreach($alumnos as $alumno)
+                @foreach($alumnos as $indexito => $alumno)
                     <div class="col-md-4 mb-3 text-center">
                         <div class="card" style="width: 70%;">
                             <img src="{{ $alumno->profile_photo ? asset('storage/' . $alumno->profile_photo) : asset('images/default-user.png') }}" 
@@ -67,7 +67,7 @@
                             <div class="card-body">
                                 <label class="form-label"><strong>{{ $alumno->nombre_alumno }} {{ $alumno->apellido_alumno }}</strong></label>
                                 <div>
-                                    <a href="{{ route('Info') }}" class="btn btn-primary">Ver Detalles</a>
+                                    <a href="{{ route('Info', $indexito) }}" class="btn btn-primary">Ver Detalles</a>
                                 </div>
                             </div>
                         </div>

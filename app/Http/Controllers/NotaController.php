@@ -8,6 +8,7 @@ use App\Models\Curso;
 use App\Models\CursoHasAlumno;
 use App\Models\Nota;
 use App\Models\Personal;
+use App\Models\Promedio;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -38,7 +39,7 @@ class NotaController extends Controller
         }
 
         // Obtener las notas filtradas
-        $notas = $query->paginate(15); // Puedes ajustar la paginación según tus necesidades
+        $notas = $query->paginate(10); // Puedes ajustar la paginación según tus necesidades
 
         return view('pages.notas.index', compact('notas', 'catedras'));
     }
@@ -93,6 +94,13 @@ class NotaController extends Controller
 
         // Actualizar solo los campos editables
         $nota->update($request->only(['nota1', 'nota2', 'nota3', 'nota_final']));
+
+        if ($request->nota_final)
+        {
+            $promedio = Promedio::where('alumno_id_alumno', $nota->alumno->id_alumno)->where('id', $nota->id_promedio)->first();
+            $promedio->valor = $nota->nota_final;
+            $promedio->save();
+        }
 
         return redirect()->route('notas.index')->with('success', 'Nota actualizada correctamente.');
     }
