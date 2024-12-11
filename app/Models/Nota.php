@@ -9,7 +9,7 @@ class Nota extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = null;
+    protected $primaryKey = 'id';
 
     protected $table = 'notas';
     public $timestamps = true;

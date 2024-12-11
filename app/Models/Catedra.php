@@ -17,22 +17,22 @@ class Catedra extends Model
 
     public function periodo()
     {
-        return $this->belongTo(Periodo::class, 'periodo_id');
+        return $this->belongsTo(Periodo::class, 'periodo_id');
     }
 
     public function docente()
     {
-        return $this->belongTo(Personal::class, 'docente_id');
+        return $this->belongsTo(Personal::class, 'docente_id');
     }
 
     public function curso()
     {
-        return $this->belongTo(Curso::class, 'curso_id');
+        return $this->belongsTo(Curso::class, 'curso_id');
     }
 
     public function seccion()
     {
-        return $this->belongTo(Seccion::class, 'seccion_id');
+        return $this->belongsTo(Seccion::class, 'seccion_id');
     }
 
     // **Definición del Accessor**
