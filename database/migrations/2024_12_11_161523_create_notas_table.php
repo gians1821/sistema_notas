@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('nota2', 45)->nullable();
             $table->string('nota3', 45)->nullable();
             $table->string('nota_final', 45)->nullable();
+            $table->integer('id_promedio');
             $table->string('visibilidad', 15)->default('docente');
             $table->timestamps();
         });
