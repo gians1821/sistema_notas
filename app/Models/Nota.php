@@ -9,36 +9,25 @@ class Nota extends Model
 {
     use HasFactory;
 
-    public $incrementing = false;
     protected $primaryKey = null;
 
-    protected $table = 'catedras';
-
-    protected function setKeysForSaveQuery($query)
-    {
-        $keys = $this->getKeyName();
-        if (!is_array($keys)) {
-            return parent::setKeysForSaveQuery($query);
-        }
-
-        foreach ($keys as $keyName) {
-            $query->where($keyName, '=', $this->getAttribute($keyName));
-        }
-
-        return $query;
-    }
+    protected $table = 'notas';
+    public $timestamps = true;
 
     protected $fillable = [
-        'curso_id_curso',
+        'catedra_id',
         'alumno_id_alumno',
+        'competencia_id',
         'nota1',
         'nota2',
-        'nota3'
+        'nota3',
+        'nota_final',
+        'visibilidad'
     ];
 
-    public function curso()
+    public function catedra()
     {
-        return $this->hasOne('App\Models\Curso', 'id_curso', 'curso_id_curso');
+        return $this->belongsTo(Catedra::class, 'catedra_id');
     }
 
     public function alumno()
@@ -46,8 +35,9 @@ class Nota extends Model
         return $this->hasOne('App\Models\Alumno', 'id_alumno', 'alumno_id_alumno');
     }
 
-    public function getKeyName()
+    public function competencia()
     {
-        return ['curso_id_curso', 'alumno_id_alumno'];
+        return $this->belongsTo(Capacidad::class, 'competencia_id');
     }
+
 }

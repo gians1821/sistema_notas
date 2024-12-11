@@ -18,6 +18,11 @@ class Seccion extends Model
         return $this->hasOne(Grado::class, 'id_grado', 'grado_id_grado');
     }
 
+    public function catedra()
+    {
+        return $this->hasOne(Catedra::class, 'seccion_id');
+    }
+
     public function Alumno()
     {
         return $this->hasMany(Alumno::class, 'id_seccion', 'seccion_id_seccion');

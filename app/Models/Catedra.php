@@ -13,26 +13,26 @@ class Catedra extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
 
-    protected $fillable = ['periodo_id', 'docente_id', 'curso_id'];
-
-    public function curso()
-    {
-        return $this->hasOne('App\Models\Curso', 'id_curso', 'curso_id');
-    }
+    protected $fillable = ['periodo_id', 'docente_id', 'curso_id', 'seccion_id'];
 
     public function periodo()
     {
-        return $this->belongsTo(Periodo::class, 'curso_id');
+        return $this->belongTo(Periodo::class, 'periodo_id');
     }
 
     public function docente()
     {
-        return $this->belongsTo(Personal::class, 'docente_id');
+        return $this->belongTo(Personal::class, 'docente_id');
+    }
+
+    public function curso()
+    {
+        return $this->belongTo(Curso::class, 'curso_id');
     }
 
     public function seccion()
     {
-        return $this->belongsTo(Seccion::class, 'seccion_id');
+        return $this->belongTo(Seccion::class, 'seccion_id');
     }
 
     // **Definición del Accessor**

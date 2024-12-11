@@ -10,7 +10,7 @@
     <br>
     <nav class="navbar navbar-light">
         @role('Admin')
-            <a class="btn btn-primary" href="{{ route('catedras.create') }}">
+            <a class="btn btn-primary" href="{{ route('notas.create') }}">
                 <i class="fas fa-plus"></i> Agregar nota
             </a>
         @endrole
