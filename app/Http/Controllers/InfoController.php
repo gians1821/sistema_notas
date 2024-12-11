@@ -9,15 +9,15 @@ use Illuminate\Support\Facades\Auth;
 
 class InfoController extends Controller
 {
-    public function show()
+    public function show($indexito)
     {
         $user = Auth::user();
         $padre = Padre::where('id_users', $user->id)->first();
         if (!$padre) {
             return redirect()->route('Home.index')->with('datos', 'No tiene hijos registrados');
         } else {
-            $alumnos = Alumno::where('padre_id', $padre->id)->first();
-            return view('Info.informacion', compact('alumnos'));
+            $alumnos = Alumno::where('padre_id', $padre->id)->get();
+            return view('Info.informacion', compact('alumnos', 'indexito'));
         }
     }
 }

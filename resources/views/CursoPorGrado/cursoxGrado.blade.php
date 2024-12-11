@@ -10,7 +10,7 @@
         <form class="form-inline my-lg-0 m-2 ml-auto" method="GET">
             <div class="input-group ">
 
-                <select class="form-control ml-2 mr-2" id="nivel" name="nivel" onchange="this.form.submit()"
+                <select class="form-control ml-2 mr-2" style="width: 220px;" id="nivel" name="nivel" onchange="this.form.submit()"
                     style="width: 150px;">
                     <option value="" {{ !$nivel ? 'selected' : '' }}>Nivel</option>
                     @foreach ($niveles as $itemniveles)
@@ -20,7 +20,7 @@
                         </option>
                     @endforeach
                 </select>
-                <select class="form-control ml-2 mr-2" id="grado" name="grado" onchange="this.form.submit()"
+                <select class="form-control ml-2 mr-2" style="width: 220px;" id="grado" name="grado" onchange="this.form.submit()"
                     style="width: 150px;">
                     <option value="" {{ !$grado ? 'selected' : '' }}>Grado</option>
                     @foreach (App\Models\Grado::where('id_nivel', $nivel)->get() as $itemgrado)
@@ -30,9 +30,6 @@
                     @endforeach
                 </select>
 
-                <div class="input-group-append ml-2">
-                    <button class="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
-                </div>
             </div>
         </form>
     </nav>

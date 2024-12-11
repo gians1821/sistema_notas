@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class AlumnosTableSeeder extends Seeder
 {
@@ -16,7 +17,7 @@ class AlumnosTableSeeder extends Seeder
     {
         
 
-        \DB::table('alumnos')->delete();
+        DB::table('alumnos')->delete();
         
         
         

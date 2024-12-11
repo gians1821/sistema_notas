@@ -32,7 +32,7 @@
 
                 <!-- Selección de nivel con envío automático -->
                 <div class="position-relative">
-                    <select class="form-control ml-2 mr-2 @error('nivel') is-invalid @enderror" style="width: 130px;" id="nivel" name="nivel" onchange="this.form.submit()">
+                    <select class="form-control ml-2 mr-2 @error('nivel') is-invalid @enderror" style="width: 150px;" id="nivel" name="nivel" onchange="this.form.submit()">
                         <option value="" selected>Nivel</option>
                         @foreach ($niveles as $itemniveles)
                             <option value="{{ $itemniveles->id_nivel }}"
@@ -52,7 +52,7 @@
 
                 <!-- Selección de grado -->
                 <div class="position-relative">
-                    <select class="form-control ml-2 mr-2 @error('grado') is-invalid @enderror" style="width: 130px;" id="grado" name="grado" onchange="this.form.submit()">
+                    <select class="form-control ml-2 mr-2 @error('grado') is-invalid @enderror" style="width: 150px;" id="grado" name="grado" onchange="this.form.submit()">
                         <option value="" selected>Grado</option>
                         <!-- Agrega opciones de grado dinámicamente o manualmente -->
                         @foreach (App\Models\Grado::where('id_nivel', $nivel)->get() as $grado)
@@ -72,7 +72,7 @@
 
                 <!-- Selección de sección -->
                 <div class="position-relative">
-                    <select class="form-control ml-2 mr-2 @error('seccion') is-invalid @enderror"" style="width: 130px;" id="seccion" name="seccion" onchange="this.form.submit()">
+                    <select class="form-control ml-2 mr-2 @error('seccion') is-invalid @enderror"" style="width: 150px;" id="seccion" name="seccion" onchange="this.form.submit()">
                         <option value="" selected>Sección</option>
                         <!-- Agrega opciones de sección dinámicamente o manualmente -->
                         @foreach (App\Models\Seccion::where('grado_id_grado', request('grado'))->get() as $seccion)

@@ -49,7 +49,7 @@
     <!-- GESTION DE ALUMNOS -->
     
     <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Info') ? 'active' : '' }}">
-        <a class="sidebar-link" href="{{ URL::to('/Info') }}">
+        <a class="sidebar-link" href="{{ route('Info', ['indexito' => 0]) }}">
             <i class="align-middle" data-feather="info"></i> <span> Informacion General </span>
         </a>
     </li>

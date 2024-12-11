@@ -3,7 +3,20 @@
     @include('components.sidebar_nav')
 @endsection('BarraNavegacion')
 @section('Contenido')
-    <!-- CONTENIDO DE LA PAGINA -->
+    <style>
+        .error-message {
+            color: darkred; 
+            font-size: 0.8em; 
+            margin-top: 15px; 
+        }
+        .alert-success {
+            color: green;
+            font-size: 1.0em;
+            margin-top: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
     <h1 class="h3 mb-3 titulos"><strong>Editar</strong> Rol</h1>
     <br>
     <form method="POST" action="{{ route('admin.perfil.update', $rol->id) }}">

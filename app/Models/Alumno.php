@@ -25,4 +25,10 @@ class Alumno extends Model
         return $this->belongsTo(Padre::class, 'padre_id'); 
     }
 
+    public function promedios()
+    {
+        return $this->hasMany(Promedio::class, 'alumno_id_alumno', 'id_alumno');
+    }
+
+
 }
