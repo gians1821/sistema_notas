@@ -111,6 +111,9 @@ Route::get('/CancelarNota', function () {
 Route::get('/CancelarCurso', function () {
     return redirect()->route('Curso.index')->with('datos', 'Accion Cancelada..!');
 })->name('CancelarCurso');
+Route::get('/CancelarNotas', function () {
+    return redirect()->route('notas.index')->with('datos', 'Accion Cancelada..!');
+})->name('CancelarNotas');
 // Confirmar Alumno
 Route::get('Alumno/{id_alumno}/confirmar', [AlumnoController::class, 'confirmar'])->name('Alumno.confirmar');
 // Confirmar Perfil
@@ -127,6 +130,8 @@ Route::get('Capacidad/{id_competencia}/confirmar', [CapacidadController::class, 
 Route::get('Personal/{id_personal}/confirmar', [PersonalController::class, 'confirmar'])->name('Personal.confirmar');
 // Confirmar Catedra
 Route::get('catedras/{id_catedra}/confirmar', [CatedrasController::class, 'confirmar'])->name('catedras.confirmar');
+// Confirmar Nota
+Route::get('notas/{id_nota}/confirmar', [NotaController::class, 'confirmar'])->name('notas.confirmar');
 
 // FUNCIONES BACKEND 
 Route::get('/api/niveles', [NivelController::class, 'getNiveles']);

@@ -109,4 +109,10 @@ class NotaController extends Controller
         $pdf = PDF::loadView('Catedra.PdfAlumno', compact('cursos', 'alumno'));
         return $pdf->stream();
     }
+
+    public function confirmar($id)
+    {
+        $nota = Nota::findOrFail($id);
+        return view('pages.notas.confirmar', compact('nota'));
+    }
 }
