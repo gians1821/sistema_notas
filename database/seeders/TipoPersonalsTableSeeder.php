@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TipoPersonalsTableSeeder extends Seeder
 {
@@ -16,9 +17,9 @@ class TipoPersonalsTableSeeder extends Seeder
     {
         
 
-        \DB::table('tipo_personals')->delete();
+        DB::table('tipo_personals')->delete();
         
-        \DB::table('tipo_personals')->insert(array (
+        DB::table('tipo_personals')->insert(array (
             0 => 
             array (
                 'id_tipo_personal' => 1,

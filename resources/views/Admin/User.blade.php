@@ -8,7 +8,7 @@
     <br>
     <nav class="navbar navbar-light">
 
-        @can('Admin.users.create')
+        @can('Crear Usuarios')
         <a class="btn btn-primary " href="{{ route('admin.usuarios.create') }}">
             <i class="fas fa-plus"></i> <strong> Nuevo Registro </strong>
         </a>
@@ -80,14 +80,14 @@
                         </td>
                         <td>
 
-                            @can('Admin.users.edit')
+                            @can('Editar Usuarios')
                             <a href="{{ route('admin.usuarios.edit', $user->id) }}" class="btn btn-info">
                                 <img src="{{ asset('plantilla/src/img/logo/editar_blanco.png') }}" alt="Editar"
                                     style="width: 30px; height: 30px;">
                             </a>
                             @endcan
 
-                            @can('Admin.users.destroy')
+                            @can('Eliminar Usuarios')
                             <a href="{{ route('admin.usuarios.confirmar', $user->id) }}" class="btn btn-danger">
                                 <img src="{{ asset('plantilla\src\img\logo\eliminar.png') }}" alt="Eliminar"
                                     style="width: 30px; height: 30px;">

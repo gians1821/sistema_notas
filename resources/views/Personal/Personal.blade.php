@@ -7,17 +7,17 @@
     <h1 class="h3 mb-3 titulos"><strong>Gestión de</strong> Personal</h1>
     <br>
     <nav class="navbar navbar-light ">
-        <a class="btn btn-primary " href="{{ route('Personal.create') }}">
-            <i class="fas fa-plus"></i> Nuevo Registro
-        </a>
+        @can('Crear Docente')
+            <a class="btn btn-primary " href="{{ route('Personal.create') }}">
+                <i class="fas fa-plus"></i> Nuevo Registro
+            </a>
+        @endcan
         <form class="form-inline my-lg-0 m-2" method="GET">
             <div class="input-group ">
                 <select class="form-control w-auto mr-4" id="tipopersonal" name="buscarporTipoPersonal">
                     <option value="TipoPersonal" selected disabled>SELECCIONE TIPO DE PERSONAL</option>
                     <option value="DOCENTE">DOCENTE</option>
-                    <option value="ADMINISTRADOR">ADMINISTRADOR</option>
-                    <option value="DIRECTOR">DIRECTOR</option>
-                    <option value="ASISTENTE">ASISTENTE</option>
+
                 </select>
                 <input name="buscarporNombre" class="form-control mr-sm-2" type="search" placeholder="NOMBRE"
                     aria-label="Search">
@@ -87,14 +87,20 @@
                     {{$itempersonal->curso && $itempersonal->curso->grado && $itempersonal->curso->grado->nivel ? mb_strtoupper($itempersonal->curso->grado->nivel->nombre_nivel) : ''}}
                 </td>
                 --}}
+
+                    @can('Editar Docente')
                         <td><a href="{{ route('Personal.edit', $itempersonal->id_personal) }}" class="btn btn-info">
                                 <img src="{{ asset('plantilla\src\img\logo\editar_blanco.png') }}" alt="Editar"
                                     style="width: 30px; height: 30px;">
                             </a>
+                    @endcan
+
+                    @can('Eliminar Docente')
                             <a href="{{ route('Personal.confirmar', $itempersonal->id_personal) }}" class="btn btn-danger">
                                 <img src="{{ asset('plantilla\src\img\logo\eliminar.png') }}" alt="Eliminar"
                                     style="width: 30px; height: 30px;">
                             </a>
+                    @endcan
                         </td>
                     </tr>
                 @endforeach

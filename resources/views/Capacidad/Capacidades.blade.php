@@ -9,11 +9,11 @@
     <h1 class="h3 mb-3 titulos"><strong>Gestión de</strong> Capacidades</h1>
     <br>
     <nav class="navbar navbar-light">
-        @role('Admin')
+        @can('Crear Capacidades')
             <a class="btn btn-primary" href="{{ route('Capacidad.create') }}">
                 <i class="fas fa-plus"></i> Nuevo Registro
             </a>
-        @endrole
+        @endcan
         <form class="form-inline my-lg-0" method="GET" action="{{ route('Capacidad.index') }}">
             <div class="d-flex align-items-center">
                 <!-- Campo de búsqueda por nombre -->

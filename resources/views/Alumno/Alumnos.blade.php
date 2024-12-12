@@ -7,8 +7,9 @@
     <h1 class="h3 mb-3 titulos"><strong>Lista de </strong>Alumnos Matriculados</h1>
     <br>
     <nav class="navbar navbar-light">
-        
-        <a href="{{ route('Alumno.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i><strong> Nuevo Registro </strong></a>
+        @can('Crear Alumnos')
+            <a href="{{ route('Alumno.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i><strong> Nuevo Registro </strong></a>
+        @endcan
 
         <form class="form-inline my-2 my-lg-0" method="GET">
             <div class="input-group">
@@ -165,15 +166,19 @@
                         <td>
 
                             
-                                
+                                @can('Editar Alumnos')
                                 <a href="{{ route('Alumno.edit', $itemalumnos->id_alumno) }}" class="btn btn-info">
                                     <img src="{{ asset('plantilla\src\img\logo\editar_blanco.png') }}" alt="Editar"
                                         style="width: 30px; height: 30px;">
                                 </a>
+                                @endcan
+
+                                @can('Eliminar Alumnos')
                                 <a href="{{ route('Alumno.confirmar', $itemalumnos->id_alumno) }}" class="btn btn-danger">
                                     <img src="{{ asset('plantilla\src\img\logo\eliminar.png') }}" alt="Eliminar"
                                         style="width: 30px; height: 30px;">
                                 </a>
+                                @endcan
                         </td>
                     </tr>
                 @endforeach
@@ -185,18 +190,21 @@
         <div>
             {{ $alumnos->appends(['buscarporNom' => $buscarporNom, 'buscarporApell' => $buscarporApell])->links() }}
         </div>
-        <div>
-            <form action="{{ route('Alumno.generarPdf', [
-                        'nivel' => request('nivel'),
-                        'grado' => request('grado'),
-                        'seccion' => request('seccion'),
-                        ]) }}"
-                                
-                method="POST" target="{{ $nueva_pagina }}">
-                @csrf
-                <button type="submit" class="btn btn-secondary">Reporte de Alumnos</button>
-            </form>
-        </div>
+
+        @can('Generar Reporte de Alumnos')
+            <div>
+                <form action="{{ route('Alumno.generarPdf', [
+                            'nivel' => request('nivel'),
+                            'grado' => request('grado'),
+                            'seccion' => request('seccion'),
+                            ]) }}"
+                                    
+                    method="POST" target="{{ $nueva_pagina }}">
+                    @csrf
+                    <button type="submit" class="btn btn-secondary">Reporte de Alumnos</button>
+                </form>
+            </div>
+        @endcan
     </div>
 
 @endsection('Contenido')

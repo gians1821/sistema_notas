@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alumno;
 use Illuminate\Http\Request;
 use App\Models\Seccion;
 use App\Models\Grado;
 use App\Models\Nivel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class SeccionController extends Controller
 {
@@ -67,7 +70,8 @@ class SeccionController extends Controller
      */
     public function create()
     {
-        return view('Seccion.create');
+        $nivel = Nivel::all();
+        return view('Seccion.create', compact('nivel'));
     }
 
     /**
@@ -75,86 +79,105 @@ class SeccionController extends Controller
      */
     public function store(Request $request)
     {
-        // Validar datos del formulario
-        $data = $request->validate([
-            'nivel' => 'required|String|max:15',
-            'grado' => 'required|String|max:15',
-            'secciones' => 'required|string|max:15',
-        ], [
-            'nivel.required' => 'Seleccione el nivel.',
-            'nivel.max' => 'El nivel no debe exceder los 15 caracteres.',
+        
+        $request->validate([
+            'nivel1' => 'nullable|required_with:grado1,seccion1|exists:nivels,id_nivel', 
+            'grado1' => 'nullable|required_with:nivel1,seccion1|exists:grados,id_grado', 
+            'seccion1' => [
+            'nullable',
+            'required_with:nivel1,grado1',
+            'string',
+            Rule::unique('seccions', 'nombre_seccion')->where(function ($query) use ($request) {
+                return $query->where('grado_id_grado', $request->grado1);
+            }),
+            ],
+        
+            'nivel2' => 'nullable|required_with:grado2,seccion2|exists:nivels,id_nivel',
+            'grado2' => 'nullable|required_with:nivel2,seccion2',
+            'seccion2' => [
+            'nullable',
+            'required_with:nivel2,grado2',
+            'string',
+            Rule::unique('seccions', 'nombre_seccion')->where(function ($query) use ($request) {
+                return $query->where('grado_id_grado', function ($query) use ($request) {
+                return $query->select('id_grado')->from('grados')->where('nombre_grado', $request->grado2)->where('id_nivel', $request->nivel2)->first();
+                });
+            }),
+            ],
+        
+            'nivel3' => 'nullable|required_with:grado3,seccion3|unique:nivels,nombre_nivel',
+            'grado3' => 'nullable|required_with:nivel3,seccion3',
+            'seccion3' => [
+            'nullable',
+            'required_with:nivel3,grado3',
+            'string',
+            Rule::unique('seccions', 'nombre_seccion')->where(function ($query) use ($request) {
+                return $query->where('grado_id_grado', $request->grado3);
+            }),
+            ],
+        ],
+        [
+            'nivel1.required_with' => 'El campo nivel es requerido.',
+            'grado1.required_with' => 'El campo grado es requerido.',
+            'seccion1.required_with' => 'El campo sección es requerido.',
+            'seccion1.unique' => 'La sección ya existe.',
 
-            'grado.required' => 'Seleccione el grado.',
-            'grado.max' => 'El grado no debe exceder los 15 caracteres.',
+            'nivel2.required_with' => 'El campo nivel es requerido.',
+            'grado2.required_with' => 'El campo grado es requerido.',
+            'seccion2.required_with' => 'El campo sección es requerido.',
+            'grado2.unique' => 'El grado ya existe.',
+            'seccion2.unique' => 'La sección ya existe.',
 
-            'secciones.required' => 'Seleccione la sección.',
-            'secciones.max' => 'La sección no debe exceder los 15 caracteres.',
+
+            'nivel3.required_with' => 'El campo nivel es requerido.',
+            'grado3.required_with' => 'El campo grado es requerido.',
+            'seccion3.required_with' => 'El campo sección es requerido.',
+            'nivel3.unique' => 'El nivel ya existe.',
+            'grado3.unique' => 'El grado ya existe.',
+            'seccion3.unique' => 'La sección ya existe.',
 
         ]);
 
-        // Obtener el valor de sección desde el formulario y asignarlo
-        $nivel = $request->nivel;
-        $grado = $request->grado;
-        // Variable para almacenar el valor de id_seccion
-        $id_grado = 0;
-        // Lógica para asignar el valor de id_grado basado en nivel
-        switch ($nivel) {
-            case 'Primaria':
-                switch ($grado) {
-                    case 'Primero':
-                        $id_grado = 1;
-                        break;
-                    case 'Segundo':
-                        $id_grado = 2;
-                        break;
-                    case 'Tercero':
-                        $id_grado = 3;
-                        break;
-                    case 'Cuarto':
-                        $id_grado = 4;
-                        break;
-                    case 'Quinto':
-                        $id_grado = 5;
-                        break;
-                    case 'Sexto':
-                        $id_grado = 6;
-                        break;
-                }
-                break;
-            case 'Secundaria':
-                switch ($grado) {
-                    case 'Primero':
-                        $id_grado = 7;
-                        break;
-                    case 'Segundo':
-                        $id_grado = 8;
-                        break;
-                    case 'Tercero':
-                        $id_grado = 9;
-                        break;
-                    case 'Cuarto':
-                        $id_grado = 10;
-                        break;
-                    case 'Quinto':
-                        $id_grado = 11;
-                        break;
-                }
-                break;
+        
+        if ($request->filled('nivel1') || $request->filled('grado1') || $request->filled('seccion1')) {
+
+            DB::table('seccions')->insert([
+                'grado_id_grado' => $request->grado1,
+                'nombre_seccion' => $request->seccion1,
+            ]);
+        } elseif ($request->filled('nivel2') || $request->filled('grado2') || $request->filled('seccion2')) {
+
+                $nivelito = $request->nivel2;
+                $grado = new Grado();
+                $grado->nombre_grado = $request->grado2;
+                $grado->id_nivel = $nivelito;
+                $grado->save();
+                $seccion = new Seccion();
+                $seccion->grado_id_grado = $grado->id_grado;
+                $seccion->nombre_seccion = $request->seccion2;
+                $seccion->save();
+            
+        } elseif ($request->filled('nivel3') || $request->filled('grado3') || $request->filled('seccion3')) {
+            
+                $nivelito = new Nivel();
+                $nivelito->nombre_nivel = $request->nivel3;
+                $nivelito->save();
+                $grado = new Grado();
+                $grado->nombre_grado = $request->grado3;
+                $grado->id_nivel = $nivelito->id_nivel;
+                $grado->save();
+                $seccion = new Seccion();
+                $seccion->grado_id_grado = $grado->id_grado;
+                $seccion->nombre_seccion = $request->seccion3;
+                $seccion->save();
+
         }
 
-        // Verificar si ya existe una sección con el mismo nivel y grado
-        $existeSection = Seccion::where('grado_id_grado', $id_grado)->where('nombre_seccion', $data['secciones'])->first();
-        if ($existeSection) {
-            return redirect()->route('Seccion.index')->with('datos', 'Ya existe una sección con el mismo nivel y grado.');
-        }
+    else {
+        
+        return redirect()->back()->withErrors(['error' => 'No se ha registrado ninguna sección.'])->withInput();
+    }
 
-
-        $seccion = new Seccion();
-        $seccion->nombre_seccion = $data['secciones'];
-        $seccion->capacidad = 30;
-        // Asignar el valor de id_seccion al modelo Seccion
-        $seccion->grado_id_grado = $id_grado;
-        $seccion->save();
         return redirect()->route('Seccion.index')->with('datos', 'Registro Guardado..!');
     }
 
@@ -180,72 +203,7 @@ class SeccionController extends Controller
      */
     public function update(Request $request, $id_seccion)
     {
-        /** 
-        // Obtener el valor de sección desde el formulario y asignarlo
-        $nivel = $request->nivel;
-        $grado = $request->grado;
-        // Variable para almacenar el valor de id_seccion
-        $id_grado = 0;
-        // Lógica para asignar el valor de id_grado basado en nivel
-        switch ($nivel) {
-            case 'Primaria':
-                switch ($grado) {
-                    case 'Primero':
-                        $id_grado = 1;
-                        break;
-                    case 'Segundo':
-                        $id_grado = 2;  
-                        break;
-                    case 'Tercero':
-                        $id_grado = 3; 
-                        break;
-                    case 'Cuarto':
-                        $id_grado = 4; 
-                        break; 
-                    case 'Quinto':
-                        $id_grado = 5;
-                        break; 
-                    case 'Sexto':
-                        $id_grado = 6;
-                        break;     
-                }
-                break;            
-            case 'Secundaria':
-                switch ($grado) {
-                    case 'Primero':
-                        $id_grado = 7;
-                        break;
-                    case 'Segundo':
-                        $id_grado = 8; 
-                        break; 
-                    case 'Tercero':
-                        $id_grado = 9; 
-                        break;
-                    case 'Cuarto':
-                        $id_grado = 10;
-                        break;  
-                    case 'Quinto':
-                        $id_grado = 11;
-                        break;
-                }
-                break;
-        }
-
-        // Verificar si ya existe una sección con el mismo nivel y grado
-        $existeSection = Seccion::where('grado_id_grado', $id_grado)->where('nombre_seccion', $data['secciones'])->first();
-        if ($existeSection) {
-            return redirect()->route('Seccion.index')->with('datos', 'Ya existe una sección con el mismo nivel y grado.');
-        }
-
-        $seccion = Seccion::findOrFail($id_seccion);
-        $seccion = new Seccion();
-        $seccion->nombre_seccion = $data['secciones'];
-        $seccion->capacidad = 30;
-        // Asignar el valor de id_seccion al modelo Seccion
-        $seccion->grado_id_grado = $id_grado;
-        $seccion->save();
-        return redirect()->route('Seccion.index')->with('datos', 'Registro Guardado..!');
-         */
+        
     }
 
 
@@ -262,7 +220,13 @@ class SeccionController extends Controller
     public function destroy($id_seccion)
     {
         $seccion = Seccion::findOrFail($id_seccion);
-        $seccion->delete();
-        return redirect()->route('Seccion.index')->with('datos', 'Registro Eliminado..');
+        $alumnos = Alumno::where('seccion_id_seccion', $id_seccion)->get();
+        if ($alumnos->isNotEmpty()) {
+            return redirect()->route('Seccion.index')->with('danger', 'No se puede eliminar la sección porque tiene alumnos registrados.');
+        }
+        else {
+            $seccion->delete();
+            return redirect()->route('Seccion.index')->with('datos', 'Registro Eliminado..');
+        }
     }
 }

@@ -7,9 +7,11 @@
     <h1 class="h3 mb-3 titulos"><strong>Gestión de</strong> Grados y Secciones</h1>
     <br>
     <nav class="navbar navbar-light ">
-        <a class="btn btn-primary " href="{{ route('Seccion.create') }}">
-            <i class="fas fa-plus"></i> Nuevo Registro
-        </a>
+        @can('Crear Secciones')
+            <a class="btn btn-primary " href="{{ route('Seccion.create') }}">
+                <i class="fas fa-plus"></i> Nuevo Registro
+            </a>
+        @endcan
         <form class="form-inline my-lg-0 m-2" method="GET">
             <div class="input-group ">
             <div class="position-relative">
@@ -55,10 +57,20 @@
         </form>
     </nav>
 
-    <div id="mensaje">
+    <div id="mensaje1">
         @if (session('datos'))
             <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
                 {{ session('datos') }}
+                <button type="button" class="close" data-dismiss="alert" arialabel="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+    </div>
+    <div id="mensaje2">
+        @if (session('danger'))
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                {{ session('danger') }}
                 <button type="button" class="close" data-dismiss="alert" arialabel="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -69,11 +81,12 @@
     <table class="table  text-center ">
         <thead class="thead-dark">
             <tr>
-                <th scope="col" class="w-25">SECCION_ID</th>
-                <th scope="col">NIVEL</th>
-                <th scope="col">GRADO</th>
-                <th scope="col">SECCION</th>
-                <th scope="col">ACCIONES</th>
+                <th scope="col" class="w-25">id</th>
+                <th scope="col">Nivel</th>
+                <th scope="col">Grado</th>
+                <th scope="col">Seccion</th>
+                <th scope="col">Capacidad</th>
+                <th scope="col">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -86,15 +99,18 @@
                     <tr>
                         <td>{{ $itemseccion->id_seccion }}</td>
                         <td>{{ $itemseccion->grado && $itemseccion->grado->nivel ? $itemseccion->grado->nivel->nombre_nivel : 'No asignado' }}
-                        </td> <!-- Asegúrate de ajustar 'nombre_nivel' según el nombre real del campo en tu modelo Nivel -->
+                        </td> <!-- Ajustar 'nombre_nivel' según el nombre real del campo en tu modelo Nivel -->
                         <td>{{ $itemseccion->grado ? $itemseccion->grado->nombre_grado : 'No asignado' }}</td>
                         <td>{{ $itemseccion->nombre_seccion }}</td>
+                        <td>{{ $itemseccion->capacidad }}</td>
                         <td>
-                            <a href="{{ route('Seccion.confirmar', $itemseccion->id_seccion) }}"
-                                class="btn btn-danger btnsm ms-2">
-                                <img src="{{ asset('plantilla\src\img\logo\eliminar.png') }}" alt="Eliminar"
-                                    style="width: 30px; height: 30px;">
-                            </a>
+                            @can('Eliminar Secciones')
+                                <a href="{{ route('Seccion.confirmar', $itemseccion->id_seccion) }}"
+                                    class="btn btn-danger btnsm ms-2">
+                                    <img src="{{ asset('plantilla\src\img\logo\eliminar.png') }}" alt="Eliminar"
+                                        style="width: 30px; height: 30px;">
+                                </a>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach
@@ -106,7 +122,12 @@
 @section('script')
     <script>
         setTimeout(function() {
-            document.querySelector('#mensaje').remove();
+            document.querySelector('#mensaje1').remove();
+        }, 3000);
+    </script>
+    <script>
+        setTimeout(function() {
+            document.querySelector('#mensaje2').remove();
         }, 3000);
     </script>
 @endsection('script')
