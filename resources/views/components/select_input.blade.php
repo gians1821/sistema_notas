@@ -11,7 +11,7 @@ $property           - el nombre del campo mostrado (distinto de 'name')
 
 <div class="form-group">
     <label class="form-label" for="{{ $name }}"><strong>{{ $label }}</strong></label>
-    <select class="form-control @error($name) is-invalid @enderror" id="{{ $name }}" name="{{ $name }}">
+    <select class="form-control @error($name) is-invalid @enderror" id="{{ $name }}" name="{{ $name }}" {{ $attributes ?? '' }}>
         <option value="" disabled {{ old($name, $selected ?? '') ? '' : 'selected' }}>
             Seleccione opción
         </option>

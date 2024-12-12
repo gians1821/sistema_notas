@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Catedra;
 use App\Models\Curso;
+use App\Models\Grado;
 use App\Models\Nivel;
 use App\Models\Periodo;
 use App\Models\Personal;
+use App\Models\Seccion;
 use App\Models\TipoPersonal;
 use Illuminate\Http\Request;
 
@@ -104,7 +106,18 @@ class CatedrasController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $catedra = Catedra::where('id', $id)->first();
+        $id_tipo_docente = TipoPersonal::where('nombre_tipopersonal', 'DOCENTE')->first()->id_tipo_personal;
+        $docentes = Personal::where('id_tipo_personal', $id_tipo_docente)->get();
+        $cursos = Curso::get();
+        $periodos = Periodo::get();
+        $niveles = Nivel::get();
+        $secciones = Seccion::get();
+        $grados = Grado::get();
+        $docente = Personal::where('id_tipo_personal', 1)
+            ->where('id_personal', $catedra->docente_id)
+            ->first();
+        return view('pages.catedras.edit', compact('catedra', 'grados', 'secciones', 'docentes', 'cursos', 'periodos', 'niveles', 'docente'));
     }
 
     /**
@@ -112,7 +125,19 @@ class CatedrasController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validar los datos del request
+        $validatedData = $request->validate([
+            'docente_id' => 'required|exists:personals,id_personal', // Asegúrate de validar correctamente
+        ]);
+
+        // Recuperar la cátedra por su ID
+        $catedra = Catedra::findOrFail($id);
+
+        // Actualizar solo los campos editables
+        $catedra->update($validatedData);
+
+        // Redirigir con mensaje de éxito
+        return redirect()->route('catedras.index')->with('success', 'Cátedra actualizada correctamente');
     }
 
     /**

@@ -10,6 +10,7 @@
     <br>
     <nav class="navbar navbar-light">
         <!-- Formulario de Búsqueda por Cátedra -->
+        @hasanyrole('Admin|Secretaria|Docente')
         <form class="form-inline" method="GET" action="{{ route('notas.index') }}">
             <div class="form-group mb-2">
                 <label for="catedra_id" class="sr-only">Cátedra</label>
@@ -25,6 +26,24 @@
             <button type="submit" class="btn btn-primary mb-2 ml-2">Buscar</button>
             <a href="{{ route('notas.index') }}" class="btn btn-secondary mb-2 ml-2">Limpiar</a>
         </form>
+        @endrole
+        @role('Padre')
+        <form class="form-inline" method="GET" action="{{ route('notas.index') }}">
+            @include('components.select_input', [
+                'name' => 'alumno_id',
+                'label' => 'Alumno',
+                'options' => $alumnos,
+                'id_property' => 'id_alumno',
+                'property' => 'nombre_alumno',
+            ])
+            <button type="submit" class="btn btn-primary mb-2 ml-2">Buscar</button>
+            <a href="{{ route('notas.index') }}" class="btn btn-secondary mb-2 ml-2">Limpiar</a>
+        </form>
+        @endrole
+        @isset($alumno_id)
+        <a href=" {{ route('alumno.reporte_notas', ['id' => $alumno_id]) }}"
+            class="btn btn-secondary" target="_blank">Ver reporte</a>
+        @endisset
     </nav>
 
     @include('components.session_messages')

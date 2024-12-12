@@ -11,6 +11,7 @@ use App\Models\Personal;
 use App\Models\Promedio;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class NotaController extends Controller
@@ -19,6 +20,11 @@ class NotaController extends Controller
 
     public function index(Request $request)
     {
+        $paginacion = 10;
+
+        $user = Auth::user();
+        $role = $user->roles->pluck('name')->first();
+
         // Obtener todos los profesores (docentes) con tipo personal 1
         $docentes = Personal::where('id_tipo_personal', '1')->orderBy('id_personal')->get();
 
@@ -27,8 +33,8 @@ class NotaController extends Controller
 
         // Obtener todas las cátedras
         $catedras = Catedra::with(['curso', 'docente', 'seccion'])
-                            ->orderBy('id')
-                            ->get();
+            ->orderBy('id')
+            ->get();
 
         // Inicializar la consulta de notas
         $query = Nota::with(['catedra.curso', 'catedra.docente', 'catedra.seccion', 'alumno', 'competencia']);
@@ -38,10 +44,37 @@ class NotaController extends Controller
             $query->where('catedra_id', $request->catedra_id);
         }
 
-        // Obtener las notas filtradas
-        $notas = $query->paginate(10); // Puedes ajustar la paginación según tus necesidades
+        if ($role == 'Padre') {
+            $alumno_id = 0;
 
-        return view('pages.notas.index', compact('notas', 'catedras'));
+            // Filtrar por alumno si se proporciona
+            if ($request->has('alumno_id') && !empty($request->alumno_id)) {
+                $query->where('alumno_id_alumno', $request->alumno_id);
+                $alumno_id = $request->alumno_id;
+            }
+
+
+            if ($role == 'Padre') {
+                $paginacion = 24;
+            }
+
+            // Obtener las notas filtradas
+            $notas = $query->paginate($paginacion); // Puedes ajustar la paginación según tus necesidades
+
+            $alumnos = Alumno::where('padre_id', $user->padre->id)->get();
+            if ($alumno_id <> 0)
+            {
+                return view('pages.notas.index', compact('notas', 'catedras', 'alumnos', 'alumno_id'));
+                
+            } else 
+            {
+            return view('pages.notas.index', compact('notas', 'catedras', 'alumnos'));
+
+            }
+        } else {
+            $notas = $query->paginate($paginacion); // Puedes ajustar la paginación según tus necesidades
+            return view('pages.notas.index', compact('notas', 'catedras'));
+        }
     }
 
     /**
@@ -95,9 +128,10 @@ class NotaController extends Controller
         // Actualizar solo los campos editables
         $nota->update($request->only(['nota1', 'nota2', 'nota3', 'nota_final']));
 
-        if ($request->nota_final)
-        {
-            $promedio = Promedio::where('alumno_id_alumno', $nota->alumno->id_alumno)->where('id', $nota->id_promedio)->first();
+        if ($request->nota_final) {
+            $promedio = Promedio::where('alumno_id_alumno', $nota->alumno->id_alumno)
+                ->where('id', $nota->id_promedio)
+                ->first();
             $promedio->valor = $nota->nota_final;
             $promedio->save();
         }
@@ -147,12 +181,12 @@ class NotaController extends Controller
         return $pdf->stream();
     }
 
-    public function PdfAlumno($id_alumno)
+    public function getReporteNota($id_alumno)
     {
         $alumno = Alumno::find($id_alumno);
-        $cursos = CursoHasAlumno::where('alumno_id_alumno', $id_alumno)->get();
+        $notas = Nota::where('alumno_id_alumno', $id_alumno)->get();
 
-        $pdf = PDF::loadView('Catedra.PdfAlumno', compact('cursos', 'alumno'));
+        $pdf = PDF::loadView('pages.notas.reporte_nota', compact('notas', 'alumno'));
         return $pdf->stream();
     }
 
