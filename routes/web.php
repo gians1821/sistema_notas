@@ -142,3 +142,4 @@ Route::get('/api/buscar-padre', [PadreController::class, 'buscarPadre']);
 Route::get('/api/tipos_personal', [TipoPersonalController::class, 'getTiposPersonal']);
 Route::get('/api/docente/{id}', [PersonalController::class, 'getDocente']);
 Route::get('/api/curso/{id}', [CursoController::class, 'getCurso']);
+Route::get('/alumno/{id}/reporte_notas', [NotaController::class, 'getReporteNota'])->name('alumno.reporte_notas');

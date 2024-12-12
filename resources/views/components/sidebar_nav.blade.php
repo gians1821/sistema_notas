@@ -88,7 +88,7 @@
             </a>
         </li>
     @endrole
-    <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Catedra') ? 'active' : '' }}">
+    <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'notas') ? 'active' : '' }}">
         <a class="sidebar-link" href="{{ route('notas.index') }}">
             <i class="align-middle" data-feather="check-circle"></i>
             <span>
@@ -105,7 +105,7 @@
                 @endrole
     
                 @role('Padre')
-                    Reporte de Notas
+                    Generar Reporte
                 @endrole
             </span>
         </a>
