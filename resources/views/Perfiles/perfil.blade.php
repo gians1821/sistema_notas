@@ -8,7 +8,7 @@
     <br>
     <nav class="navbar navbar-light">
 
-        @can('Admin.perfiles.create')
+        @can('Crear Perfiles')
         <a class="btn btn-primary " href="{{ route('admin.perfil.create') }}">
             <i class="fas fa-plus"></i> <strong> Nuevo Registro </strong>
         </a>

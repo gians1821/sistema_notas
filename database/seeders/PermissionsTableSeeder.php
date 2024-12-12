@@ -24,7 +24,7 @@ class PermissionsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'name' => 'Home.index',
+                'name' => 'Home',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -32,7 +32,7 @@ class PermissionsTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 2,
-                'name' => 'Home.info.hijo',
+                'name' => 'Ver Usuarios',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -42,7 +42,7 @@ class PermissionsTableSeeder extends Seeder
             2 => 
             array (
                 'id' => 3,
-                'name' => 'Admin.users.index',
+                'name' => 'Ver Perfiles',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -50,7 +50,7 @@ class PermissionsTableSeeder extends Seeder
             3 => 
             array (
                 'id' => 4,
-                'name' => 'Admin.users.create',
+                'name' => 'Informacion General',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -58,7 +58,7 @@ class PermissionsTableSeeder extends Seeder
             4 => 
             array (
                 'id' => 5,
-                'name' => 'Admin.users.edit',
+                'name' => 'Ver Alumnos Matriculados',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -66,7 +66,7 @@ class PermissionsTableSeeder extends Seeder
             5 => 
             array (
                 'id' => 6,
-                'name' => 'Admin.users.destroy',
+                'name' => 'Ver Vacantes',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -76,7 +76,7 @@ class PermissionsTableSeeder extends Seeder
             6 => 
             array (
                 'id' => 7,
-                'name' => 'Admin.perfiles.index',
+                'name' => 'Ver Cátedras',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -84,7 +84,7 @@ class PermissionsTableSeeder extends Seeder
             7 => 
             array (
                 'id' => 8,
-                'name' => 'Admin.perfiles.create',
+                'name' => 'Ver Personal',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -92,7 +92,7 @@ class PermissionsTableSeeder extends Seeder
             8 => 
             array (
                 'id' => 9,
-                'name' => 'Admin.perfiles.edit',
+                'name' => 'Ver notas',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -100,28 +100,27 @@ class PermissionsTableSeeder extends Seeder
             9 => 
             array (
                 'id' => 10,
-                'name' => 'Admin.perfiles.destroy',
+                'name' => 'Ver Capacidades',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
 
-
-
-
-            //DEMAS 5
             10 => 
             array (
                 'id' => 11,
-                'name' => 'Alumno.index',
+                'name' => 'Ver Cursos',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
+
+
+
             11 => 
             array (
                 'id' => 12,
-                'name' => 'Alumno.create',
+                'name' => 'Crear Usuarios',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -129,7 +128,7 @@ class PermissionsTableSeeder extends Seeder
             12 => 
             array (
                 'id' => 13,
-                'name' => 'Alumno.edit',
+                'name' => 'Editar Usuarios',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -137,7 +136,7 @@ class PermissionsTableSeeder extends Seeder
             13 => 
             array (
                 'id' => 14,
-                'name' => 'Alumno.destroy',
+                'name' => 'Eliminar Usuarios',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -145,7 +144,7 @@ class PermissionsTableSeeder extends Seeder
             14 => 
             array (
                 'id' => 15,
-                'name' => 'Seccion.index',
+                'name' => 'Crear Perfiles',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -153,7 +152,7 @@ class PermissionsTableSeeder extends Seeder
             15 => 
             array (
                 'id' => 16,
-                'name' => 'Seccion.create',
+                'name' => 'Editar Perfiles',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -161,7 +160,7 @@ class PermissionsTableSeeder extends Seeder
             16 => 
             array (
                 'id' => 17,
-                'name' => 'Seccion.destroy',
+                'name' => 'Eliminar Perfil',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -169,7 +168,7 @@ class PermissionsTableSeeder extends Seeder
             17 => 
             array (
                 'id' => 18,
-                'name' => 'Curso.index',
+                'name' => 'Crear Alumnos',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -177,7 +176,7 @@ class PermissionsTableSeeder extends Seeder
             18 => 
             array (
                 'id' => 19,
-                'name' => 'Curso.create',
+                'name' => 'Editar Alumnos',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -185,7 +184,7 @@ class PermissionsTableSeeder extends Seeder
             19 => 
             array (
                 'id' => 20,
-                'name' => 'Curso.edit',
+                'name' => 'Eliminar Alumnos',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -193,7 +192,7 @@ class PermissionsTableSeeder extends Seeder
             20 => 
             array (
                 'id' => 21,
-                'name' => 'Curso.destroy',
+                'name' => 'Generar Reporte de Alumnos',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -201,7 +200,7 @@ class PermissionsTableSeeder extends Seeder
             21 => 
             array (
                 'id' => 22,
-                'name' => 'CursoPorGrado.index',
+                'name' => 'Crear Secciones',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -209,7 +208,7 @@ class PermissionsTableSeeder extends Seeder
             22 => 
             array (
                 'id' => 23,
-                'name' => 'Capacidad.index',
+                'name' => 'Eliminar Secciones',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -217,7 +216,7 @@ class PermissionsTableSeeder extends Seeder
             23 => 
             array (
                 'id' => 24,
-                'name' => 'Capacidad.create',
+                'name' => 'Crear Cursos',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -225,7 +224,7 @@ class PermissionsTableSeeder extends Seeder
             24 => 
             array (
                 'id' => 25,
-                'name' => 'Capacidad.edit',
+                'name' => 'Editar Cursos',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -233,7 +232,7 @@ class PermissionsTableSeeder extends Seeder
             25 => 
             array (
                 'id' => 26,
-                'name' => 'Capacidad.destroy',
+                'name' => 'Eliminar Cursos',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -241,7 +240,7 @@ class PermissionsTableSeeder extends Seeder
             26 => 
             array (
                 'id' => 27,
-                'name' => 'Personal.index',
+                'name' => 'Crear Capacidades',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -249,7 +248,7 @@ class PermissionsTableSeeder extends Seeder
             27 => 
             array (
                 'id' => 28,
-                'name' => 'Personal.create',
+                'name' => 'Editar Capacidades',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -257,7 +256,7 @@ class PermissionsTableSeeder extends Seeder
             28 => 
             array (
                 'id' => 29,
-                'name' => 'Personal.edit',
+                'name' => 'Eliminar Capacidades',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -265,7 +264,7 @@ class PermissionsTableSeeder extends Seeder
             29 => 
             array (
                 'id' => 30,
-                'name' => 'Personal.destroy',
+                'name' => 'Editar Notas',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -273,7 +272,7 @@ class PermissionsTableSeeder extends Seeder
             30 => 
             array (
                 'id' => 31,
-                'name' => 'CursoHasAlumno.index',
+                'name' => 'Eliminar Notas',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -281,7 +280,7 @@ class PermissionsTableSeeder extends Seeder
             31 => 
             array (
                 'id' => 32,
-                'name' => 'CursoHasAlumno.edit',
+                'name' => 'Crear Docente',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
@@ -289,11 +288,36 @@ class PermissionsTableSeeder extends Seeder
             32 => 
             array (
                 'id' => 33,
-                'name' => 'CursoHasAlumno.pdf',
+                'name' => 'Editar Docente',
                 'guard_name' => 'web',
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
+            33 => 
+            array (
+                'id' => 34,
+                'name' => 'Eliminar Docente',
+                'guard_name' => 'web',
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            34 => 
+            array (
+                'id' => 35,
+                'name' => 'Editar Catedras',
+                'guard_name' => 'web',
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            35 => 
+            array (
+                'id' => 36,
+                'name' => 'Eliminar Catedra',
+                'guard_name' => 'web',
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+
         ));
         
         

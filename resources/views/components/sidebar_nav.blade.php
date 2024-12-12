@@ -1,11 +1,10 @@
 <ul class="sidebar-nav">
-    <!-- TITULO 1 -->
+
+    @can('Home')
     <li class="sidebar-header">
         PRINCIPAL
     </li>
-    <!-- DASHBOARD -->
 
-    @can('Home.index')
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Home') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ route('Home.index') }}">
                 <i class="align-middle" data-feather="home"></i> <span> Inicio </span>
@@ -14,7 +13,7 @@
     @endcan
 
     <!-- PROFILE -->
-    @can('Admin.users.index')
+    @can('Ver Usuarios')
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'admin.usuarios') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ route('admin.usuarios.index') }}">
                 <i class="align-middle" data-feather="user"></i> <span> Usuarios </span>
@@ -22,7 +21,7 @@
         </li>
     @endcan
 
-    @can('Admin.perfiles.index')
+    @can('Ver Perfiles')
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'admin.perfil') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ route('admin.perfil.index') }}">
                 <i class="align-middle" data-feather="users"></i> <span> Perfiles </span>
@@ -47,41 +46,42 @@
     </li>
     <!-- AQUI ES DONDE TRABAJAREMOS -->
     <!-- GESTION DE ALUMNOS -->
-    
+    @can('Informacion General')
     <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Info') ? 'active' : '' }}">
         <a class="sidebar-link" href="{{ route('Info', ['indexito' => 0]) }}">
             <i class="align-middle" data-feather="info"></i> <span> Informacion General </span>
         </a>
     </li>
-    @hasanyrole('Admin|Secretaria')
+    @endcan
+
+    @can('Ver Alumnos Matriculados')
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Alumno') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ URL::to('/Alumno') }}">
                 <i class="align-middle" data-feather="check-circle"></i> <span> Registrar Matrícula </span>
             </a>
         </li>
-    @endhasanyrole
-    @role('Admin')
+    @endcan
+
+    @can('Ver Vacantes')
         <!-- GESTION DE GRADOS -->
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Seccion') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ URL::to('/Seccion') }}">
-                <i class="align-middle" data-feather="check-circle"></i> <span> Grados </span>
+                <i class="align-middle" data-feather="check-circle"></i> <span> Vacantes </span>
             </a>
         </li>
+    @endcan
+
+    @can('Ver Cursos')
         <!-- GESTION DE CURSOS -->
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Curso.') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ URL::to('/Curso') }}">
                 <i class="align-middle" data-feather="check-circle"></i> <span> Cursos </span>
             </a>
         </li>
-        <!-- GESTION DE CURSOS POR GRADOS -->
-        <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'CursoPorGrado') ? 'active' : '' }}">
-            <a class="sidebar-link" href="{{ URL::to('/CursoPorGrado') }}">
-                <i class="align-middle" data-feather="check-circle"></i> <span> Cursos por Grados </span>
-            </a>
-        </li>
-    @endrole
+    @endcan
+
     <!-- GESTION DE CAPACIDADES -->
-    @role('Admin')
+    @can('Ver Capacidades')
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Capacidad') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ URL::to('/Capacidad') }}">
                 <i class="align-middle" data-feather="check-circle"></i> <span> Capacidades </span>
@@ -110,25 +110,29 @@
             </span>
         </a>
     </li>
+    @endcan
+
     <!-- TITULO 3 -->
-    <li class="sidebar-header">
-        GESTIÓN ADMINISTRATIVA
-    </li>
-    @role('Admin')
+
+    @can('Ver Personal')
+        <li class="sidebar-header">
+            GESTIÓN ADMINISTRATIVA
+        </li>
         <!-- GESTION DE PERSONAL -->
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'Personal') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ route('Personal.index') }}">
                 <i class="align-middle" data-feather="check-circle"></i> <span> Personal </span>
             </a>
         </li>
-    @endrole
-    @role('Admin')
+    @endcan
+
+    @can('Ver Cátedras')
         <!-- GESTION DE PERSONAL -->
         <li class="sidebar-item {{ Str::startsWith(Route::currentRouteName(), 'catedra') ? 'active' : '' }}">
             <a class="sidebar-link" href="{{ route('catedras.index') }}">
                 <i class="align-middle" data-feather="check-circle"></i> <span> Cátedras </span>
             </a>
         </li>
-    @endrole
+    @endcan
     
 </ul>

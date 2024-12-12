@@ -106,8 +106,11 @@ class UserController extends Controller
         $usuario->save();
 
         // Asignar el rol al usuario
-        $rol = Role::find($request->input('rol'));
-        $usuario->assignRole($rol->name);
+        DB::table('model_has_roles')->insert([
+            'role_id' => $request->rol,
+            'model_id' => $usuario->id,
+            'model_type' => User::class, 
+        ]);
 
         // Redirigir con mensaje de éxito
         return redirect()->route('admin.usuarios.index')->with('datos', 'Usuario registrado correctamente');

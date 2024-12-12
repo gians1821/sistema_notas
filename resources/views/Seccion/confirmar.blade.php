@@ -9,7 +9,7 @@
         <div class="card-body">
             <h5 class="card-title">¿Estas seguro de eliminar esta sección?</h5>
             <form action="{{ route('Seccion.destroy', $seccion->id_seccion) }}" method="POST">
-                <h5>{{ $seccion->grado->nombre_grado }} "{{ $seccion->nombre_seccion }}" DE
+                <h5>{{ $seccion->grado->nombre_grado }} "{{ $seccion->nombre_seccion }}" de
                     {{ $seccion->grado->nivel->nombre_nivel }} </h5>
                 @method('delete')
                 @csrf

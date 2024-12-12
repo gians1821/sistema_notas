@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ModelHasRolesTableSeeder extends Seeder
 {
@@ -16,9 +17,9 @@ class ModelHasRolesTableSeeder extends Seeder
     {
         
 
-        \DB::table('model_has_roles')->delete();
+        DB::table('model_has_roles')->delete();
         
-        \DB::table('model_has_roles')->insert(array (
+        DB::table('model_has_roles')->insert(array (
             0 => 
             array (
                 'role_id' => 3,

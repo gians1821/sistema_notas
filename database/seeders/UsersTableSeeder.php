@@ -36,7 +36,7 @@ class UsersTableSeeder extends Seeder
             array (
                 'id' => 2,
                 'name' => 'Jhonatan',
-                'email' => 'Jm@gmail.com',
+                'email' => 'jmonzon@unitru.edu.pe',
                 'profile_photo' => NULL,
                 'email_verified_at' => NULL,
                 'password' => '$2y$12$YwBp.OzykM3oke2f8kxgqe5Y1sDj0AnR4d7/e.OBCFELX0oDdSkye',

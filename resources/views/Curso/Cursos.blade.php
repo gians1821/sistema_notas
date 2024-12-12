@@ -7,9 +7,11 @@
     <h1 class="h3 mb-3 titulos"><strong>Gestión de</strong> Cursos</h1>
     <br>
     <nav class="navbar navbar-light ">
+        @can('Crear Cusos')
         <a class="btn btn-primary " href="{{ route('Curso.create') }}">
             <i class="fas fa-plus"></i> Nuevo Registro
         </a>
+        @endcan
         <form class="form-inline my-2 my-lg-0" method="GET">
             <div class="input-group ">
                 <input name="buscarporNombre" class="form-control mr-sm-2" type="search" placeholder="Nombre"
@@ -56,14 +58,19 @@
                         </td> <!-- Asegúrate de ajustar 'nombre_nivel' según el nombre real del campo en tu modelo Nivel -->
                         <td>{{ mb_strtoupper($itemcurso->nombre_curso) }}</td>
                         <td>
-                            <a href="{{ route('Curso.edit', $itemcurso->id_curso) }}" class="btn btn-info">
-                                <img src="{{ asset('plantilla\src\img\logo\editar_blanco.png') }}" alt="Editar"
-                                    style="width: 30px; height: 30px;">
-                            </a>
-                            <a href="{{ route('Curso.confirmar', $itemcurso->id_curso) }}" class="btn btn-danger">
-                                <img src="{{ asset('plantilla\src\img\logo\eliminar.png') }}" alt="Eliminar"
-                                    style="width: 30px; height: 30px;">
-                            </a>
+                            @can('Editar Cursos')
+                                <a href="{{ route('Curso.edit', $itemcurso->id_curso) }}" class="btn btn-info">
+                                    <img src="{{ asset('plantilla\src\img\logo\editar_blanco.png') }}" alt="Editar"
+                                        style="width: 30px; height: 30px;">
+                                </a>
+                            @endcan
+
+                            @can('Eliminar Cursos')
+                                <a href="{{ route('Curso.confirmar', $itemcurso->id_curso) }}" class="btn btn-danger">
+                                    <img src="{{ asset('plantilla\src\img\logo\eliminar.png') }}" alt="Eliminar"
+                                        style="width: 30px; height: 30px;">
+                                </a>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach

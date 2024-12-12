@@ -18,7 +18,7 @@
         }
     </style>
     <!-- CONTENIDO DE LA PAGINA -->
-    <h1 class="h3 mb-3 titulos text-center"><strong>Asignar un</strong> Rol</h1>
+    <h1 class="h3 mb-3 titulos text-center"><strong>Crear un</strong> Usuario</h1>
     <br>
     <form method="POST" action="{{ route('admin.usuarios.store') }}" enctype="multipart/form-data">
         @csrf
